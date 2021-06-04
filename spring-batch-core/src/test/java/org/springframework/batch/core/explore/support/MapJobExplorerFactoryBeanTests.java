@@ -15,16 +15,16 @@
  */
 package org.springframework.batch.core.explore.support;
 
-import static org.junit.Assert.assertEquals;
+import java.util.Date;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
-
-import java.util.Date;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link MapJobExplorerFactoryBean}.

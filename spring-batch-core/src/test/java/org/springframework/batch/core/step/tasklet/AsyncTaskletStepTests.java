@@ -16,9 +16,6 @@
 
 package org.springframework.batch.core.step.tasklet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +23,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -46,6 +44,8 @@ import org.springframework.batch.support.transaction.ResourcelessTransactionMana
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.lang.Nullable;
 import org.springframework.util.StringUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AsyncTaskletStepTests {
 
@@ -137,10 +137,10 @@ public class AsyncTaskletStepTests {
 		// System.err.println(processed);
 		// Check commit count didn't spin out of control waiting for other
 		// threads to finish...
-		assertTrue("Not enough commits: " + stepExecution.getCommitCount(),
-				stepExecution.getCommitCount() > processed.size() / 2);
-		assertTrue("Too many commits: " + stepExecution.getCommitCount(),
-				stepExecution.getCommitCount() <= processed.size() / 2 + throttleLimit + 1);
+		assertTrue(
+		stepExecution.getCommitCount() > processed.size() / 2, "Not enough commits: " + stepExecution.getCommitCount());
+		assertTrue(
+		stepExecution.getCommitCount() <= processed.size() / 2 + throttleLimit + 1, "Too many commits: " + stepExecution.getCommitCount());
 
 	}
 

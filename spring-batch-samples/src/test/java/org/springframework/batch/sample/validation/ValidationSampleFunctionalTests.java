@@ -17,10 +17,9 @@
 package org.springframework.batch.sample.validation;
 
 import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -31,12 +30,12 @@ import org.springframework.batch.item.support.ListItemWriter;
 import org.springframework.batch.sample.validation.domain.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ValidationSampleConfiguration.class})
 public class ValidationSampleFunctionalTests {
 
@@ -58,9 +57,9 @@ public class ValidationSampleFunctionalTests {
 		JobExecution jobExecution = this.jobLauncher.run(this.job, jobParameters);
 
 		// then
-		Assert.assertEquals(ExitStatus.COMPLETED.getExitCode(), jobExecution.getExitStatus().getExitCode());
+		Assertions.assertEquals(ExitStatus.COMPLETED.getExitCode(), jobExecution.getExitStatus().getExitCode());
 		List<? extends Person> writtenItems = this.listItemWriter.getWrittenItems();
-		Assert.assertEquals(1, writtenItems.size());
-		Assert.assertEquals("foo", writtenItems.get(0).getName());
+		Assertions.assertEquals(1, writtenItems.size());
+		Assertions.assertEquals("foo", writtenItems.get(0).getName());
 	}
 }

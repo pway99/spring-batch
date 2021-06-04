@@ -27,10 +27,7 @@ import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.skyscreamer.jsonassert.JSONAssert;
 
 import org.springframework.batch.item.ExecutionContext;
@@ -44,11 +41,8 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.DigestUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mahmoud Ben Hassine
@@ -356,7 +350,7 @@ public abstract class JsonFileItemWriterFunctionalTests {
 		writer.open(executionContext);
 		writer.write(Collections.singletonList(this.trade1));
 		writer.close();
-		
+
 		// then
 		assertFileEquals(
 				new File(EXPECTED_FILE_DIRECTORY + "expected-trades1.json"),

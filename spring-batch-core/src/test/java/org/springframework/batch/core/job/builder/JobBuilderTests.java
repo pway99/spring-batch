@@ -15,8 +15,8 @@
  */
 package org.springframework.batch.core.job.builder;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -35,7 +35,7 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Mahmoud Ben Hassine
@@ -53,7 +53,7 @@ public class JobBuilderTests {
 		JobExecution jobExecution = jobLauncher.run(job, new JobParameters());
 
 		// then
-		Assert.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
+		Assertions.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
 		assertEquals(1, AnnotationBasedJobExecutionListener.beforeJobCount);
 		assertEquals(1, AnnotationBasedJobExecutionListener.afterJobCount);
 		assertEquals(1, InterfaceBasedJobExecutionListener.beforeJobCount);
@@ -75,7 +75,7 @@ public class JobBuilderTests {
 					.build();
 		}
 	}
-	
+
 	static class InterfaceBasedJobExecutionListener implements JobExecutionListener {
 
 		public static int beforeJobCount = 0;
@@ -96,7 +96,7 @@ public class JobBuilderTests {
 
 		public static int beforeJobCount = 0;
 		public static int afterJobCount = 0;
-		
+
 		@BeforeJob
 		public void beforeJob(JobExecution jobExecution) {
 			beforeJobCount++;

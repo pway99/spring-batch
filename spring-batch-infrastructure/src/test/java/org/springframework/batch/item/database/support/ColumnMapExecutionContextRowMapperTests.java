@@ -15,48 +15,51 @@
  */
 package org.springframework.batch.item.database.support;
 
-import static org.mockito.Mockito.mock;
 import java.sql.PreparedStatement;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Lucas Ward
  * @author Will Schipp
  */
-public class ColumnMapExecutionContextRowMapperTests extends TestCase {
+public class ColumnMapExecutionContextRowMapperTests {
 
 	private ColumnMapItemPreparedStatementSetter mapper;
-	
+
 	private Map<String, Object> key;
-	
+
 	private PreparedStatement ps;
-		
-    @Override
-	protected void setUp() throws Exception {
-		super.setUp();
-	
+
+ @BeforeEach
+	public void setUp() throws Exception {
+
 		ps = mock(PreparedStatement.class);
 		mapper = new ColumnMapItemPreparedStatementSetter();
-		
+
 		key = new LinkedHashMap<>(2);
 		key.put("1", Integer.valueOf(1));
 		key.put("2", Integer.valueOf(2));
 	}
-	
-	public void testCreateExecutionContextFromEmptyKeys() throws Exception {
-		
+
+	@Test
+ public void testCreateExecutionContextFromEmptyKeys() throws Exception {
+
 		mapper.setValues(new HashMap<>(), ps);
 	}
-	
-	public void testCreateSetter() throws Exception {
-		
+
+	@Test
+ public void testCreateSetter() throws Exception {
+
 		ps.setObject(1, Integer.valueOf(1));
 		ps.setObject(2, Integer.valueOf(2));
-		mapper.setValues(key, ps);	
+		mapper.setValues(key, ps);
 	}
-	
+
 }

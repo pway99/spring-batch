@@ -15,11 +15,10 @@
  */
 package org.springframework.batch.integration.file;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -31,14 +30,15 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.MessageHandler;
 import org.springframework.messaging.SubscribableChannel;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
  *
  */
 @ContextConfiguration()
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class FileToMessagesJobIntegrationTests implements MessageHandler {
 
 	@Autowired
@@ -57,7 +57,7 @@ public class FileToMessagesJobIntegrationTests implements MessageHandler {
 		count++;
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		requests.subscribe(this);
 	}

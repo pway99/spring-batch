@@ -15,9 +15,6 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,8 +24,9 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.aop.framework.Advised;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecutionListener;
@@ -62,6 +60,10 @@ import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Thomas Risberg
  * @author Dan Garrette
@@ -70,7 +72,7 @@ public class StepParserTests {
 
 	private static ApplicationContext stepParserParentAttributeTestsCtx;
 
-	@BeforeClass
+	@BeforeAll
 	public static void loadAppCtx() {
 		stepParserParentAttributeTestsCtx = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/StepParserParentAttributeTests-context.xml");
@@ -87,7 +89,7 @@ public class StepParserTests {
 		@SuppressWarnings("unchecked")
 		StepParserStepFactoryBean<Object, Object> factory = beans.get(factoryName);
 		TaskletStep bean = (TaskletStep) factory.getObject();
-		assertEquals("wrong start-limit:", 25, bean.getStartLimit());
+		assertEquals(25, bean.getStartLimit(), "wrong start-limit:");
 		Object throttleLimit = ReflectionTestUtils.getField(factory, "throttleLimit");
 		assertEquals(new Integer(10), throttleLimit);
 	}
@@ -98,16 +100,18 @@ public class StepParserTests {
 		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/StepParserBeanNameTests-context.xml");
 		Map<String, Step> beans = ctx.getBeansOfType(Step.class);
-		assertTrue("'s1' bean not found", beans.containsKey("s1"));
+		assertTrue(beans.containsKey("s1"), "'s1' bean not found");
 		Step s1 = (Step) ctx.getBean("s1");
-		assertEquals("wrong name", "s1", s1.getName());
+		assertEquals("s1", s1.getName(), "wrong name");
 	}
 
-	@Test(expected = BeanDefinitionParsingException.class)
+	@Test
 	@SuppressWarnings("resource")
 	public void testStepParserCommitIntervalCompletionPolicy() throws Exception {
+	 assertThrows(BeanDefinitionParsingException.class, () -> {
 		new ClassPathXmlApplicationContext(
-				"org/springframework/batch/core/configuration/xml/StepParserCommitIntervalCompletionPolicyTests-context.xml");
+		"org/springframework/batch/core/configuration/xml/StepParserCommitIntervalCompletionPolicyTests-context.xml");
+	 });
 	}
 
 	@Test
@@ -116,7 +120,7 @@ public class StepParserTests {
 		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/StepParserCommitIntervalTests-context.xml");
 		Map<String, Step> beans = ctx.getBeansOfType(Step.class);
-		assertTrue("'s1' bean not found", beans.containsKey("s1"));
+		assertTrue(beans.containsKey("s1"), "'s1' bean not found");
 		Step s1 = (Step) ctx.getBean("s1");
 		CompletionPolicy completionPolicy = getCompletionPolicy(s1);
 		assertTrue(completionPolicy instanceof SimpleCompletionPolicy);
@@ -129,7 +133,7 @@ public class StepParserTests {
 		ConfigurableApplicationContext ctx = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/StepParserCompletionPolicyTests-context.xml");
 		Map<String, Step> beans = ctx.getBeansOfType(Step.class);
-		assertTrue("'s1' bean not found", beans.containsKey("s1"));
+		assertTrue(beans.containsKey("s1"), "'s1' bean not found");
 		Step s1 = (Step) ctx.getBean("s1");
 		CompletionPolicy completionPolicy = getCompletionPolicy(s1);
 		assertTrue(completionPolicy instanceof DummyCompletionPolicy);
@@ -142,25 +146,31 @@ public class StepParserTests {
 		return (CompletionPolicy) ReflectionTestUtils.getField(repeatOperations, "completionPolicy");
 	}
 
-	@Test(expected = BeanDefinitionParsingException.class)
+	@Test
 	@SuppressWarnings("resource")
 	public void testStepParserNoCommitIntervalOrCompletionPolicy() throws Exception {
+	 assertThrows(BeanDefinitionParsingException.class, () -> {
 		new ClassPathXmlApplicationContext(
-				"org/springframework/batch/core/configuration/xml/StepParserNoCommitIntervalOrCompletionPolicyTests-context.xml");
+		"org/springframework/batch/core/configuration/xml/StepParserNoCommitIntervalOrCompletionPolicyTests-context.xml");
+	 });
 	}
 
-	@Test(expected = BeanDefinitionParsingException.class)
+	@Test
 	@SuppressWarnings("resource")
 	public void testTaskletStepWithBadStepListener() throws Exception {
+	 assertThrows(BeanDefinitionParsingException.class, () -> {
 		new ClassPathXmlApplicationContext(
-				"org/springframework/batch/core/configuration/xml/StepParserBadStepListenerTests-context.xml");
+		"org/springframework/batch/core/configuration/xml/StepParserBadStepListenerTests-context.xml");
+	 });
 	}
 
-	@Test(expected = BeanDefinitionParsingException.class)
+	@Test
 	@SuppressWarnings("resource")
 	public void testTaskletStepWithBadRetryListener() throws Exception {
+	 assertThrows(BeanDefinitionParsingException.class, () -> {
 		new ClassPathXmlApplicationContext(
-				"org/springframework/batch/core/configuration/xml/StepParserBadRetryListenerTests-context.xml");
+		"org/springframework/batch/core/configuration/xml/StepParserBadRetryListenerTests-context.xml");
+	 });
 	}
 
 	@Test

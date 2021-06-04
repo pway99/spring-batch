@@ -15,9 +15,6 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,9 +22,10 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -47,8 +45,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ReflectionUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Dave Syer
@@ -56,7 +56,7 @@ import org.springframework.util.ReflectionUtils;
  * @author Mahmoud Ben Hassine
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class PartitionStepParserTests implements ApplicationContextAware {
 
 	@Autowired
@@ -98,7 +98,7 @@ public class PartitionStepParserTests implements ApplicationContextAware {
 		this.applicationContext = applicationContext;
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		nameStoringTasklet.setStepNamesList(savedStepNames);
 		mapJobRepositoryFactoryBean.clear();
@@ -149,7 +149,7 @@ public class PartitionStepParserTests implements ApplicationContextAware {
 	 */
 	@Test
 	public void testNestedPartitionStepStepReference() throws Throwable {
-		assertNotNull("the reference to the job3 configured in the XML file must not be null", job3);
+		assertNotNull(job3, "the reference to the job3 configured in the XML file must not be null");
 		JobExecution jobExecution = jobRepository.createJobExecution(job3.getName(), new JobParameters());
 
 		job3.execute(jobExecution);
@@ -165,8 +165,8 @@ public class PartitionStepParserTests implements ApplicationContextAware {
 						"partitionHandler");
 				TaskletStep taskletStep = accessPrivateField(taskExecutorPartitionHandler, "step");
 
-				assertNotNull("the taskletStep wasn't configured with a step. "
-						+ "We're trusting that the factory ensured " + "a reference was given.", taskletStep);
+				assertNotNull(taskletStep, "the taskletStep wasn't configured with a step. "
+				+ "We're trusting that the factory ensured " + "a reference was given.");
 			}
 		}
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
@@ -184,7 +184,7 @@ public class PartitionStepParserTests implements ApplicationContextAware {
 	 */
 	@Test
 	public void testNestedPartitionStep() throws Throwable {
-		assertNotNull("the reference to the job4 configured in the XML file must not be null", job4);
+		assertNotNull(job4, "the reference to the job4 configured in the XML file must not be null");
 		JobExecution jobExecution = jobRepository.createJobExecution(job4.getName(), new JobParameters());
 
 		job4.execute(jobExecution);
@@ -201,8 +201,8 @@ public class PartitionStepParserTests implements ApplicationContextAware {
 						"partitionHandler");
 				TaskletStep taskletStep = accessPrivateField(taskExecutorPartitionHandler, "step");
 
-				assertNotNull("the taskletStep wasn't configured with a step. "
-						+ "We're trusting that the factory ensured " + "a reference was given.", taskletStep);
+				assertNotNull(taskletStep, "the taskletStep wasn't configured with a step. "
+				+ "We're trusting that the factory ensured " + "a reference was given.");
 			}
 		}
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());

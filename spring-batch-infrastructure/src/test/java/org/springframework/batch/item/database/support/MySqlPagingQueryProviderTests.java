@@ -18,11 +18,10 @@ package org.springframework.batch.item.database.support;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.database.Order;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Thomas Risberg
@@ -55,7 +54,7 @@ public class MySqlPagingQueryProviderTests extends AbstractSqlPagingQueryProvide
 		String s = pagingQueryProvider.generateJumpToItemQuery(145, pageSize);
 		assertEquals(sql, s);
 	}
-	
+
 	@Test @Override
 	public void testGenerateJumpToItemQueryForFirstPage() {
 		String sql = "SELECT id FROM foo WHERE bar = 1 ORDER BY id ASC LIMIT 0, 1";

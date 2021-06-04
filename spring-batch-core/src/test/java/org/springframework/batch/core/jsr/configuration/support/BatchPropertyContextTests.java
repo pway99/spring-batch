@@ -15,14 +15,13 @@
  */
 package org.springframework.batch.core.jsr.configuration.support;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * <p>
@@ -39,7 +38,7 @@ public class BatchPropertyContextTests {
 	private Map<String, Map<String, Properties>> stepArtifactProperties = new HashMap<>();
 
 	@SuppressWarnings("serial")
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Properties step1Properties = new Properties();
 		step1Properties.setProperty("step1PropertyName1", "step1PropertyValue1");

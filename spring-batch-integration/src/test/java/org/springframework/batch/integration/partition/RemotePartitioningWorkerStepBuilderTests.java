@@ -16,33 +16,32 @@
 
 package org.springframework.batch.integration.partition;
 
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.integration.channel.DirectChannel;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Mahmoud Ben Hassine
  */
 public class RemotePartitioningWorkerStepBuilderTests {
 
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
-
 	@Mock
 	private Tasklet tasklet;
 
 	@Test
 	public void inputChannelMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("inputChannel must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningWorkerStepBuilder("step").inputChannel(null);
+
+		 // then
+		 // expected exception
+	 }, "inputChannel must not be null");
 
 		// then
 		// expected exception
@@ -50,12 +49,14 @@ public class RemotePartitioningWorkerStepBuilderTests {
 
 	@Test
 	public void outputChannelMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("outputChannel must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningWorkerStepBuilder("step").outputChannel(null);
+
+		 // then
+		 // expected exception
+	 }, "outputChannel must not be null");
 
 		// then
 		// expected exception
@@ -63,12 +64,14 @@ public class RemotePartitioningWorkerStepBuilderTests {
 
 	@Test
 	public void jobExplorerMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("jobExplorer must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningWorkerStepBuilder("step").jobExplorer(null);
+
+		 // then
+		 // expected exception
+	 }, "jobExplorer must not be null");
 
 		// then
 		// expected exception
@@ -76,12 +79,14 @@ public class RemotePartitioningWorkerStepBuilderTests {
 
 	@Test
 	public void stepLocatorMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("stepLocator must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningWorkerStepBuilder("step").stepLocator(null);
+
+		 // then
+		 // expected exception
+	 }, "stepLocator must not be null");
 
 		// then
 		// expected exception
@@ -89,12 +94,14 @@ public class RemotePartitioningWorkerStepBuilderTests {
 
 	@Test
 	public void beanFactoryMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("beanFactory must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningWorkerStepBuilder("step").beanFactory(null);
+
+		 // then
+		 // expected exception
+	 }, "beanFactory must not be null");
 
 		// then
 		// expected exception
@@ -102,12 +109,14 @@ public class RemotePartitioningWorkerStepBuilderTests {
 
 	@Test
 	public void testMandatoryInputChannel() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("An InputChannel must be provided");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningWorkerStepBuilder("step").tasklet(this.tasklet);
+
+		 // then
+		 // expected exception
+	 }, "An InputChannel must be provided");
 
 		// then
 		// expected exception
@@ -115,15 +124,18 @@ public class RemotePartitioningWorkerStepBuilderTests {
 
 	@Test
 	public void testMandatoryJobExplorer() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		// given
 		DirectChannel inputChannel = new DirectChannel();
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("A JobExplorer must be provided");
 
 		// when
 		new RemotePartitioningWorkerStepBuilder("step")
-				.inputChannel(inputChannel)
-				.tasklet(this.tasklet);
+		.inputChannel(inputChannel)
+		.tasklet(this.tasklet);
+
+		 // then
+		 // expected exception
+	 }, "A JobExplorer must be provided");
 
 		// then
 		// expected exception

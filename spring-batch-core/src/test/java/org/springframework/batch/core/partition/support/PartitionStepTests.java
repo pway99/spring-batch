@@ -21,8 +21,8 @@ import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
@@ -33,8 +33,7 @@ import org.springframework.batch.core.partition.PartitionHandler;
 import org.springframework.batch.core.partition.StepExecutionSplitter;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
@@ -46,7 +45,7 @@ public class PartitionStepTests {
 
 	private JobRepository jobRepository;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MapJobRepositoryFactoryBean factory = new MapJobRepositoryFactoryBean();
 		jobRepository = factory.getObject();

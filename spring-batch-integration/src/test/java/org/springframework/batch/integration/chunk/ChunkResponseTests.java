@@ -15,12 +15,12 @@
  */
 package org.springframework.batch.integration.chunk;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
 import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.util.SerializationUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Dave Syer

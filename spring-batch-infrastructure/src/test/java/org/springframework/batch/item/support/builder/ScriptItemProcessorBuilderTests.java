@@ -22,17 +22,16 @@ import java.util.List;
 import javax.script.ScriptEngineFactory;
 import javax.script.ScriptEngineManager;
 
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.support.ScriptItemProcessor;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * @author Glenn Renfro
@@ -40,7 +39,7 @@ import static org.junit.Assume.assumeTrue;
 public class ScriptItemProcessorBuilderTests {
 	private static List<String> availableLanguages = new ArrayList<>();
 
-	@BeforeClass
+	@BeforeAll
 	public static void populateAvailableEngines() {
 		List<ScriptEngineFactory> scriptEngineFactories = new ScriptEngineManager().getEngineFactories();
 
@@ -49,7 +48,7 @@ public class ScriptItemProcessorBuilderTests {
 		}
 	}
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		assumeTrue(availableLanguages.contains("javascript"));
 	}
@@ -62,7 +61,7 @@ public class ScriptItemProcessorBuilderTests {
 				.build();
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "AA", scriptItemProcessor.process("aa"));
+		assertEquals("AA", scriptItemProcessor.process("aa"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -74,7 +73,7 @@ public class ScriptItemProcessorBuilderTests {
 				.build();
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", true, scriptItemProcessor.process("Hello World"));
+		assertEquals(true, scriptItemProcessor.process("Hello World"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -85,7 +84,7 @@ public class ScriptItemProcessorBuilderTests {
 				.build();
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "BB", scriptItemProcessor.process("bb"));
+		assertEquals("BB", scriptItemProcessor.process("bb"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -107,8 +106,8 @@ public class ScriptItemProcessorBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.", message,
-					iae.getMessage());
+			assertEquals(message,
+			iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 

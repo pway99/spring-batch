@@ -15,13 +15,16 @@
  */
 package org.springframework.batch.core.repository.dao;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.springframework.batch.core.repository.ExecutionContextSerializer;
-
 import java.io.ByteArrayOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.batch.core.repository.ExecutionContextSerializer;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Michael Minella
@@ -34,18 +37,20 @@ public class DefaultExecutionContextSerializerTests extends AbstractExecutionCon
 	/**
 	 * @throws java.lang.Exception
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		serializer = new DefaultExecutionContextSerializer();
 	}
 
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSerializeNonSerializable() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		Map<String, Object> m1 = new HashMap<>();
 		m1.put("object1", new Object());
 
 		serializer.serialize(m1, new ByteArrayOutputStream());
+	 });
 	}
 
 	@Override

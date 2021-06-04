@@ -19,9 +19,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Timeout;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
@@ -42,32 +43,32 @@ import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for fault tolerant {@link org.springframework.batch.core.step.item.ChunkOrientedTasklet}.
  */
 @ContextConfiguration(locations = "/simple-job-launcher-context.xml")
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class FaultTolerantStepIntegrationTests {
-	
+
 	private static final int TOTAL_ITEMS = 30;
 	private static final int CHUNK_SIZE = TOTAL_ITEMS;
-	
+
 	@Autowired
 	private JobRepository jobRepository;
-	
+
 	@Autowired
 	private PlatformTransactionManager transactionManager;
-	
+
 	private SkipPolicy skipPolicy;
-	
+
 	private FaultTolerantStepBuilder<Integer, Integer> stepBuilder;
-	
-	@Before
+
+	@BeforeEach
 	public void setUp() {
 		ItemReader<Integer> itemReader = new ListItemReader<>(createItems());
 		ItemProcessor<Integer, Integer> itemProcessor = item -> item > 20 ? null : item;
@@ -84,24 +85,24 @@ public class FaultTolerantStepIntegrationTests {
 				.writer(itemWriter)
 				.faultTolerant();
 	}
-	
+
 	@Test
 	public void testFilterCountWithTransactionalProcessorWhenSkipInWrite() throws Exception {
 		// Given
 		Step step = stepBuilder
 				.skipPolicy(skipPolicy)
 				.build();
-		
+
 		// When
 		StepExecution stepExecution = execute(step);
-		
+
 		// Then
 		assertEquals(TOTAL_ITEMS, stepExecution.getReadCount());
 		assertEquals(10, stepExecution.getFilterCount());
 		assertEquals(19, stepExecution.getWriteCount());
 		assertEquals(1, stepExecution.getWriteSkipCount());
 	}
-	
+
 	@Test
 	public void testFilterCountWithNonTransactionalProcessorWhenSkipInWrite() throws Exception {
 		// Given
@@ -109,17 +110,17 @@ public class FaultTolerantStepIntegrationTests {
 				.skipPolicy(skipPolicy)
 				.processorNonTransactional()
 				.build();
-		
+
 		// When
 		StepExecution stepExecution = execute(step);
-		
+
 		// Then
 		assertEquals(TOTAL_ITEMS, stepExecution.getReadCount());
 		assertEquals(10, stepExecution.getFilterCount());
 		assertEquals(19, stepExecution.getWriteCount());
 		assertEquals(1, stepExecution.getWriteSkipCount());
 	}
-	
+
 	@Test
 	public void testFilterCountOnRetryWithTransactionalProcessorWhenSkipInWrite() throws Exception {
 		// Given
@@ -128,10 +129,10 @@ public class FaultTolerantStepIntegrationTests {
 				.retryLimit(2)
 				.skipPolicy(skipPolicy)
 				.build();
-		
+
 		// When
 		StepExecution stepExecution = execute(step);
-		
+
 		// Then
 		assertEquals(TOTAL_ITEMS, stepExecution.getReadCount());
 		// filter count is expected to be counted on each retry attempt
@@ -139,7 +140,7 @@ public class FaultTolerantStepIntegrationTests {
 		assertEquals(19, stepExecution.getWriteCount());
 		assertEquals(1, stepExecution.getWriteSkipCount());
 	}
-	
+
 	@Test
 	public void testFilterCountOnRetryWithNonTransactionalProcessorWhenSkipInWrite() throws Exception {
 		// Given
@@ -149,10 +150,10 @@ public class FaultTolerantStepIntegrationTests {
 				.skipPolicy(skipPolicy)
 				.processorNonTransactional()
 				.build();
-		
+
 		// When
 		StepExecution stepExecution = execute(step);
-		
+
 		// Then
 		assertEquals(TOTAL_ITEMS, stepExecution.getReadCount());
 		// filter count is expected to be counted on each retry attempt
@@ -161,7 +162,8 @@ public class FaultTolerantStepIntegrationTests {
 		assertEquals(1, stepExecution.getWriteSkipCount());
 	}
 
-	@Test(timeout = 3000)
+	@Test
+ @Timeout(3000)
 	public void testExceptionInProcessDuringChunkScan() throws Exception {
 		// Given
 		ListItemReader<Integer> itemReader = new ListItemReader<>(Arrays.asList(1, 2, 3, 4, 5, 6, 7));
@@ -213,7 +215,8 @@ public class FaultTolerantStepIntegrationTests {
 		assertEquals(1, stepExecution.getProcessSkipCount());
 	}
 
-	@Test(timeout = 3000)
+	@Test
+ @Timeout(3000)
 	public void testExceptionInProcessAndWriteDuringChunkScan() throws Exception {
 		// Given
 		ListItemReader<Integer> itemReader = new ListItemReader<>(Arrays.asList(1, 2, 3));
@@ -267,7 +270,7 @@ public class FaultTolerantStepIntegrationTests {
 		}
 		return items;
 	}
-	
+
 	private StepExecution execute(Step step) throws Exception {
 		JobExecution jobExecution = jobRepository.createJobExecution(
 								"job" + Math.random(), new JobParameters());
@@ -276,14 +279,14 @@ public class FaultTolerantStepIntegrationTests {
 		step.execute(stepExecution);
 		return stepExecution;
 	}
-	
+
 	private class SkipIllegalArgumentExceptionSkipPolicy implements SkipPolicy {
-		
+
 		@Override
 		public boolean shouldSkip(Throwable throwable, int skipCount)
 				throws SkipLimitExceededException {
 			return throwable instanceof IllegalArgumentException;
 		}
-		
+
 	}
 }

@@ -15,10 +15,9 @@
  */
 package org.springframework.batch.item.file.transform;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
@@ -35,7 +34,7 @@ public class DelimitedLineAggregatorTests {
 		}
 	};
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		aggregator = new DelimitedLineAggregator<>();
 		aggregator.setFieldExtractor(defaultFieldExtractor);

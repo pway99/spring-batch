@@ -15,21 +15,25 @@
  */
 package org.springframework.batch.item.file.transform;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.file.transform.LineAggregator;
 import org.springframework.batch.item.file.transform.PassThroughLineAggregator;
 
-public class PassThroughLineAggregatorTests extends TestCase {
-	
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+public class PassThroughLineAggregatorTests {
+
 	private LineAggregator<Object> mapper = new PassThroughLineAggregator<>();
 
-	public void testUnmapItemAsFieldSet() throws Exception {
+	@Test
+ public void testUnmapItemAsFieldSet() throws Exception {
 		Object item = new Object();
 		assertEquals(item.toString(), mapper.aggregate(item));
 	}
 
-	public void testUnmapItemAsString() throws Exception {
+	@Test
+ public void testUnmapItemAsString() throws Exception {
 		assertEquals("foo", mapper.aggregate("foo"));
 	}
 

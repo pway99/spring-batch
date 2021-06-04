@@ -22,13 +22,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLStreamException;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
@@ -40,9 +41,10 @@ import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Michael Minella
@@ -73,7 +75,7 @@ public class StaxEventItemWriterBuilderTests {
 			"<ns2:item xmlns:ns2=\"https://www.springframework.org/test\"><first>7</first>" +
 			"<second>eight</second><third>nine</third></ns2:item></root>";
 
-	@Before
+	@BeforeEach
 	public void setUp() throws IOException {
 		File directory = new File("target/data");
 		directory.mkdirs();
@@ -89,14 +91,15 @@ public class StaxEventItemWriterBuilderTests {
 		((Jaxb2Marshaller) marshaller).setClassesToBeBound(Foo.class);
 	}
 
-	@Test(expected = ItemStreamException.class)
+	@Test
 	public void testOverwriteOutput() throws Exception {
+	 assertThrows(ItemStreamException.class, () -> {
 		StaxEventItemWriter<Foo> staxEventItemWriter = new StaxEventItemWriterBuilder<Foo>()
-				.name("fooWriter")
-				.marshaller(marshaller)
-				.resource(this.resource)
-				.overwriteOutput(false)
-				.build();
+		.name("fooWriter")
+		.marshaller(marshaller)
+		.resource(this.resource)
+		.overwriteOutput(false)
+		.build();
 
 		staxEventItemWriter.afterPropertiesSet();
 
@@ -114,6 +117,7 @@ public class StaxEventItemWriterBuilderTests {
 
 		executionContext = new ExecutionContext();
 		staxEventItemWriter.open(executionContext);
+	 });
 	}
 
 	@Test
@@ -212,18 +216,22 @@ public class StaxEventItemWriterBuilderTests {
 		assertEquals(0, executionContext.size());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testMissingMarshallerValidation() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new StaxEventItemWriterBuilder<Foo>()
-				.name("fooWriter")
-				.build();
+		.name("fooWriter")
+		.build();
+	 });
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testMissingNameValidation() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new StaxEventItemWriterBuilder<Foo>()
-				.marshaller(new Jaxb2Marshaller())
-				.build();
+		.marshaller(new Jaxb2Marshaller())
+		.build();
+	 });
 	}
 
 	@Test

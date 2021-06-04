@@ -16,23 +16,15 @@
 
 package org.springframework.batch.core.repository.support;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -49,6 +41,16 @@ import org.springframework.batch.core.repository.dao.JobExecutionDao;
 import org.springframework.batch.core.repository.dao.JobInstanceDao;
 import org.springframework.batch.core.repository.dao.StepExecutionDao;
 import org.springframework.batch.core.step.StepSupport;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Test SimpleJobRepository. The majority of test cases are tested using
@@ -91,7 +93,7 @@ public class SimpleJobRepositoryTests {
 
 	JobExecution jobExecution;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		jobExecutionDao = mock(JobExecutionDao.class);
@@ -196,9 +198,11 @@ public class SimpleJobRepositoryTests {
 		verify(ecDao).saveExecutionContexts(stepExecutions);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSaveNullStepExecutions() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		jobRepository.addAll(null);
+	 });
 	}
 
 	@Test
@@ -241,8 +245,9 @@ public class SimpleJobRepositoryTests {
 		assertTrue(jobRepository.isJobInstanceExists("foo", new JobParameters()));
 	}
 
-	@Test(expected = JobExecutionAlreadyRunningException.class)
+	@Test
 	public void testCreateJobExecutionAlreadyRunning() throws Exception {
+	 assertThrows(JobExecutionAlreadyRunningException.class, () -> {
 		jobExecution.setStatus(BatchStatus.STARTED);
 		jobExecution.setStartTime(new Date());
 		jobExecution.setEndTime(null);
@@ -251,10 +256,12 @@ public class SimpleJobRepositoryTests {
 		when(jobExecutionDao.findJobExecutions(jobInstance)).thenReturn(Arrays.asList(jobExecution));
 
 		jobRepository.createJobExecution("foo", new JobParameters());
+	 });
 	}
 
-	@Test(expected = JobRestartException.class)
+	@Test
 	public void testCreateJobExecutionStatusUnknown() throws Exception {
+	 assertThrows(JobRestartException.class, () -> {
 		jobExecution.setStatus(BatchStatus.UNKNOWN);
 		jobExecution.setEndTime(new Date());
 
@@ -262,10 +269,12 @@ public class SimpleJobRepositoryTests {
 		when(jobExecutionDao.findJobExecutions(jobInstance)).thenReturn(Arrays.asList(jobExecution));
 
 		jobRepository.createJobExecution("foo", new JobParameters());
+	 });
 	}
 
-	@Test(expected = JobInstanceAlreadyCompleteException.class)
+	@Test
 	public void testCreateJobExecutionAlreadyComplete() throws Exception {
+	 assertThrows(JobInstanceAlreadyCompleteException.class, () -> {
 		jobExecution.setStatus(BatchStatus.COMPLETED);
 		jobExecution.setEndTime(new Date());
 
@@ -273,14 +282,17 @@ public class SimpleJobRepositoryTests {
 		when(jobExecutionDao.findJobExecutions(jobInstance)).thenReturn(Arrays.asList(jobExecution));
 
 		jobRepository.createJobExecution("foo", new JobParameters());
+	 });
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testCreateJobExecutionInstanceWithoutExecutions() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		when(jobInstanceDao.getJobInstance("foo", new JobParameters())).thenReturn(jobInstance);
 		when(jobExecutionDao.findJobExecutions(jobInstance)).thenReturn(Collections.emptyList());
 
 		jobRepository.createJobExecution("foo", new JobParameters());
+	 });
 	}
 
 	@Test

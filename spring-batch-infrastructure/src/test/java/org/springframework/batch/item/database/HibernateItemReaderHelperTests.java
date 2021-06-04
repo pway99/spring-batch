@@ -16,17 +16,16 @@
 
 package org.springframework.batch.item.database;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
-
 import org.hibernate.SessionFactory;
 import org.hibernate.StatelessSession;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -35,17 +34,17 @@ import org.springframework.test.util.ReflectionTestUtils;
  *
  */
 public class HibernateItemReaderHelperTests {
-	
+
 	private HibernateItemReaderHelper<String> helper = new HibernateItemReaderHelper<>();
-	
+
 	private SessionFactory sessionFactory = mock(SessionFactory.class);
-	
+
 	@Test
 	public void testOneSessionForAllPages() throws Exception {
 
 		StatelessSession session = mock(StatelessSession.class);
 		when(sessionFactory.openStatelessSession()).thenReturn(session);
-		
+
 		helper.setSessionFactory(sessionFactory);
 
 		helper.createQuery();
@@ -59,13 +58,13 @@ public class HibernateItemReaderHelperTests {
 
 		StatelessSession session = mock(StatelessSession.class);
 		when(sessionFactory.openStatelessSession()).thenReturn(session);
-		
+
 		helper.setSessionFactory(sessionFactory);
 
 		helper.createQuery();
 		assertNotNull(ReflectionTestUtils.getField(helper, "statelessSession"));
 
-		helper.close();		
+		helper.close();
 		assertNull(ReflectionTestUtils.getField(helper, "statelessSession"));
 
 	}

@@ -16,22 +16,22 @@
 
 package org.springframework.batch.sample;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/simple-job-launcher-context.xml", "/jobs/groovyJob.xml",
 		"/job-runner-context.xml" })
 public class GroovyJobFunctionalTests {
@@ -39,7 +39,7 @@ public class GroovyJobFunctionalTests {
 	@Autowired
 	private JobLauncherTestUtils jobLauncherTestUtils;
 
-	@Before
+	@BeforeEach
 	public void removeOldData() throws IOException {
 		FileUtils.deleteDirectory(new File("target/groovyJob"));
 	}

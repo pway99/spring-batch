@@ -16,9 +16,6 @@
 package org.springframework.batch.item.file;
 
 import java.util.Comparator;
-
-import org.junit.runners.JUnit4;
-import org.junit.runner.RunWith;
 import org.springframework.batch.item.AbstractItemStreamItemReaderTests;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
@@ -26,7 +23,7 @@ import org.springframework.batch.item.sample.Foo;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
-@RunWith(JUnit4.class)
+
 public class MultiResourceItemReaderFlatFileTests extends
 		AbstractItemStreamItemReaderTests {
 
@@ -44,7 +41,7 @@ public class MultiResourceItemReaderFlatFileTests extends
 				foo.setValue(Integer.valueOf(line));
 				return foo;
 			}
-			
+
 		});
 		fileReader.setSaveState(true);
 
@@ -62,7 +59,7 @@ public class MultiResourceItemReaderFlatFileTests extends
 			public int compare(Resource arg0, Resource arg1) {
 				return 0; // preserve original ordering
 			}
-			
+
 		});
 
 		return multiReader;

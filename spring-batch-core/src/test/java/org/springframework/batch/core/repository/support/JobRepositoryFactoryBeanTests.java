@@ -19,11 +19,12 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Types;
 import java.util.Map;
+
 import javax.sql.DataSource;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.repository.ExecutionContextSerializer;
@@ -42,10 +43,11 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -66,7 +68,7 @@ public class JobRepositoryFactoryBeanTests {
 
 	private String tablePrefix = "TEST_BATCH_PREFIX_";
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		factory = new JobRepositoryFactoryBean();
@@ -174,7 +176,7 @@ public class JobRepositoryFactoryBeanTests {
 		factory.afterPropertiesSet();
 		assertEquals(customSerializer, ReflectionTestUtils.getField(factory, "serializer"));
 	}
-	
+
 	@Test
 	public void testDefaultJdbcOperations() throws Exception {
 
@@ -188,10 +190,10 @@ public class JobRepositoryFactoryBeanTests {
 		factory.setIncrementerFactory(incrementerFactory);
 
 		factory.afterPropertiesSet();
-		
+
 		JdbcOperations jdbcOperations = (JdbcOperations) ReflectionTestUtils.getField(factory, "jdbcOperations");
 		assertTrue(jdbcOperations instanceof JdbcTemplate);
-	}	
+	}
 
 	@Test
 	public void testCustomJdbcOperations() throws Exception {
@@ -204,15 +206,15 @@ public class JobRepositoryFactoryBeanTests {
 		when(incrementerFactory.getIncrementer("ORACLE", tablePrefix + "JOB_EXECUTION_SEQ")).thenReturn(new StubIncrementer());
 		when(incrementerFactory.getIncrementer("ORACLE", tablePrefix + "STEP_EXECUTION_SEQ")).thenReturn(new StubIncrementer());
 		factory.setIncrementerFactory(incrementerFactory);
-		
+
 		JdbcOperations customJdbcOperations = mock(JdbcOperations.class);
 		factory.setJdbcOperations(customJdbcOperations);
-		
+
 		factory.afterPropertiesSet();
-		
+
 		assertEquals(customJdbcOperations, ReflectionTestUtils.getField(factory, "jdbcOperations"));
-	}	
-	
+	}
+
 	@Test
 	public void testMissingDataSource() throws Exception {
 
@@ -224,7 +226,7 @@ public class JobRepositoryFactoryBeanTests {
 		catch (IllegalArgumentException ex) {
 			// expected
 			String message = ex.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("DataSource"));
+			assertTrue(message.contains("DataSource"), "Wrong message: " + message);
 		}
 
 	}
@@ -244,7 +246,7 @@ public class JobRepositoryFactoryBeanTests {
 		catch (IllegalArgumentException ex) {
 			// expected
 			String message = ex.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("TransactionManager"));
+			assertTrue(message.contains("TransactionManager"), "Wrong message: " + message);
 		}
 
 	}
@@ -262,7 +264,7 @@ public class JobRepositoryFactoryBeanTests {
 		catch (IllegalArgumentException ex) {
 			// expected
 			String message = ex.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("foo"));
+			assertTrue(message.contains("foo"), "Wrong message: " + message);
 		}
 
 	}
@@ -282,7 +284,7 @@ public class JobRepositoryFactoryBeanTests {
 		factory.getObject();
 	}
 
-	@Ignore
+	@Disabled
 	@Test
 	public void testTransactionAttributesForCreateMethodNullHypothesis() throws Exception {
 		testCreateRepository();
@@ -352,10 +354,12 @@ public class JobRepositoryFactoryBeanTests {
 		}
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testInvalidCustomLobType() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		factory.setClobType(Integer.MAX_VALUE);
 		testCreateRepository();
+	 });
 	}
 
 	@Test

@@ -18,12 +18,13 @@ package org.springframework.batch.core.jsr.configuration.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
+
 import javax.batch.api.Batchlet;
 import javax.batch.runtime.JobExecution;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.w3c.dom.Document;
 import org.xml.sax.ErrorHandler;
 import org.xml.sax.InputSource;
@@ -36,10 +37,9 @@ import org.springframework.beans.factory.xml.DocumentLoader;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.util.StringUtils;
 import org.springframework.util.xml.SimpleSaxErrorHandler;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>
@@ -73,7 +73,7 @@ public class JsrBeanDefinitionDocumentReaderTests extends AbstractJsrTestCase {
 
 		Properties processedJobParameters = (Properties) beanDefinition.getConstructorArgumentValues().getGenericArgumentValue(Properties.class).getValue();
 		assertNotNull(processedJobParameters);
-		assertTrue("Wrong number of job parameters", processedJobParameters.size() == 2);
+		assertTrue(processedJobParameters.size() == 2, "Wrong number of job parameters");
 		assertEquals("jobParameter1Value", processedJobParameters.getProperty("jobParameter1"));
 		assertEquals("jobParameter2Value", processedJobParameters.getProperty("jobParameter2"));
 	}
@@ -89,7 +89,7 @@ public class JsrBeanDefinitionDocumentReaderTests extends AbstractJsrTestCase {
 
 		Properties documentJobProperties = documentReader.getJobProperties();
 		assertNotNull(documentJobProperties);
-		assertTrue("Wrong number of job properties", documentJobProperties.size() == 3);
+		assertTrue(documentJobProperties.size() == 3, "Wrong number of job properties");
 		assertEquals("jobProperty1Value", documentJobProperties.getProperty("jobProperty1"));
 		assertEquals("jobProperty1Value", documentJobProperties.getProperty("jobProperty2"));
 		assertEquals("", documentJobProperties.getProperty("jobProperty3"));
@@ -118,7 +118,7 @@ public class JsrBeanDefinitionDocumentReaderTests extends AbstractJsrTestCase {
 		Properties resolvedParameters = documentReader.getJobParameters();
 
 		assertNotNull(resolvedParameters);
-		assertTrue("Wrong number of job parameters", resolvedParameters.size() == 3);
+		assertTrue(resolvedParameters.size() == 3, "Wrong number of job parameters");
 		assertEquals("myfile.txt", resolvedParameters.getProperty("jobParameter1"));
 		assertEquals("jobProperty1Value", resolvedParameters.getProperty("jobParameter2"));
 		assertEquals("myfile.txt", resolvedParameters.getProperty("jobParameter3"));
@@ -144,7 +144,7 @@ public class JsrBeanDefinitionDocumentReaderTests extends AbstractJsrTestCase {
 
 		Properties resolvedProperties = documentReader.getJobProperties();
 		assertNotNull(resolvedProperties);
-		assertTrue("Wrong number of job properties", resolvedProperties.size() == 3);
+		assertTrue(resolvedProperties.size() == 3, "Wrong number of job properties");
 		assertEquals("jobProperty1Value", resolvedProperties.getProperty("jobProperty1"));
 		assertEquals("jobProperty1Value", resolvedProperties.getProperty("jobProperty2"));
 		assertEquals("myfile.txt", resolvedProperties.getProperty("jobProperty3"));
@@ -160,16 +160,16 @@ public class JsrBeanDefinitionDocumentReaderTests extends AbstractJsrTestCase {
 				new ClassPathResource("/META-INF/batch-jobs/jsrUniqueInstanceTests.xml"));
 		applicationContext.refresh();
 
-		assertTrue("exitStatusSettingStepListener bean definition not found", applicationContext.containsBeanDefinition("exitStatusSettingStepListener"));
-		assertTrue("exitStatusSettingStepListener1 bean definition not found", applicationContext.containsBeanDefinition("exitStatusSettingStepListener1"));
-		assertTrue("exitStatusSettingStepListener2 bean definition not found", applicationContext.containsBeanDefinition("exitStatusSettingStepListener2"));
-		assertTrue("exitStatusSettingStepListener3 bean definition not found", applicationContext.containsBeanDefinition("exitStatusSettingStepListener3"));
-		assertTrue("exitStatusSettingStepListenerClassBeanDefinition bean definition not found", applicationContext.containsBeanDefinition("org.springframework.batch.core.jsr.step.listener.ExitStatusSettingStepListener"));
-		assertTrue("exitStatusSettingStepListener1ClassBeanDefinition bean definition not found", applicationContext.containsBeanDefinition("org.springframework.batch.core.jsr.step.listener.ExitStatusSettingStepListener1"));
-		assertTrue("exitStatusSettingStepListener2ClassBeanDefinition bean definition not found", applicationContext.containsBeanDefinition("org.springframework.batch.core.jsr.step.listener.ExitStatusSettingStepListener2"));
-		assertTrue("exitStatusSettingStepListener3ClassBeanDefinition bean definition not found", applicationContext.containsBeanDefinition("org.springframework.batch.core.jsr.step.listener.ExitStatusSettingStepListener3"));
-		assertTrue("testBatchlet bean definition not found", applicationContext.containsBeanDefinition("testBatchlet"));
-		assertTrue("testBatchlet1 bean definition not found", applicationContext.containsBeanDefinition("testBatchlet1"));
+		assertTrue(applicationContext.containsBeanDefinition("exitStatusSettingStepListener"), "exitStatusSettingStepListener bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("exitStatusSettingStepListener1"), "exitStatusSettingStepListener1 bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("exitStatusSettingStepListener2"), "exitStatusSettingStepListener2 bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("exitStatusSettingStepListener3"), "exitStatusSettingStepListener3 bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("org.springframework.batch.core.jsr.step.listener.ExitStatusSettingStepListener"), "exitStatusSettingStepListenerClassBeanDefinition bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("org.springframework.batch.core.jsr.step.listener.ExitStatusSettingStepListener1"), "exitStatusSettingStepListener1ClassBeanDefinition bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("org.springframework.batch.core.jsr.step.listener.ExitStatusSettingStepListener2"), "exitStatusSettingStepListener2ClassBeanDefinition bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("org.springframework.batch.core.jsr.step.listener.ExitStatusSettingStepListener3"), "exitStatusSettingStepListener3ClassBeanDefinition bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("testBatchlet"), "testBatchlet bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("testBatchlet1"), "testBatchlet1 bean definition not found");
 	}
 
 	@Test
@@ -177,31 +177,31 @@ public class JsrBeanDefinitionDocumentReaderTests extends AbstractJsrTestCase {
 		JobExecution jobExecution = runJob("jsrUniqueInstanceTests", new Properties(), 10000L);
 		String exitStatus = jobExecution.getExitStatus();
 
-		assertTrue("Exit status must contain listener3", exitStatus.contains("listener3"));
+		assertTrue(exitStatus.contains("listener3"), "Exit status must contain listener3");
 		exitStatus = exitStatus.replace("listener3", "");
 
-		assertTrue("Exit status must contain listener2", exitStatus.contains("listener2"));
+		assertTrue(exitStatus.contains("listener2"), "Exit status must contain listener2");
 		exitStatus = exitStatus.replace("listener2", "");
 
-		assertTrue("Exit status must contain listener1", exitStatus.contains("listener1"));
+		assertTrue(exitStatus.contains("listener1"), "Exit status must contain listener1");
 		exitStatus = exitStatus.replace("listener1", "");
 
-		assertTrue("Exit status must contain listener0", exitStatus.contains("listener0"));
+		assertTrue(exitStatus.contains("listener0"), "Exit status must contain listener0");
 		exitStatus = exitStatus.replace("listener0", "");
 
-		assertTrue("Exit status must contain listener7", exitStatus.contains("listener7"));
+		assertTrue(exitStatus.contains("listener7"), "Exit status must contain listener7");
 		exitStatus = exitStatus.replace("listener7", "");
 
-		assertTrue("Exit status must contain listener6", exitStatus.contains("listener6"));
+		assertTrue(exitStatus.contains("listener6"), "Exit status must contain listener6");
 		exitStatus = exitStatus.replace("listener6", "");
 
-		assertTrue("Exit status must contain listener5", exitStatus.contains("listener5"));
+		assertTrue(exitStatus.contains("listener5"), "Exit status must contain listener5");
 		exitStatus = exitStatus.replace("listener5", "");
 
-		assertTrue("Exit status must contain listener4", exitStatus.contains("listener4"));
+		assertTrue(exitStatus.contains("listener4"), "Exit status must contain listener4");
 		exitStatus = exitStatus.replace("listener4", "");
 
-		assertTrue("exitStatus must be empty", "".equals(exitStatus));
+		assertTrue("".equals(exitStatus), "exitStatus must be empty");
 	}
 
 	@Test
@@ -214,20 +214,20 @@ public class JsrBeanDefinitionDocumentReaderTests extends AbstractJsrTestCase {
 
 		applicationContext.refresh();
 
-		assertTrue("exitStatusSettingStepListener bean definition not found", applicationContext.containsBeanDefinition("exitStatusSettingStepListener"));
-		assertTrue("scopedTarget.exitStatusSettingStepListener bean definition not found", applicationContext.containsBeanDefinition("scopedTarget.exitStatusSettingStepListener"));
+		assertTrue(applicationContext.containsBeanDefinition("exitStatusSettingStepListener"), "exitStatusSettingStepListener bean definition not found");
+		assertTrue(applicationContext.containsBeanDefinition("scopedTarget.exitStatusSettingStepListener"), "scopedTarget.exitStatusSettingStepListener bean definition not found");
 
 		BeanDefinition exitStatusSettingStepListenerBeanDefinition = applicationContext.getBeanDefinition("scopedTarget.exitStatusSettingStepListener");
 		assertTrue("step".equals(exitStatusSettingStepListenerBeanDefinition.getScope()));
 
-		assertTrue("Should not contain bean definition for exitStatusSettingStepListener1", !applicationContext.containsBeanDefinition("exitStatusSettingStepListener1"));
-		assertTrue("Should not contain bean definition for exitStatusSettingStepListener2", !applicationContext.containsBeanDefinition("exitStatusSettingStepListener2"));
-		assertTrue("Should not contain bean definition for exitStatusSettingStepListener3", !applicationContext.containsBeanDefinition("exitStatusSettingStepListener3"));
+		assertTrue(!applicationContext.containsBeanDefinition("exitStatusSettingStepListener1"), "Should not contain bean definition for exitStatusSettingStepListener1");
+		assertTrue(!applicationContext.containsBeanDefinition("exitStatusSettingStepListener2"), "Should not contain bean definition for exitStatusSettingStepListener2");
+		assertTrue(!applicationContext.containsBeanDefinition("exitStatusSettingStepListener3"), "Should not contain bean definition for exitStatusSettingStepListener3");
 
-		assertTrue("Should not contain bean definition for testBatchlet1", !applicationContext.containsBeanDefinition("testBatchlet1"));
-		assertTrue("Should not contain bean definition for testBatchlet2", !applicationContext.containsBeanDefinition("testBatchlet2"));
+		assertTrue(!applicationContext.containsBeanDefinition("testBatchlet1"), "Should not contain bean definition for testBatchlet1");
+		assertTrue(!applicationContext.containsBeanDefinition("testBatchlet2"), "Should not contain bean definition for testBatchlet2");
 
-		assertTrue("testBatchlet bean definition not found", applicationContext.containsBeanDefinition("testBatchlet"));
+		assertTrue(applicationContext.containsBeanDefinition("testBatchlet"), "testBatchlet bean definition not found");
 
 		BeanDefinition testBatchletBeanDefinition = applicationContext.getBeanDefinition("testBatchlet");
 		assertTrue("singleton".equals(testBatchletBeanDefinition.getScope()));
@@ -238,16 +238,16 @@ public class JsrBeanDefinitionDocumentReaderTests extends AbstractJsrTestCase {
 		JobExecution jobExecution = runJob("jsrSpringInstanceTests", new Properties(), 10000L);
 		String exitStatus = jobExecution.getExitStatus();
 
-		assertTrue("Exit status must contain listener1", exitStatus.contains("listener1"));
-		assertTrue("exitStatus must contain 2 listener1 values", StringUtils.countOccurrencesOf(exitStatus, "listener1") == 2);
+		assertTrue(exitStatus.contains("listener1"), "Exit status must contain listener1");
+		assertTrue(StringUtils.countOccurrencesOf(exitStatus, "listener1") == 2, "exitStatus must contain 2 listener1 values");
 
 		exitStatus = exitStatus.replace("listener1", "");
 
-		assertTrue("Exit status must contain listener4", exitStatus.contains("listener4"));
-		assertTrue("exitStatus must contain 2 listener4 values", StringUtils.countOccurrencesOf(exitStatus, "listener4") == 2);
+		assertTrue(exitStatus.contains("listener4"), "Exit status must contain listener4");
+		assertTrue(StringUtils.countOccurrencesOf(exitStatus, "listener4") == 2, "exitStatus must contain 2 listener4 values");
 		exitStatus = exitStatus.replace("listener4", "");
 
-		assertTrue("exitStatus must be empty", "".equals(exitStatus));
+		assertTrue("".equals(exitStatus), "exitStatus must be empty");
 	}
 
 	private Document getDocument(String location) {

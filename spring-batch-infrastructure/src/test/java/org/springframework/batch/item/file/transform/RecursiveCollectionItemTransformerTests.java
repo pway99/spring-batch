@@ -18,21 +18,24 @@ package org.springframework.batch.item.file.transform;
 import java.util.Arrays;
 import java.util.Collections;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.util.StringUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
  * 
  */
-public class RecursiveCollectionItemTransformerTests extends TestCase {
+public class RecursiveCollectionItemTransformerTests {
 
 	private static final String LINE_SEPARATOR = System.getProperty("line.separator");
 
 	private RecursiveCollectionLineAggregator<String> aggregator = new RecursiveCollectionLineAggregator<>();
 
-	public void testSetDelegateAndPassInString() throws Exception {
+	@Test
+ public void testSetDelegateAndPassInString() throws Exception {
 		aggregator.setDelegate(new LineAggregator<String>() {
             @Override
 			public String aggregate(String item) {
@@ -42,7 +45,8 @@ public class RecursiveCollectionItemTransformerTests extends TestCase {
 		assertEquals("bar", aggregator.aggregate(Collections.singleton("foo")));
 	}
 
-	public void testTransformList() throws Exception {
+	@Test
+ public void testTransformList() throws Exception {
 		String result = aggregator.aggregate(Arrays.asList(StringUtils.commaDelimitedListToStringArray("foo,bar")));
 		String[] array = StringUtils.delimitedListToStringArray(result, LINE_SEPARATOR);
 		assertEquals("foo", array[0]);

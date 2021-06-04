@@ -12,8 +12,8 @@
  */
 package org.springframework.batch.integration.config.xml;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.integration.launch.JobLaunchingMessageHandler;
@@ -24,12 +24,11 @@ import org.springframework.integration.channel.AbstractMessageChannel;
 import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.integration.endpoint.EventDrivenConsumer;
 import org.springframework.integration.test.util.TestUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  *
@@ -57,7 +56,7 @@ public class JobLaunchingGatewayParserTests {
 		final MessagingTemplate messagingTemplate = TestUtils.getPropertyValue(this.consumer, "handler.messagingTemplate", MessagingTemplate.class);
 		final Long sendTimeout = TestUtils.getPropertyValue(messagingTemplate, "sendTimeout", Long.class);
 
-		assertEquals("Wrong sendTimeout", Long.valueOf(123L),  sendTimeout);
+		assertEquals(Long.valueOf(123L),  sendTimeout, "Wrong sendTimeout");
 		assertFalse(this.consumer.isRunning());
 	}
 
@@ -69,7 +68,7 @@ public class JobLaunchingGatewayParserTests {
 		final MessagingTemplate messagingTemplate = TestUtils.getPropertyValue(this.consumer, "handler.messagingTemplate", MessagingTemplate.class);
 		final Long sendTimeout = TestUtils.getPropertyValue(messagingTemplate, "sendTimeout", Long.class);
 
-		assertEquals("Wrong sendTimeout", Long.valueOf(-1L),  sendTimeout);
+		assertEquals(Long.valueOf(-1L),  sendTimeout, "Wrong sendTimeout");
 	}
 
 	@Test
@@ -96,7 +95,7 @@ public class JobLaunchingGatewayParserTests {
 
 	}
 
-	@After
+	@AfterEach
 	public void tearDown(){
 		if(context != null){
 			context.close();

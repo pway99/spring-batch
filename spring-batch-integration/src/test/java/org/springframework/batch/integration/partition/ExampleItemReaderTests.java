@@ -1,18 +1,20 @@
 package org.springframework.batch.integration.partition;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
 import org.springframework.batch.item.ExecutionContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ExampleItemReaderTests {
-	
+
 	private ExampleItemReader reader = new ExampleItemReader();
-	
-	@Before
-	@After
+
+	@BeforeEach
+	@AfterEach
 	public void ensureFailFlagUnset() {
 		ExampleItemReader.fail = false;
 	}
@@ -38,7 +40,7 @@ public class ExampleItemReaderTests {
 		while (reader.read()!=null) {
 			count++;
 		}
-		assertEquals(4, count);		
+		assertEquals(4, count);
 	}
 
 	@Test
@@ -64,7 +66,7 @@ public class ExampleItemReaderTests {
 		while (reader.read()!=null) {
 			count++;
 		}
-		assertEquals(4, count);		
+		assertEquals(4, count);
 	}
 
 }

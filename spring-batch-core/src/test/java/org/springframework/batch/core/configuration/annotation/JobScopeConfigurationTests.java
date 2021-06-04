@@ -16,15 +16,11 @@
 
 package org.springframework.batch.core.configuration.annotation;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.concurrent.Callable;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -45,6 +41,9 @@ import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.lang.Nullable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author Dave Syer
  * @author Michael Minella
@@ -56,9 +55,6 @@ public class JobScopeConfigurationTests {
 	private ConfigurableApplicationContext context;
 
 	private JobExecution jobExecution;
-
-	@Rule
-	public ExpectedException expected = ExpectedException.none();
 
 	@Test
 	public void testXmlJobScopeWithProxyTargetClass() throws Exception {
@@ -114,22 +110,22 @@ public class JobScopeConfigurationTests {
 
 	@Test
 	public void testIntentionallyBlowUpOnMissingContextWithProxyTargetClass() throws Exception {
+	 assertThrows(BeanCreationException.class, () -> {
 		init(JobScopeConfigurationRequiringProxyTargetClass.class);
 		JobSynchronizationManager.release();
-		expected.expect(BeanCreationException.class);
-		expected.expectMessage("job scope");
 		SimpleHolder value = context.getBean(SimpleHolder.class);
 		assertEquals("JOB", value.call());
+	 }, "job scope");
 	}
 
 	@Test
 	public void testIntentionallyBlowupWithForcedInterface() throws Exception {
+	 assertThrows(BeanCreationException.class, () -> {
 		init(JobScopeConfigurationForcingInterfaceProxy.class);
 		JobSynchronizationManager.release();
-		expected.expect(BeanCreationException.class);
-		expected.expectMessage("job scope");
 		SimpleHolder value = context.getBean(SimpleHolder.class);
 		assertEquals("JOB", value.call());
+	 }, "job scope");
 	}
 
 	@Test
@@ -142,13 +138,13 @@ public class JobScopeConfigurationTests {
 
 	@Test
 	public void testIntentionallyBlowUpOnMissingContextWithInterface() throws Exception {
+	 assertThrows(BeanCreationException.class, () -> {
 		init(JobScopeConfigurationWithDefaults.class);
 		JobSynchronizationManager.release();
-		expected.expect(BeanCreationException.class);
-		expected.expectMessage("job scope");
 		@SuppressWarnings("unchecked")
 		Callable<String> value = context.getBean(Callable.class);
 		assertEquals("JOB", value.call());
+	 }, "job scope");
 	}
 
 	public void init(Class<?>... config) throws Exception {
@@ -162,13 +158,13 @@ public class JobScopeConfigurationTests {
 		JobSynchronizationManager.register(jobExecution);
 	}
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		JobSynchronizationManager.release();
 		jobExecution = new JobExecution(new JobInstance(5l, "JOB"), null, null);
 	}
 
-	@After
+	@AfterEach
 	public void close() {
 		JobSynchronizationManager.release();
 		if (context != null) {

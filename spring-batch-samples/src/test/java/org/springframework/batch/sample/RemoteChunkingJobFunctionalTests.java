@@ -16,11 +16,11 @@
 package org.springframework.batch.sample;
 
 import org.apache.activemq.broker.BrokerService;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -33,7 +33,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * The manager step of the job under test will read data and send chunks to the worker
@@ -41,7 +41,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  *
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {JobRunnerConfiguration.class, ManagerConfiguration.class})
 @PropertySource("classpath:remote-chunking.properties")
 public class RemoteChunkingJobFunctionalTests {
@@ -58,7 +58,7 @@ public class RemoteChunkingJobFunctionalTests {
 
 	private AnnotationConfigApplicationContext workerApplicationContext;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.brokerService = new BrokerService();
 		this.brokerService.addConnector(this.brokerUrl);
@@ -67,7 +67,7 @@ public class RemoteChunkingJobFunctionalTests {
 		this.workerApplicationContext = new AnnotationConfigApplicationContext(WorkerConfiguration.class);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.workerApplicationContext.close();
 		this.brokerService.stop();
@@ -79,8 +79,8 @@ public class RemoteChunkingJobFunctionalTests {
 		JobExecution jobExecution = this.jobLauncherTestUtils.launchJob();
 
 		// then
-		Assert.assertEquals(ExitStatus.COMPLETED.getExitCode(), jobExecution.getExitStatus().getExitCode());
-		Assert.assertEquals(
+		Assertions.assertEquals(ExitStatus.COMPLETED.getExitCode(), jobExecution.getExitStatus().getExitCode());
+		Assertions.assertEquals(
 				"Waited for 2 results.", // the manager sent 2 chunks ({1, 2, 3} and {4, 5, 6}) to workers
 				jobExecution.getExitStatus().getExitDescription());
 	}

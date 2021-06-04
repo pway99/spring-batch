@@ -18,11 +18,12 @@ package org.springframework.batch.item.xml.builder;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.stream.XMLInputFactory;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -33,10 +34,11 @@ import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 import org.springframework.oxm.jaxb.Jaxb2Marshaller;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 
 /**
@@ -54,7 +56,7 @@ public class StaxEventItemReaderBuilderTests {
 	@Mock
 	private Resource resource;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
@@ -163,22 +165,24 @@ public class StaxEventItemReaderBuilderTests {
 		assertEquals(2, executionContext.size());
 	}
 
-	@Test(expected = ItemStreamException.class)
+	@Test
 	public void testStrict() throws Exception {
+	 assertThrows(ItemStreamException.class, () -> {
 		Jaxb2Marshaller unmarshaller = new Jaxb2Marshaller();
 		unmarshaller.setClassesToBeBound(Foo.class);
 
 		StaxEventItemReader<Foo> reader = new StaxEventItemReaderBuilder<Foo>()
-				.name("fooReader")
-				.resource(this.resource)
-				.addFragmentRootElements("foo")
-				.unmarshaller(unmarshaller)
-				.build();
+		.name("fooReader")
+		.resource(this.resource)
+		.addFragmentRootElements("foo")
+		.unmarshaller(unmarshaller)
+		.build();
 
 		reader.afterPropertiesSet();
 
 		ExecutionContext executionContext = new ExecutionContext();
 		reader.open(executionContext);
+	 });
 	}
 
 	@Test

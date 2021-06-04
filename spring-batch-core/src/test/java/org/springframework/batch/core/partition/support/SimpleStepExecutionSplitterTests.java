@@ -22,8 +22,8 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -36,10 +36,9 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.batch.item.ExecutionContext;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class SimpleStepExecutionSplitterTests {
 
@@ -49,7 +48,7 @@ public class SimpleStepExecutionSplitterTests {
 
 	private StepExecution stepExecution;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		step = new TaskletStep("step");
 		MapJobRepositoryFactoryBean factory = new MapJobRepositoryFactoryBean();
@@ -66,7 +65,7 @@ public class SimpleStepExecutionSplitterTests {
 		assertEquals(2, execs.size());
 
 		for (StepExecution execution : execs) {
-			assertNotNull("step execution partition is saved", execution.getId());
+			assertNotNull(execution.getId(), "step execution partition is saved");
 		}
 	}
 
@@ -151,7 +150,7 @@ public class SimpleStepExecutionSplitterTests {
 		}
 		catch (JobExecutionException e) {
 			String message = e.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("UNKNOWN"));
+			assertTrue(message.contains("UNKNOWN"), "Wrong message: " + message);
 		}
 	}
 
@@ -190,7 +189,7 @@ public class SimpleStepExecutionSplitterTests {
 		}
 		catch (JobExecutionException e) {
 			String message = e.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("STARTED"));
+			assertTrue(message.contains("STARTED"), "Wrong message: " + message);
 		}
 	}
 
@@ -207,7 +206,7 @@ public class SimpleStepExecutionSplitterTests {
 		}
 		catch (JobExecutionException e) {
 			String message = e.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("ABANDONED"));
+			assertTrue(message.contains("ABANDONED"), "Wrong message: " + message);
 		}
 	}
 

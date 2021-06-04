@@ -17,9 +17,8 @@ package org.springframework.batch.test.context;
 
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import org.springframework.test.context.ContextConfigurationAttributes;
 import org.springframework.test.context.ContextCustomizer;
@@ -41,7 +40,7 @@ public class BatchTestContextCustomizerFactoryTest {
 		ContextCustomizer contextCustomizer = this.factory.createContextCustomizer(testClass, configAttributes);
 
 		// then
-		Assert.assertNotNull(contextCustomizer);
+		Assertions.assertNotNull(contextCustomizer);
 	}
 
 	@Test
@@ -54,7 +53,7 @@ public class BatchTestContextCustomizerFactoryTest {
 		ContextCustomizer contextCustomizer = this.factory.createContextCustomizer(testClass, configAttributes);
 
 		// then
-		Assert.assertNull(contextCustomizer);
+		Assertions.assertNull(contextCustomizer);
 	}
 
 	@SpringBatchTest

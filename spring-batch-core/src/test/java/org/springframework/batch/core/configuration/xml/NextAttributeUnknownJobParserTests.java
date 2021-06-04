@@ -15,10 +15,9 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -26,14 +25,15 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.listener.StepExecutionListenerSupport;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
  * @since 2.1.9
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class NextAttributeUnknownJobParserTests extends AbstractJobParserTests {
 
 	@Test
@@ -56,7 +56,7 @@ public class NextAttributeUnknownJobParserTests extends AbstractJobParserTests {
 		assertEquals(ExitStatus.UNKNOWN, stepExecution2.getExitStatus());
 
 	}
-	
+
 	public static class UnknownListener extends StepExecutionListenerSupport {
 		@Nullable
 		@Override

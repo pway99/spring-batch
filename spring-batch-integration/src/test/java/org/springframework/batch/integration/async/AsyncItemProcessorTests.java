@@ -15,15 +15,13 @@
  */
 package org.springframework.batch.integration.async;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.scope.context.StepContext;
 import org.springframework.batch.core.scope.context.StepSynchronizationManager;
 import org.springframework.batch.item.ItemProcessor;
@@ -31,6 +29,10 @@ import org.springframework.batch.test.MetaDataInstanceFactory;
 import org.springframework.batch.test.StepScopeTestUtils;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.lang.Nullable;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class AsyncItemProcessorTests {
 
@@ -40,12 +42,14 @@ public class AsyncItemProcessorTests {
 		@Nullable
 		public String process(String item) throws Exception {
 			return item + item;
-		};
+		}
 	};
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNoDelegate() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		processor.afterPropertiesSet();
+	 });
 	}
 
 	@Test
@@ -63,7 +67,7 @@ public class AsyncItemProcessorTests {
 				StepContext context = StepSynchronizationManager.getContext();
 				assertTrue(context != null && context.getStepExecution() != null);
 				return item + item;
-			};
+			}
 		};
 		processor.setDelegate(delegate);
 		Future<String> result = StepScopeTestUtils.doInStepScope(MetaDataInstanceFactory.createStepExecution(), new Callable<Future<String>>() {

@@ -18,7 +18,8 @@ package org.springframework.batch.core.resource;
 
 import java.io.IOException;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -29,12 +30,15 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.batch.repeat.RepeatContext;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * Unit tests for {@link StepExecutionSimpleCompletionPolicy}
  *
  * @author Dave Syer
  */
-public class StepExecutionSimpleCompletionPolicyTests extends TestCase {
+public class StepExecutionSimpleCompletionPolicyTests {
 
 	/**
 	 * Object under test
@@ -49,8 +53,8 @@ public class StepExecutionSimpleCompletionPolicyTests extends TestCase {
 	 * mock step context
 	 */
 
-	@Override
-	protected void setUp() throws Exception {
+	@BeforeEach
+	public void setUp() throws Exception {
 
 		JobParameters jobParameters = new JobParametersBuilder().addLong("commit.interval", 2L).toJobParameters();
 		jobInstance = new JobInstance(new Long(0), "testJob");
@@ -61,12 +65,14 @@ public class StepExecutionSimpleCompletionPolicyTests extends TestCase {
 
 	}
 
-	public void testToString() throws Exception {
+	@Test
+ public void testToString() throws Exception {
 		String msg = policy.toString();
-		assertTrue("String does not contain chunk size", msg.indexOf("chunkSize=2")>=0);
+		assertTrue(msg.indexOf("chunkSize=2") >= 0, "String does not contain chunk size");
 	}
 
-	public void testKeyName() throws Exception, IOException {
+	@Test
+ public void testKeyName() throws Exception, IOException {
 		RepeatContext context = policy.start(null);
 		assertFalse(policy.isComplete(context));
 	}

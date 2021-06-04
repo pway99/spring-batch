@@ -16,8 +16,8 @@
 
 package org.springframework.batch.item.amqp.builder;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -25,8 +25,8 @@ import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 import org.springframework.batch.item.amqp.AmqpItemReader;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -38,7 +38,7 @@ public class AmqpItemReaderBuilderTests {
 	@Mock
 	AmqpTemplate amqpTemplate;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		MockitoAnnotations.initMocks(this);
 	}
@@ -81,8 +81,8 @@ public class AmqpItemReaderBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.",
-					"amqpTemplate is required.", iae.getMessage());
+			assertEquals(
+			"amqpTemplate is required.", iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 }

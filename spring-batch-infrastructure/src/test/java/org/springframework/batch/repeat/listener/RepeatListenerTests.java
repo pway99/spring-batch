@@ -19,21 +19,26 @@ package org.springframework.batch.repeat.listener;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.batch.repeat.RepeatCallback;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.RepeatListener;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.batch.repeat.support.RepeatTemplate;
 import org.springframework.batch.repeat.support.TaskExecutorRepeatTemplate;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
-public class RepeatListenerTests extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class RepeatListenerTests {
 
 	int count = 0;
 
-	public void testBeforeInterceptors() throws Exception {
+	@Test
+ public void testBeforeInterceptors() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		final List<Object> calls = new ArrayList<>();
 		template.setListeners(new RepeatListener[] { new RepeatListenerSupport() {
@@ -62,7 +67,8 @@ public class RepeatListenerTests extends TestCase {
 		assertEquals("[1, 2, 1, 2]", calls.toString());
 	}
 
-	public void testBeforeInterceptorCanVeto() throws Exception {
+	@Test
+ public void testBeforeInterceptorCanVeto() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		final List<Object> calls = new ArrayList<>();
 		template.registerListener(new RepeatListenerSupport() {
@@ -84,7 +90,8 @@ public class RepeatListenerTests extends TestCase {
 		assertEquals("[1]", calls.toString());
 	}
 
-	public void testAfterInterceptors() throws Exception {
+	@Test
+ public void testAfterInterceptors() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		final List<Object> calls = new ArrayList<>();
 		template.setListeners(new RepeatListener[] { new RepeatListenerSupport() {
@@ -111,7 +118,8 @@ public class RepeatListenerTests extends TestCase {
 		assertEquals("[2, 1]", calls.toString());
 	}
 
-	public void testOpenInterceptors() throws Exception {
+	@Test
+ public void testOpenInterceptors() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		final List<Object> calls = new ArrayList<>();
 		template.setListeners(new RepeatListener[] { new RepeatListenerSupport() {
@@ -137,7 +145,8 @@ public class RepeatListenerTests extends TestCase {
 		assertEquals("[1, 2]", calls.toString());
 	}
 
-	public void testSingleOpenInterceptor() throws Exception {
+	@Test
+ public void testSingleOpenInterceptor() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		final List<Object> calls = new ArrayList<>();
 		template.registerListener(new RepeatListenerSupport() {
@@ -158,7 +167,8 @@ public class RepeatListenerTests extends TestCase {
 		assertEquals("[1]", calls.toString());
 	}
 
-	public void testCloseInterceptors() throws Exception {
+	@Test
+ public void testCloseInterceptors() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		final List<Object> calls = new ArrayList<>();
 		template.setListeners(new RepeatListener[] { new RepeatListenerSupport() {
@@ -186,7 +196,8 @@ public class RepeatListenerTests extends TestCase {
 	}
 
 
-	public void testOnErrorInterceptors() throws Exception {
+	@Test
+ public void testOnErrorInterceptors() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		final List<Object> calls = new ArrayList<>();
 		template.setListeners(new RepeatListener[] { new RepeatListenerSupport() {
@@ -216,7 +227,8 @@ public class RepeatListenerTests extends TestCase {
 		assertEquals("[2, 1]", calls.toString());
 	}
 
-	public void testOnErrorInterceptorsPrecedence() throws Exception {
+	@Test
+ public void testOnErrorInterceptorsPrecedence() throws Exception {
 		RepeatTemplate template = new RepeatTemplate();
 		final List<Object> calls = new ArrayList<>();
 		template.setListeners(new RepeatListener[] { new RepeatListenerSupport() {
@@ -247,7 +259,8 @@ public class RepeatListenerTests extends TestCase {
 		assertEquals("[2]", calls.toString());
 	}
 
-	public void testAsynchronousOnErrorInterceptorsPrecedence() throws Exception {
+	@Test
+ public void testAsynchronousOnErrorInterceptorsPrecedence() throws Exception {
 		TaskExecutorRepeatTemplate template = new TaskExecutorRepeatTemplate();
 		template.setTaskExecutor(new SimpleAsyncTaskExecutor());
 		final List<Object> calls = new ArrayList<>();

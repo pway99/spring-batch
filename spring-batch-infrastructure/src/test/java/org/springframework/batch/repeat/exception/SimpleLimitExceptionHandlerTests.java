@@ -16,18 +16,18 @@
 
 package org.springframework.batch.repeat.exception;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.repeat.context.RepeatContextSupport;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Unit tests for {@link SimpleLimitExceptionHandler}
@@ -40,7 +40,7 @@ public class SimpleLimitExceptionHandlerTests {
 	// object under test
 	private SimpleLimitExceptionHandler handler = new SimpleLimitExceptionHandler();
 
-	@Before
+	@BeforeEach
 	public void initializeHandler() throws Exception {
 		handler.afterPropertiesSet();
 	}
@@ -74,7 +74,7 @@ public class SimpleLimitExceptionHandlerTests {
 			fail("Exception was swallowed.");
 		}
 		catch (RuntimeException expected) {
-			assertTrue("Exception is rethrown, ignoring the exception limit", true);
+			assertTrue(true, "Exception is rethrown, ignoring the exception limit");
 			assertSame(expected, throwable);
 		}
 	}
@@ -99,7 +99,7 @@ public class SimpleLimitExceptionHandlerTests {
 			fail("Exception was swallowed.");
 		}
 		catch (RuntimeException expected) {
-			assertTrue("Exception is rethrown, ignoring the exception limit", true);
+			assertTrue(true, "Exception is rethrown, ignoring the exception limit");
 			assertSame(expected, throwable);
 		}
 	}
@@ -209,7 +209,7 @@ public class SimpleLimitExceptionHandlerTests {
 			for (Throwable throwable : throwables) {
 
 				handler.handleException(context, throwable);
-				assertTrue("exceptions up to limit are swallowed", true);
+				assertTrue(true, "exceptions up to limit are swallowed");
 
 			}
 		}
@@ -248,7 +248,7 @@ public class SimpleLimitExceptionHandlerTests {
 			for (Throwable throwable : throwables) {
 
 				handler.handleException(context, throwable);
-				assertTrue("exceptions up to limit are swallowed", true);
+				assertTrue(true, "exceptions up to limit are swallowed");
 
 			}
 		}
@@ -259,7 +259,7 @@ public class SimpleLimitExceptionHandlerTests {
 		// after reaching the limit, behaviour should be idempotent
 		try {
 			handler.handleException(context, new RuntimeException("foo"));
-			assertTrue("exceptions up to limit are swallowed", true);
+			assertTrue(true, "exceptions up to limit are swallowed");
 
 		}
 		catch (RuntimeException expected) {

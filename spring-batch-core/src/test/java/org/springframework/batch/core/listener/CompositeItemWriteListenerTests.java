@@ -15,15 +15,16 @@
  */
 package org.springframework.batch.core.listener;
 
-import static org.mockito.Mockito.mock;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.ItemWriteListener;
+
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Lucas Ward
@@ -37,7 +38,7 @@ public class CompositeItemWriteListenerTests {
 	CompositeItemWriteListener<Object> compositeListener;
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		listener = mock(ItemWriteListener.class);
 		compositeListener = new CompositeItemWriteListener<>();

@@ -20,30 +20,35 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Properties;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.util.StringUtils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Lucas Ward
  *
  */
-public class ScheduledJobParametersFactoryTests extends TestCase {
+public class ScheduledJobParametersFactoryTests {
 
 	ScheduledJobParametersFactory factory;
 
 	DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 
-	@Override
-	protected void setUp() throws Exception {
-		super.setUp();
+	@BeforeEach
+	public void setUp() throws Exception {
 
 		factory = new ScheduledJobParametersFactory();
 	}
 
-	public void testGetParameters() throws Exception {
+	@Test
+ public void testGetParameters() throws Exception {
 
 		String jobKey = "job.key=myKey";
 		String scheduleDate = "schedule.date=2008/01/23";
@@ -59,7 +64,8 @@ public class ScheduledJobParametersFactoryTests extends TestCase {
 		assertEquals(date, props.getDate("schedule.date"));
 	}
 
-	public void testGetProperties() throws Exception {
+	@Test
+ public void testGetProperties() throws Exception {
 
 		JobParameters parameters = new JobParametersBuilder().addDate("schedule.date", dateFormat.parse("01/23/2008"))
 				.addString("job.key", "myKey").addString("vendor.id", "33243243").toJobParameters();
@@ -71,18 +77,21 @@ public class ScheduledJobParametersFactoryTests extends TestCase {
 		assertEquals("2008/01/23", props.getProperty("schedule.date"));
 	}
 
-	public void testEmptyArgs() {
+	@Test
+ public void testEmptyArgs() {
 
 		JobParameters props = factory.getJobParameters(new Properties());
 		assertTrue(props.getParameters().isEmpty());
 	}
 
-	public void testNullArgs() {
+	@Test
+ public void testNullArgs() {
 		assertEquals(new JobParameters(), factory.getJobParameters(null));
 		assertEquals(new Properties(), factory.getProperties(null));
 	}
 
-	public void testGetParametersWithDateFormat() throws Exception {
+	@Test
+ public void testGetParametersWithDateFormat() throws Exception {
 
 		String[] args = new String[] { "schedule.date=2008/23/01" };
 
@@ -93,7 +102,8 @@ public class ScheduledJobParametersFactoryTests extends TestCase {
 		assertEquals(date, props.getDate("schedule.date"));
 	}
 
-	public void testGetParametersWithBogusDate() throws Exception {
+	@Test
+ public void testGetParametersWithBogusDate() throws Exception {
 
 		String[] args = new String[] { "schedule.date=20080123" };
 
@@ -101,7 +111,7 @@ public class ScheduledJobParametersFactoryTests extends TestCase {
 			factory.getJobParameters(StringUtils.splitArrayElementsIntoProperties(args, "="));
 		} catch (IllegalArgumentException e) {
 			String message = e.getMessage();
-			assertTrue("Message should contain wrong date: " + message, contains(message, "20080123"));
+			assertTrue(contains(message, "20080123"), "Message should contain wrong date: " + message);
 		}
 	}
 

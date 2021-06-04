@@ -16,10 +16,8 @@
 
 package org.springframework.batch.item.kafka.builder;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -28,8 +26,9 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Mathieu Ouellet
@@ -37,15 +36,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class KafkaItemWriterBuilderTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	@Mock
 	private KafkaTemplate<String, String> kafkaTemplate;
 
 	private KafkaItemKeyMapper itemKeyMapper;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		this.itemKeyMapper = new KafkaItemKeyMapper();
@@ -53,18 +49,18 @@ public class KafkaItemWriterBuilderTests {
 
 	@Test
 	public void testNullKafkaTemplate() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("kafkaTemplate is required.");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		new KafkaItemWriterBuilder<String, String>().itemKeyMapper(this.itemKeyMapper).build();
+	 }, "kafkaTemplate is required.");
 	}
 
 	@Test
 	public void testNullItemKeyMapper() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("itemKeyMapper is required.");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		new KafkaItemWriterBuilder<String, String>().kafkaTemplate(this.kafkaTemplate).build();
+	 }, "itemKeyMapper is required.");
 	}
 
 	@Test

@@ -15,8 +15,6 @@
  */
 package org.springframework.batch.core.repository.dao;
 
-import static org.junit.Assert.assertEquals;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -26,10 +24,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.TimeZone;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 
 /**
  * Test case showing some weirdnesses in date formatting. Looks like a bug in
@@ -39,7 +38,6 @@ import org.junit.runners.Parameterized.Parameters;
  * @author Dave Syer
  * 
  */
-@RunWith(Parameterized.class)
 public class DateFormatTests {
 
 	private final SimpleDateFormat format;
@@ -53,32 +51,35 @@ public class DateFormatTests {
 	/**
 	 * 
 	 */
-	public DateFormatTests(String pattern, String input, String output, int hour) {
-		this.output = output;
-		this.format = new SimpleDateFormat(pattern, Locale.UK);
-		format.setTimeZone(TimeZone.getTimeZone("GMT"));
-		this.input = input;
-		this.hour = hour;
+	public void initDateFormatTests(String pattern, String input, String output, int hour) {
+	this.output = output;
+	this.format = new SimpleDateFormat(pattern, Locale.UK);
+	format.setTimeZone(TimeZone.getTimeZone("GMT"));
+	this.input = input;
+	this.hour = hour;
 	}
 
-	@Test
-	public void testDateFormat() throws Exception {
+	@MethodSource("data")
+ @ParameterizedTest
+	public void testDateFormat(String pattern, String input, String output, int hour) throws Exception {
 
-		Date date = format.parse(input);
-		GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"), Locale.UK);
-		calendar.setTime(date);
+	initDateFormatTests(pattern, input, output, hour);
 
-		// System.err.println(format.toPattern() + " + " + input + " --> " +
-		// calendar.getTime());
+	Date date = format.parse(input);
+	GregorianCalendar calendar = new GregorianCalendar(TimeZone.getTimeZone("GMT"), Locale.UK);
+	calendar.setTime(date);
 
-		// This assertion is true...
-		assertEquals(hour, calendar.get(Calendar.HOUR_OF_DAY));
-		// ...but the toString() does not match in 1970 and 1971
-		assertEquals(output, format.format(date));
+	// System.err.println(format.toPattern() + " + " + input + " --> " +
+	// calendar.getTime());
+
+	// This assertion is true...
+	assertEquals(hour, calendar.get(Calendar.HOUR_OF_DAY));
+	// ...but the toString() does not match in 1970 and 1971
+	assertEquals(output, format.format(date));
 
 	}
 
-	@Parameters
+
 	public static List<Object[]> data() {
 
 		List<Object[]> params = new ArrayList<>();

@@ -17,10 +17,9 @@ package org.springframework.batch.sample.domain.trade;
 
 import java.math.BigDecimal;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 public class TradeTests {
 	@Test
@@ -28,7 +27,7 @@ public class TradeTests {
 		Trade trade1 = new Trade("isin", 1, new BigDecimal("1.1"), "customer1");
 		Trade trade1Clone = new Trade("isin", 1, new BigDecimal("1.1"), "customer1");
 		Trade trade2 = new Trade("isin", 1, new BigDecimal("2.3"), "customer2");
-		
+
 		assertEquals(trade1, trade1Clone);
 		assertFalse(trade1.equals(trade2));
 	}

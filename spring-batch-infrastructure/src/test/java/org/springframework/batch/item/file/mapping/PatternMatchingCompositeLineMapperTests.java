@@ -16,19 +16,21 @@
 
 package org.springframework.batch.item.file.mapping;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.transform.LineTokenizer;
 import org.springframework.batch.item.file.transform.Name;
 import org.springframework.lang.Nullable;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Dan Garrette
@@ -39,12 +41,14 @@ public class PatternMatchingCompositeLineMapperTests {
 
 	private PatternMatchingCompositeLineMapper<Name> mapper = new PatternMatchingCompositeLineMapper<>();
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNoMappers() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		mapper.setTokenizers(Collections.singletonMap("", (LineTokenizer) new DelimitedLineTokenizer()));
 		Map<String, FieldSetMapper<Name>> fieldSetMappers = Collections.emptyMap();
 		mapper.setFieldSetMappers(fieldSetMappers);
 		mapper.afterPropertiesSet();
+	 });
 	}
 
 	@Test
@@ -83,33 +87,35 @@ public class PatternMatchingCompositeLineMapperTests {
 		assertEquals(new Name("d", "c", 0), name);
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testMapperKeyNotFound() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		Map<String, LineTokenizer> tokenizers = new HashMap<>();
 		tokenizers.put("foo*", new LineTokenizer() {
-            @Override
-			public FieldSet tokenize(@Nullable String line) {
-				return new DefaultFieldSet(new String[] { "a", "b" });
-			}
+	   @Override
+		public FieldSet tokenize(@Nullable String line) {
+		return new DefaultFieldSet(new String[]{"a", "b"});
+		}
 		});
 		tokenizers.put("bar*", new LineTokenizer() {
-            @Override
-			public FieldSet tokenize(@Nullable String line) {
-				return new DefaultFieldSet(new String[] { "c", "d" });
-			}
+	   @Override
+		public FieldSet tokenize(@Nullable String line) {
+		return new DefaultFieldSet(new String[]{"c", "d"});
+		}
 		});
 		mapper.setTokenizers(tokenizers);
 
 		Map<String, FieldSetMapper<Name>> fieldSetMappers = new HashMap<>();
 		fieldSetMappers.put("foo*", new FieldSetMapper<Name>() {
-            @Override
-			public Name mapFieldSet(FieldSet fs) {
-				return new Name(fs.readString(0), fs.readString(1), 0);
-			}
+	   @Override
+		public Name mapFieldSet(FieldSet fs) {
+		return new Name(fs.readString(0), fs.readString(1), 0);
+		}
 		});
 		mapper.setFieldSetMappers(fieldSetMappers);
 
 		Name name = mapper.mapLine("bar", 1);
 		assertEquals(new Name("d", "c", 0), name);
+	 });
 	}
 }

@@ -16,10 +16,10 @@
 
 package org.springframework.batch.item;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
 import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class ItemReaderTests {

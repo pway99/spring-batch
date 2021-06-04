@@ -17,10 +17,11 @@ package org.springframework.batch.item.database;
 
 
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.item.ItemReader;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * Generic configuration for testing {@link ItemReader} implementations which read
@@ -28,9 +29,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * 
  * @author Thomas Risberg
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "data-source-context.xml")
-public abstract class AbstractGenericDataSourceItemReaderIntegrationTests 
+public abstract class AbstractGenericDataSourceItemReaderIntegrationTests
 		extends AbstractDataSourceItemReaderIntegrationTests {
 
 }

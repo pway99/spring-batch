@@ -15,17 +15,16 @@
  */
 package org.springframework.batch.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -35,14 +34,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.lang.Nullable;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.jdbc.JdbcTestUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Dave Syer
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/simple-job-launcher-context.xml")
 public class JobRepositoryTestUtilsTests {
 
@@ -60,24 +62,28 @@ public class JobRepositoryTestUtilsTests {
 
 	private int beforeSteps;
 
-	@Before
+	@BeforeEach
 	public void init() {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		beforeJobs = JdbcTestUtils.countRowsInTable(jdbcTemplate, "BATCH_JOB_EXECUTION");
 		beforeSteps = JdbcTestUtils.countRowsInTable(jdbcTemplate, "BATCH_STEP_EXECUTION");
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testMandatoryProperties() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		utils = new JobRepositoryTestUtils();
 		utils.afterPropertiesSet();
+	 });
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testMandatoryDataSource() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		utils = new JobRepositoryTestUtils();
 		utils.setJobRepository(jobRepository);
 		utils.afterPropertiesSet();
+	 });
 	}
 
 	@Test

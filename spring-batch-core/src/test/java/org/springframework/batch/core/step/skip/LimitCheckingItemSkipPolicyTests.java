@@ -15,20 +15,20 @@
  */
 package org.springframework.batch.core.step.skip;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.ItemWriterException;
 import org.springframework.batch.item.WriteFailedException;
 import org.springframework.batch.item.WriterNotOpenException;
 import org.springframework.batch.item.file.FlatFileParseException;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Lucas Ward
@@ -39,7 +39,7 @@ public class LimitCheckingItemSkipPolicyTests {
 
 	private LimitCheckingItemSkipPolicy failurePolicy;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		Map<Class<? extends Throwable>, Boolean> skippableExceptions = new HashMap<>();
 		skippableExceptions.put(FlatFileParseException.class, true);

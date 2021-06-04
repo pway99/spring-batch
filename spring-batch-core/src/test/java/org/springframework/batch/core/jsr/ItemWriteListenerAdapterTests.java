@@ -15,19 +15,20 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.batch.api.chunk.listener.ItemWriteListener;
 import javax.batch.operations.BatchRuntimeException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 @SuppressWarnings({"rawtypes", "unchecked"})
 public class ItemWriteListenerAdapterTests {
@@ -37,15 +38,17 @@ public class ItemWriteListenerAdapterTests {
 	private ItemWriteListener delegate;
 	private List items = new ArrayList();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		adapter = new ItemWriteListenerAdapter<>(delegate);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testCreateWithNull() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		adapter = new ItemWriteListenerAdapter<>(null);
+	 });
 	}
 
 	@Test
@@ -55,11 +58,13 @@ public class ItemWriteListenerAdapterTests {
 		verify(delegate).beforeWrite(items);
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testBeforeTestWriteException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		doThrow(new Exception("expected")).when(delegate).beforeWrite(items);
 
 		adapter.beforeWrite(items);
+	 });
 	}
 
 	@Test
@@ -69,11 +74,13 @@ public class ItemWriteListenerAdapterTests {
 		verify(delegate).afterWrite(items);
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testAfterTestWriteException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		doThrow(new Exception("expected")).when(delegate).afterWrite(items);
 
 		adapter.afterWrite(items);
+	 });
 	}
 
 	@Test
@@ -85,12 +92,14 @@ public class ItemWriteListenerAdapterTests {
 		verify(delegate).onWriteError(items, cause);
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testOnWriteErrorException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		Exception cause = new Exception("cause");
 
 		doThrow(new Exception("expected")).when(delegate).onWriteError(items, cause);
 
 		adapter.onWriteError(cause, items);
+	 });
 	}
 }

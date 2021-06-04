@@ -16,11 +16,9 @@
 
 package org.springframework.batch.integration.partition;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mockito;
 
 import org.springframework.batch.core.Step;
@@ -35,31 +33,31 @@ import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.channel.QueueChannel;
 import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 
 /**
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RemotePartitioningMasterStepBuilderTests.BatchConfiguration.class})
 public class RemotePartitioningMasterStepBuilderTests {
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	@Autowired
 	private JobRepository jobRepository;
 
 	@Test
 	public void inputChannelMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("inputChannel must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningMasterStepBuilder("step").inputChannel(null);
+
+		 // then
+		 // expected exception
+	 }, "inputChannel must not be null");
 
 		// then
 		// expected exception
@@ -67,12 +65,14 @@ public class RemotePartitioningMasterStepBuilderTests {
 
 	@Test
 	public void outputChannelMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("outputChannel must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningMasterStepBuilder("step").outputChannel(null);
+
+		 // then
+		 // expected exception
+	 }, "outputChannel must not be null");
 
 		// then
 		// expected exception
@@ -80,12 +80,14 @@ public class RemotePartitioningMasterStepBuilderTests {
 
 	@Test
 	public void messagingTemplateMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("messagingTemplate must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningMasterStepBuilder("step").messagingTemplate(null);
+
+		 // then
+		 // expected exception
+	 }, "messagingTemplate must not be null");
 
 		// then
 		// expected exception
@@ -93,12 +95,14 @@ public class RemotePartitioningMasterStepBuilderTests {
 
 	@Test
 	public void jobExplorerMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("jobExplorer must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningMasterStepBuilder("step").jobExplorer(null);
+
+		 // then
+		 // expected exception
+	 }, "jobExplorer must not be null");
 
 		// then
 		// expected exception
@@ -106,12 +110,14 @@ public class RemotePartitioningMasterStepBuilderTests {
 
 	@Test
 	public void pollIntervalMustBeGreaterThanZero() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("The poll interval must be greater than zero");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		new RemotePartitioningMasterStepBuilder("step").pollInterval(-1);
+
+		 // then
+		 // expected exception
+	 }, "The poll interval must be greater than zero");
 
 		// then
 		// expected exception
@@ -119,16 +125,18 @@ public class RemotePartitioningMasterStepBuilderTests {
 
 	@Test
 	public void eitherOutputChannelOrMessagingTemplateMustBeProvided() {
+	 assertThrows(IllegalStateException.class, () -> {
 		// given
 		RemotePartitioningMasterStepBuilder builder = new RemotePartitioningMasterStepBuilder("step")
-				.outputChannel(new DirectChannel())
-				.messagingTemplate(new MessagingTemplate());
-
-		this.expectedException.expect(IllegalStateException.class);
-		this.expectedException.expectMessage("You must specify either an outputChannel or a messagingTemplate but not both.");
+		.outputChannel(new DirectChannel())
+		.messagingTemplate(new MessagingTemplate());
 
 		// when
 		Step step = builder.build();
+
+		 // then
+		 // expected exception
+	 }, "You must specify either an outputChannel or a messagingTemplate but not both.");
 
 		// then
 		// expected exception
@@ -136,17 +144,20 @@ public class RemotePartitioningMasterStepBuilderTests {
 
 	@Test
 	public void testUnsupportedOperationExceptionWhenSpecifyingPartitionHandler() {
+	 assertThrows(UnsupportedOperationException.class, () -> {
 		// given
 		PartitionHandler partitionHandler = Mockito.mock(PartitionHandler.class);
-		this.expectedException.expect(UnsupportedOperationException.class);
-		this.expectedException.expectMessage("When configuring a master step " +
-				"for remote partitioning using the RemotePartitioningMasterStepBuilder, " +
-				"the partition handler will be automatically set to an instance " +
-				"of MessageChannelPartitionHandler. The partition handler must " +
-				"not be provided in this case.");
 
 		// when
 		new RemotePartitioningMasterStepBuilder("step").partitionHandler(partitionHandler);
+
+		 // then
+		 // expected exception
+	 }, "When configuring a master step " +
+		"for remote partitioning using the RemotePartitioningMasterStepBuilder, " +
+		"the partition handler will be automatically set to an instance " +
+		"of MessageChannelPartitionHandler. The partition handler must " +
+		"not be provided in this case.");
 
 		// then
 		// expected exception
@@ -177,24 +188,24 @@ public class RemotePartitioningMasterStepBuilderTests {
 				.build();
 
 		// then
-		Assert.assertNotNull(step);
-		Assert.assertEquals(getField(step, "startLimit"), startLimit);
-		Assert.assertEquals(getField(step, "jobRepository"), this.jobRepository);
-		Assert.assertEquals(getField(step, "stepExecutionAggregator"), stepExecutionAggregator);
-		Assert.assertTrue((Boolean) getField(step, "allowStartIfComplete"));
+		Assertions.assertNotNull(step);
+		Assertions.assertEquals(getField(step, "startLimit"), startLimit);
+		Assertions.assertEquals(getField(step, "jobRepository"), this.jobRepository);
+		Assertions.assertEquals(getField(step, "stepExecutionAggregator"), stepExecutionAggregator);
+		Assertions.assertTrue((Boolean) getField(step, "allowStartIfComplete"));
 
 		Object partitionHandler = getField(step, "partitionHandler");
-		Assert.assertNotNull(partitionHandler);
-		Assert.assertTrue(partitionHandler instanceof MessageChannelPartitionHandler);
+		Assertions.assertNotNull(partitionHandler);
+		Assertions.assertTrue(partitionHandler instanceof MessageChannelPartitionHandler);
 		MessageChannelPartitionHandler messageChannelPartitionHandler = (MessageChannelPartitionHandler) partitionHandler;
-		Assert.assertEquals(getField(messageChannelPartitionHandler, "gridSize"), gridSize);
-		Assert.assertEquals(getField(messageChannelPartitionHandler, "pollInterval"), pollInterval);
-		Assert.assertEquals(getField(messageChannelPartitionHandler, "timeout"), timeout);
+		Assertions.assertEquals(getField(messageChannelPartitionHandler, "gridSize"), gridSize);
+		Assertions.assertEquals(getField(messageChannelPartitionHandler, "pollInterval"), pollInterval);
+		Assertions.assertEquals(getField(messageChannelPartitionHandler, "timeout"), timeout);
 
 		Object messagingGateway = getField(messageChannelPartitionHandler, "messagingGateway");
-		Assert.assertNotNull(messagingGateway);
+		Assertions.assertNotNull(messagingGateway);
 		MessagingTemplate messagingTemplate = (MessagingTemplate) messagingGateway;
-		Assert.assertEquals(getField(messagingTemplate, "defaultDestination"), outputChannel);
+		Assertions.assertEquals(getField(messagingTemplate, "defaultDestination"), outputChannel);
 	}
 
 	@Test
@@ -218,26 +229,26 @@ public class RemotePartitioningMasterStepBuilderTests {
 				.build();
 
 		// then
-		Assert.assertNotNull(step);
-		Assert.assertEquals(getField(step, "startLimit"), startLimit);
-		Assert.assertEquals(getField(step, "jobRepository"), this.jobRepository);
-		Assert.assertEquals(getField(step, "stepExecutionAggregator"), stepExecutionAggregator);
-		Assert.assertTrue((Boolean) getField(step, "allowStartIfComplete"));
+		Assertions.assertNotNull(step);
+		Assertions.assertEquals(getField(step, "startLimit"), startLimit);
+		Assertions.assertEquals(getField(step, "jobRepository"), this.jobRepository);
+		Assertions.assertEquals(getField(step, "stepExecutionAggregator"), stepExecutionAggregator);
+		Assertions.assertTrue((Boolean) getField(step, "allowStartIfComplete"));
 
 		Object partitionHandler = getField(step, "partitionHandler");
-		Assert.assertNotNull(partitionHandler);
-		Assert.assertTrue(partitionHandler instanceof MessageChannelPartitionHandler);
+		Assertions.assertNotNull(partitionHandler);
+		Assertions.assertTrue(partitionHandler instanceof MessageChannelPartitionHandler);
 		MessageChannelPartitionHandler messageChannelPartitionHandler = (MessageChannelPartitionHandler) partitionHandler;
-		Assert.assertEquals(getField(messageChannelPartitionHandler, "gridSize"), gridSize);
+		Assertions.assertEquals(getField(messageChannelPartitionHandler, "gridSize"), gridSize);
 
 		Object replyChannel = getField(messageChannelPartitionHandler, "replyChannel");
-		Assert.assertNotNull(replyChannel);
-		Assert.assertTrue(replyChannel instanceof QueueChannel);
+		Assertions.assertNotNull(replyChannel);
+		Assertions.assertTrue(replyChannel instanceof QueueChannel);
 
 		Object messagingGateway = getField(messageChannelPartitionHandler, "messagingGateway");
-		Assert.assertNotNull(messagingGateway);
+		Assertions.assertNotNull(messagingGateway);
 		MessagingTemplate messagingTemplate = (MessagingTemplate) messagingGateway;
-		Assert.assertEquals(getField(messagingTemplate, "defaultDestination"), outputChannel);
+		Assertions.assertEquals(getField(messagingTemplate, "defaultDestination"), outputChannel);
 	}
 
 	@Configuration

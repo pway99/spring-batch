@@ -15,15 +15,15 @@
  */
 package org.springframework.batch.sample;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>Ensure a RabbitMQ instance is running, modifying default.amqp.properties if needed. Execute the
@@ -34,7 +34,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * queue for inspection.</p>
 */
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/simple-job-launcher-context.xml", "/jobs/amqp-example-job.xml", "/job-runner-context.xml" })
 public class AMQPJobFunctionalTests {
 

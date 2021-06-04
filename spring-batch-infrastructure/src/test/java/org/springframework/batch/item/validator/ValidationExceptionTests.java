@@ -16,6 +16,8 @@
 
 package org.springframework.batch.item.validator;
 
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.repeat.AbstractExceptionTests;
 
 public class ValidationExceptionTests extends AbstractExceptionTests {
@@ -30,7 +32,8 @@ public class ValidationExceptionTests extends AbstractExceptionTests {
 		return new ValidationException(msg, t);
 	}
 
-	public void testNothing() throws Exception {
+	@Test
+ public void testNothing() throws Exception {
 		// fool coverage tools...
 	}
 }

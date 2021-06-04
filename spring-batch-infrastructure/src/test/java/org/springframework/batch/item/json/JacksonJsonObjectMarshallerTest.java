@@ -16,8 +16,8 @@
 
 package org.springframework.batch.item.json;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Mahmoud Ben Hassine
@@ -33,7 +33,7 @@ public class JacksonJsonObjectMarshallerTest {
 		String foo = jsonObjectMarshaller.marshal(new Foo(1, "foo"));
 
 		// then
-		Assert.assertEquals("{\"id\":1,\"name\":\"foo\"}", foo);
+		Assertions.assertEquals("{\"id\":1,\"name\":\"foo\"}", foo);
 	}
 
 	public static class Foo {

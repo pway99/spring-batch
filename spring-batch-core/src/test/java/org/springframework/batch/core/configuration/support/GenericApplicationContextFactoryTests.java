@@ -15,11 +15,7 @@
  */
 package org.springframework.batch.core.configuration.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.job.JobSupport;
@@ -41,6 +37,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.util.ClassUtils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Dave Syer
  * @author Mahmoud Ben Hassine
@@ -55,7 +56,7 @@ public class GenericApplicationContextFactoryTests {
 		@SuppressWarnings("resource")
 		ConfigurableApplicationContext context = factory.createApplicationContext();
 		assertNotNull(context);
-		assertTrue("Wrong id: " + context, context.getId().contains("trivial-context.xml"));
+		assertTrue(context.getId().contains("trivial-context.xml"), "Wrong id: " + context);
 	}
 
 	@Test
@@ -146,7 +147,7 @@ public class GenericApplicationContextFactoryTests {
 		assertEquals(other, factory);
 		assertEquals(other.hashCode(), factory.hashCode());
 	}
-	
+
 	@Test
 	public void testEqualsMultipleConfigs() throws Exception {
 		Resource resource1 = new ClassPathResource(ClassUtils.addResourcePathToPackagePath(getClass(),
@@ -181,12 +182,14 @@ public class GenericApplicationContextFactoryTests {
 		assertTrue(autowiredFound);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testDifferentResourceTypes() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		Resource resource1 = new ClassPathResource(ClassUtils.addResourcePathToPackagePath(getClass(),
-			"abstract-context.xml"));
+		"abstract-context.xml"));
 		GenericApplicationContextFactory factory = new GenericApplicationContextFactory(resource1, Configuration1.class);
 		factory.createApplicationContext();
+	 });
 	}
 
 	@Test

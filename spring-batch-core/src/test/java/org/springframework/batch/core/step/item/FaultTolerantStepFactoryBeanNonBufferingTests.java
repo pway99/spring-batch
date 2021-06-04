@@ -23,8 +23,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -41,8 +41,8 @@ import org.springframework.batch.support.transaction.ResourcelessTransactionMana
 import org.springframework.batch.support.transaction.TransactionAwareProxyFactory;
 import org.springframework.util.StringUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.mockito.Mockito.mock;
 
 public class FaultTolerantStepFactoryBeanNonBufferingTests {
@@ -64,7 +64,7 @@ public class FaultTolerantStepFactoryBeanNonBufferingTests {
 
 	int count = 0;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		factory.setBeanName("stepName");
 		factory.setJobRepository(new JobRepositorySupport());

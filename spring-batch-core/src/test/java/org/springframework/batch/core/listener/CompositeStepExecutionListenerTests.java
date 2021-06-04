@@ -18,7 +18,7 @@ package org.springframework.batch.core.listener;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -26,11 +26,13 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.lang.Nullable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * @author Dave Syer
  *
  */
-public class CompositeStepExecutionListenerTests extends TestCase {
+public class CompositeStepExecutionListenerTests {
 
 	private CompositeStepExecutionListener listener = new CompositeStepExecutionListener();
 
@@ -41,7 +43,8 @@ public class CompositeStepExecutionListenerTests extends TestCase {
 	 * {@link org.springframework.batch.core.listener.CompositeStepExecutionListener#setListeners(org.springframework.batch.core.StepExecutionListener[])}
 	 * .
 	 */
-	public void testSetListeners() {
+	@Test
+ public void testSetListeners() {
 		JobExecution jobExecution = new JobExecution(1L);
 		StepExecution stepExecution = new StepExecution("s1", jobExecution);
 		listener.setListeners(new StepExecutionListener[] { new StepExecutionListenerSupport() {
@@ -69,7 +72,8 @@ public class CompositeStepExecutionListenerTests extends TestCase {
 	 * {@link org.springframework.batch.core.listener.CompositeStepExecutionListener#register(org.springframework.batch.core.StepExecutionListener)}
 	 * .
 	 */
-	public void testSetListener() {
+	@Test
+ public void testSetListener() {
 		JobExecution jobExecution = new JobExecution(1L);
 		StepExecution stepExecution = new StepExecution("s1", jobExecution);
 		listener.register(new StepExecutionListenerSupport() {
@@ -89,7 +93,8 @@ public class CompositeStepExecutionListenerTests extends TestCase {
 	 * {@link org.springframework.batch.core.listener.CompositeStepExecutionListener#beforeStep(StepExecution)}
 	 * .
 	 */
-	public void testOpen() {
+	@Test
+ public void testOpen() {
 		listener.register(new StepExecutionListenerSupport() {
 			@Override
 			public void beforeStep(StepExecution stepExecution) {

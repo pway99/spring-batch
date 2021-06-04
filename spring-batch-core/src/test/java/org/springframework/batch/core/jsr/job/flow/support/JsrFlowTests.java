@@ -15,10 +15,9 @@
  */
 package org.springframework.batch.core.jsr.job.flow.support;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -31,11 +30,12 @@ import org.springframework.batch.core.job.flow.support.JobFlowExecutorSupport;
 import org.springframework.batch.core.job.flow.support.SimpleFlowTests;
 import org.springframework.batch.core.job.flow.support.StateTransition;
 import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JsrFlowTests extends SimpleFlowTests {
 
 	@Override
-	@Before
+	@BeforeEach
 	public void setUp() {
 		flow = new JsrFlow("flow1");
 	}

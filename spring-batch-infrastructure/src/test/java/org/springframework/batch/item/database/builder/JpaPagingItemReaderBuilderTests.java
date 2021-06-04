@@ -19,12 +19,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.database.JpaPagingItemReader;
@@ -43,11 +44,10 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Michael Minella
@@ -60,13 +60,13 @@ public class JpaPagingItemReaderBuilderTests {
 
 	private ConfigurableApplicationContext context;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.context = new AnnotationConfigApplicationContext(JpaPagingItemReaderBuilderTests.TestDataSourceConfiguration.class);
 		this.entityManagerFactory = (EntityManagerFactory) context.getBean("entityManagerFactory");
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		if(this.context != null) {
 			this.context.close();

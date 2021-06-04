@@ -15,8 +15,12 @@
  */
 package org.springframework.batch.core.partition.support;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.Arrays;
+import java.util.Collections;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -25,11 +29,9 @@ import org.springframework.batch.core.explore.support.MapJobExplorerFactoryBean;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 
-import java.util.Arrays;
-import java.util.Collections;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class RemoteStepExecutionAggregatorTests {
 
@@ -43,7 +45,7 @@ public class RemoteStepExecutionAggregatorTests {
 
 	private StepExecution stepExecution2;
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception {
 		MapJobRepositoryFactoryBean factory = new MapJobRepositoryFactoryBean();
 		JobRepository jobRepository = factory.getObject();
@@ -75,14 +77,16 @@ public class RemoteStepExecutionAggregatorTests {
 		assertEquals(BatchStatus.STARTING, result.getStatus());
 	}
 
-	@Test(expected=IllegalStateException.class)
+	@Test
 	public void testAggregateStatusMissingExecution() {
+	 assertThrows(IllegalStateException.class, () -> {
 		stepExecution2 = jobExecution.createStepExecution("foo:3");
 		stepExecution1.setStatus(BatchStatus.COMPLETED);
 		stepExecution2.setStatus(BatchStatus.COMPLETED);
-		aggregator.aggregate(result, Arrays.<StepExecution> asList(stepExecution1, stepExecution2));
+		aggregator.aggregate(result, Arrays.<StepExecution>asList(stepExecution1, stepExecution2));
 		assertNotNull(result);
 		assertEquals(BatchStatus.STARTING, result.getStatus());
+	 });
 	}
 
 }

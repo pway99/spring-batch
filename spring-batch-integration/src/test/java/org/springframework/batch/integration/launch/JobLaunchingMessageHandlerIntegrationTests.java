@@ -1,15 +1,12 @@
 package org.springframework.batch.integration.launch;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -24,10 +21,13 @@ import org.springframework.messaging.PollableChannel;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class JobLaunchingMessageHandlerIntegrationTests {
 
 	@Autowired
@@ -40,7 +40,7 @@ public class JobLaunchingMessageHandlerIntegrationTests {
 
 	private final JobSupport job = new JobSupport("testJob");
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Object message = "";
 		while (message!=null) {
@@ -59,11 +59,11 @@ public class JobLaunchingMessageHandlerIntegrationTests {
 		}
 		catch (MessagingException e) {
 			String message = e.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("replyChannel"));
+			assertTrue(message.contains("replyChannel"), "Wrong message: " + message);
 		}
 		Message<JobExecution> executionMessage = (Message<JobExecution>) responseChannel.receive(1000);
 
-		assertNull("JobExecution message received when no return address set", executionMessage);
+		assertNull(executionMessage, "JobExecution message received when no return address set");
 	}
 
 	@SuppressWarnings("unchecked")
@@ -80,9 +80,9 @@ public class JobLaunchingMessageHandlerIntegrationTests {
 		requestChannel.send(trigger);
 		Message<JobExecution> executionMessage = (Message<JobExecution>) responseChannel.receive(1000);
 
-		assertNotNull("No response received", executionMessage);
+		assertNotNull(executionMessage, "No response received");
 		JobExecution execution = executionMessage.getPayload();
-		assertNotNull("JobExecution not returned", execution);
+		assertNotNull(execution, "JobExecution not returned");
 	}
 
 }

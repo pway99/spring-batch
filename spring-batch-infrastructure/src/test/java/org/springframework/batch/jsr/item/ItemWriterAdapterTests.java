@@ -18,17 +18,19 @@ package org.springframework.batch.jsr.item;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.batch.api.chunk.ItemWriter;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,7 +43,7 @@ public class ItemWriterAdapterTests {
 	@Mock
 	private ExecutionContext executionContext;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
@@ -49,9 +51,11 @@ public class ItemWriterAdapterTests {
 		adapter.setName("jsrWriter");
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testCreateWithNull() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		adapter = new ItemWriterAdapter<>(null);
+	 });
 	}
 
 	@Test
@@ -63,13 +67,15 @@ public class ItemWriterAdapterTests {
 		verify(delegate).open("checkpoint");
 	}
 
-	@Test(expected=ItemStreamException.class)
+	@Test
 	public void testOpenException() throws Exception {
+	 assertThrows(ItemStreamException.class, () -> {
 		when(executionContext.get("jsrWriter.writer.checkpoint")).thenReturn("checkpoint");
 
 		doThrow(new Exception("expected")).when(delegate).open("checkpoint");
 
 		adapter.open(executionContext);
+	 });
 	}
 
 	@Test
@@ -81,11 +87,13 @@ public class ItemWriterAdapterTests {
 		verify(executionContext).put("jsrWriter.writer.checkpoint", "checkpoint");
 	}
 
-	@Test(expected=ItemStreamException.class)
+	@Test
 	public void testUpdateException() throws Exception {
+	 assertThrows(ItemStreamException.class, () -> {
 		doThrow(new Exception("expected")).when(delegate).checkpointInfo();
 
 		adapter.update(executionContext);
+	 });
 	}
 
 	@Test
@@ -95,11 +103,13 @@ public class ItemWriterAdapterTests {
 		verify(delegate).close();
 	}
 
-	@Test(expected=ItemStreamException.class)
+	@Test
 	public void testCloseException() throws Exception {
+	 assertThrows(ItemStreamException.class, () -> {
 		doThrow(new Exception("expected")).when(delegate).close();
 
 		adapter.close();
+	 });
 	}
 
 	@Test

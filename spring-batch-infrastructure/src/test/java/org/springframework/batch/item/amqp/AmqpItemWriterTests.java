@@ -16,12 +16,14 @@
 
 package org.springframework.batch.item.amqp;
 
-import static org.mockito.Mockito.mock;
+import java.util.Arrays;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.amqp.core.AmqpTemplate;
 
-import java.util.Arrays;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 /**
  * <p>
@@ -32,10 +34,12 @@ import java.util.Arrays;
  * @author Will Schipp
  */
 public class AmqpItemWriterTests {
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullAmqpTemplate() {
-        new AmqpItemWriter<String>(null);
-    }
+	 assertThrows(IllegalArgumentException.class, () -> {
+	  new AmqpItemWriter<String>(null);
+	 });
+	}
 
     @Test
     public void voidTestWrite() throws Exception {

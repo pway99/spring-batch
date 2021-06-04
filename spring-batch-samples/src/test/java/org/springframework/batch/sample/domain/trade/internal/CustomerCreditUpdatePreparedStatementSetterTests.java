@@ -15,15 +15,16 @@
  */
 package org.springframework.batch.sample.domain.trade.internal;
 
-import static org.mockito.Mockito.mock;
-
 import java.math.BigDecimal;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.sample.domain.trade.CustomerCredit;
+
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Dave Syer
@@ -37,7 +38,7 @@ public class CustomerCreditUpdatePreparedStatementSetterTests {
 
 	private PreparedStatement ps;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		ps = mock(PreparedStatement.class);
 		credit = new CustomerCredit();

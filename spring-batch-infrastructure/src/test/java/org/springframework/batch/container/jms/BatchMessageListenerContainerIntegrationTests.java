@@ -15,9 +15,6 @@
  */
 package org.springframework.batch.container.jms;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.BlockingQueue;
@@ -29,12 +26,12 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.TextMessage;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jms.core.JmsTemplate;
@@ -46,17 +43,19 @@ import org.springframework.retry.support.DefaultRetryState;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Dave Syer
  * @author Mahmoud Ben Hassine
  * 
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/org/springframework/batch/jms/jms-context.xml")
 @DirtiesContext
-@Ignore //FIXME https://github.com/spring-projects/spring-batch/issues/3852
+@Disabled //FIXME https://github.com/spring-projects/spring-batch/issues/3852
 public class BatchMessageListenerContainerIntegrationTests {
 
 	@Autowired
@@ -69,8 +68,8 @@ public class BatchMessageListenerContainerIntegrationTests {
 
 	private volatile BlockingQueue<String> processed = new LinkedBlockingQueue<>();
 
-	@After
-	@Before
+	@AfterEach
+	@BeforeEach
 	public void drainQueue() throws Exception {
 		container.stop();
 		while (jmsTemplate.receiveAndConvert("queue") != null) {
@@ -79,7 +78,7 @@ public class BatchMessageListenerContainerIntegrationTests {
 		processed.clear();
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void giveContainerTimeToStop() throws Exception {
 		Thread.sleep(1000);
 	}

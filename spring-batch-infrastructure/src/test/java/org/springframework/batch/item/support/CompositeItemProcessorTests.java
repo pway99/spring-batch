@@ -15,18 +15,19 @@
  */
 package org.springframework.batch.item.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.ItemProcessor;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * Tests for {@link CompositeItemProcessor}.
@@ -42,7 +43,7 @@ public class CompositeItemProcessorTests {
 	private ItemProcessor<Object, Object> processor2;
 
 	@SuppressWarnings({ "unchecked", "serial" })
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		processor1 = mock(ItemProcessor.class);
 		processor2 = mock(ItemProcessor.class);
@@ -128,6 +129,6 @@ public class CompositeItemProcessorTests {
 
 		Object item = new Object();
 		when(processor1.process(item)).thenReturn(null);
-		Assert.assertEquals(null,composite.process(item));
+		Assertions.assertEquals(null,composite.process(item));
 	}
 }

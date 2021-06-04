@@ -21,11 +21,11 @@ import java.util.List;
 import javax.sql.DataSource;
 
 import com.mysql.cj.jdbc.MysqlDataSource;
-import org.junit.Assert;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.ClassRule;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.utility.DockerImageName;
 
@@ -49,12 +49,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration
 public class MySQLJdbcJobRepositoryIntegrationTests {
 
@@ -64,7 +64,7 @@ public class MySQLJdbcJobRepositoryIntegrationTests {
 
 	@ClassRule
 	public static MySQLContainer<?> mysql = new MySQLContainer<>(MYSQL_IMAGE);
-	
+
 	@Autowired
 	private DataSource dataSource;
 	@Autowired
@@ -73,8 +73,8 @@ public class MySQLJdbcJobRepositoryIntegrationTests {
 	private JobOperator jobOperator;
 	@Autowired
 	private Job job;
-	
-	@Before
+
+	@BeforeEach
 	public void setUp() {
 		ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
 		databasePopulator.addScript(new ClassPathResource("/org/springframework/batch/core/schema-mysql.sql"));
@@ -100,18 +100,18 @@ public class MySQLJdbcJobRepositoryIntegrationTests {
 		// given
 		Date date = new Date();
 		JobParameters jobParameters = new JobParametersBuilder()
-				.addDate("date", date) 
+				.addDate("date", date)
 				.toJobParameters();
-		
+
 		// when
 		JobExecution jobExecution = this.jobLauncher.run(this.job, jobParameters);
 		this.jobOperator.restart(jobExecution.getId()); // should load the date parameter with fractional seconds precision here
 
 		// then
 		List<Long> jobInstances = this.jobOperator.getJobInstances("job", 0, 100);
-		Assert.assertEquals(1, jobInstances.size());
+		Assertions.assertEquals(1, jobInstances.size());
 		List<Long> jobExecutions = this.jobOperator.getExecutions(jobInstances.get(0));
-		Assert.assertEquals(2, jobExecutions.size());
+		Assertions.assertEquals(2, jobExecutions.size());
 	}
 
 	@Configuration

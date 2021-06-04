@@ -15,15 +15,14 @@
  */
 package org.springframework.batch.sample.common;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collections;
 
 import javax.sql.DataSource;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
@@ -32,10 +31,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration
 public class StagingItemWriterTests {
 	private JdbcOperations jdbcTemplate;
@@ -48,7 +48,7 @@ public class StagingItemWriterTests {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Before
+	@BeforeEach
 	public void onSetUpBeforeTransaction() throws Exception {
 		StepExecution stepExecution = new StepExecution("stepName", new JobExecution(new JobInstance(12L,
 				"testJob"), new JobParameters()));

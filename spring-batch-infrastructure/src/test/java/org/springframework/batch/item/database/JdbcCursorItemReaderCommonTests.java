@@ -15,15 +15,16 @@
  */
 package org.springframework.batch.item.database;
 
-import org.junit.Test;
-import org.junit.runners.JUnit4;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ReaderNotOpenException;
 import org.springframework.batch.item.sample.Foo;
 
-@RunWith(JUnit4.class)
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+
 public class JdbcCursorItemReaderCommonTests extends AbstractDatabaseItemStreamItemReaderTests {
 
     @Override
@@ -60,13 +61,15 @@ public class JdbcCursorItemReaderCommonTests extends AbstractDatabaseItemStreamI
 		reader.close();
 		reader.setSql("select ID from T_FOOS where ID < 0");
 		reader.afterPropertiesSet();
-		reader.open(new ExecutionContext());		
+		reader.open(new ExecutionContext());
 	}
 
-	@Test(expected=ReaderNotOpenException.class)
+	@Test
 	public void testReadBeforeOpen() throws Exception {
+	 assertThrows(ReaderNotOpenException.class, () -> {
 		tested = getItemReader();
 		tested.read();
+	 });
 	}
-	
+
 }

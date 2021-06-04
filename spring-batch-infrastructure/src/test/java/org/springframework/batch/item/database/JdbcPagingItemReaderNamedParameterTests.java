@@ -21,15 +21,15 @@ import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.item.database.support.HsqlPagingQueryProvider;
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
@@ -37,9 +37,9 @@ import org.springframework.test.util.ReflectionTestUtils;
  * @author Thomas Risberg
  * @author Michael Minella
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/org/springframework/batch/item/database/JdbcPagingItemReaderParameterTests-context.xml")
-@Ignore("This test fails when integration tests are skipped..") // FIXME make this test independent of other tests
+@Disabled("This test fails when integration tests are skipped..") // FIXME make this test independent of other tests
 public class JdbcPagingItemReaderNamedParameterTests extends AbstractJdbcPagingItemReaderParameterTests {
 
 	// force jumpToItemQuery in JdbcPagingItemReader.doJumpToPage(int)
@@ -83,19 +83,19 @@ public class JdbcPagingItemReaderNamedParameterTests extends AbstractJdbcPagingI
 		reader.setSaveState(true);
 
 		return reader;
-		
+
 	}
-    
+
 	@Test
-	public void testReadAfterJumpSecondPageWithJumpToItemQuery() throws Exception {		
+	public void testReadAfterJumpSecondPageWithJumpToItemQuery() throws Exception {
 		try {
 			forceJumpToItemQuery = true;
 			super.testReadAfterJumpSecondPage();
 		} finally {
-			forceJumpToItemQuery = false;	
+			forceJumpToItemQuery = false;
 		}
 	}
-    
+
     @Override
     protected String getName() {
     	return "JdbcPagingItemReader";

@@ -1,12 +1,11 @@
 package org.springframework.batch.integration.chunk;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -20,10 +19,11 @@ import org.springframework.messaging.Message;
 import org.springframework.messaging.PollableChannel;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class RemoteChunkFaultTolerantStepJdbcIntegrationTests {
 
 	@Autowired
@@ -35,7 +35,7 @@ public class RemoteChunkFaultTolerantStepJdbcIntegrationTests {
 	@Autowired
 	private PollableChannel replies;
 
-	@Before
+	@BeforeEach
 	public void drain() {
 		Message<?> message = replies.receive(100L);
 		while (message!=null) {

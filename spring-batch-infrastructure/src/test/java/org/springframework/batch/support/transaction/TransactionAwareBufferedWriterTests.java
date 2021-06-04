@@ -19,16 +19,16 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -49,7 +49,7 @@ public class TransactionAwareBufferedWriterTests {
 
 	private TransactionAwareBufferedWriter writer;
 
-	@Before
+	@BeforeEach
 	public void init() {
 		fileChannel = mock(FileChannel.class);
 
@@ -265,7 +265,7 @@ public class TransactionAwareBufferedWriterTests {
 		catch (RuntimeException e) {
 			// expected
 			String message = e.getMessage();
-			assertEquals("Wrong message:  " + message, "Planned failure", message);
+			assertEquals("Planned failure", message, "Wrong message:  " + message);
 		}
 		assertEquals(0, writer.getBufferSize());
 	}
@@ -297,7 +297,7 @@ public class TransactionAwareBufferedWriterTests {
 			assertEquals("Could not write to output buffer", ffe.getMessage());
 		}
 	}
-	
+
 	// BATCH-2018
 	@Test
 	public void testResourceKeyCollision() throws Exception {
@@ -320,7 +320,7 @@ public class TransactionAwareBufferedWriterTests {
 			});
 			writers[i] = new TransactionAwareBufferedWriter(fileChannel, null);
 		}
-		
+
 		new TransactionTemplate(transactionManager).execute((TransactionCallback<Void>) status -> {
 			try {
 				for(int i=0; i< limit; i++) {
@@ -332,10 +332,10 @@ public class TransactionAwareBufferedWriterTests {
 			}
 			return null;
 		});
-		
+
 		for(int i=0; i< limit; i++) {
 			assertEquals(String.valueOf(i), results[i]);
-		}				
+		}
 	}
 
 	//BATCH-3745

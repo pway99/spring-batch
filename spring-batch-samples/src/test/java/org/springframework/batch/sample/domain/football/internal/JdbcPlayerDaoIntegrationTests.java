@@ -15,30 +15,30 @@
  */
 package org.springframework.batch.sample.domain.football.internal;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import javax.sql.DataSource;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.sample.domain.football.Player;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Lucas Ward
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"/data-source-context.xml"})
 public class JdbcPlayerDaoIntegrationTests {
 	private JdbcPlayerDao playerDao;
@@ -61,7 +61,7 @@ public class JdbcPlayerDaoIntegrationTests {
 		player.setDebutYear(1998);
 	}
 
-	@Before
+	@BeforeEach
 	public void onSetUpInTransaction() throws Exception {
         jdbcTemplate.execute("delete from PLAYERS");
 	}

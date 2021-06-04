@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.file.FlatFileItemWriter;
@@ -30,9 +30,10 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Michael Minella
@@ -44,26 +45,30 @@ public class FlatFileItemWriterBuilderTests {
 	// reads the output file to check the result
 	private BufferedReader reader;
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testMissingLineAggregator() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new FlatFileItemWriterBuilder<Foo>()
-				.build();
+		.build();
+	 });
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testMultipleLineAggregators() throws IOException {
+	 assertThrows(IllegalStateException.class, () -> {
 		Resource output = new FileSystemResource(File.createTempFile("foo", "txt"));
 
 		new FlatFileItemWriterBuilder<Foo>()
-				.name("itemWriter")
-				.resource(output)
-				.delimited()
-				.delimiter(";")
-				.names("foo", "bar")
-				.formatted()
-				.format("%2s%2s")
-				.names("foo", "bar")
-				.build();
+		.name("itemWriter")
+		.resource(output)
+		.delimited()
+		.delimiter(";")
+		.names("foo", "bar")
+		.formatted()
+		.format("%2s%2s")
+		.names("foo", "bar")
+		.build();
+	 });
 	}
 
 	@Test

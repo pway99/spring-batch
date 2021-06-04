@@ -16,18 +16,19 @@
 
 package org.springframework.batch.sample;
 
-import static org.springframework.batch.test.AssertFile.assertFileEquals;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+import static org.springframework.batch.test.AssertFile.assertFileEquals;
+
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/simple-job-launcher-context.xml", "/jobs/multilineOrderJob.xml",
 		"/job-runner-context.xml" })
 public class MultilineOrderJobFunctionalTests {
@@ -37,7 +38,7 @@ public class MultilineOrderJobFunctionalTests {
 
 	@Autowired
 	private JobLauncherTestUtils jobLauncherTestUtils;
-	
+
 	@Test
 	public void testJobLaunch() throws Exception {
 		jobLauncherTestUtils.launchJob();

@@ -20,7 +20,8 @@ import java.util.Collections;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.item.database.orm.JpaNativeQueryProvider;
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,17 +35,17 @@ import org.springframework.orm.jpa.persistenceunit.DefaultPersistenceUnitManager
 import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
 
 /**
  * @author Anatoly Polinsky
  * @author Dave Syer
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaPagingItemReaderNativeQueryIntegrationTests.JpaConfiguration.class)
 public class JpaPagingItemReaderNativeQueryIntegrationTests extends AbstractPagingItemReaderParameterTests {
-    
+
     @Autowired
     private EntityManagerFactory entityManagerFactory;
 
@@ -54,13 +55,13 @@ public class JpaPagingItemReaderNativeQueryIntegrationTests extends AbstractPagi
         String sqlQuery = "select * from T_FOOS where value >= :limit";
 
         JpaPagingItemReader<Foo> reader = new JpaPagingItemReader<>();
-        
+
         //creating a native query provider as it would be created in configuration
         JpaNativeQueryProvider<Foo> queryProvider= new JpaNativeQueryProvider<>();
         queryProvider.setSqlQuery(sqlQuery);
         queryProvider.setEntityClass(Foo.class);
         queryProvider.afterPropertiesSet();
-        
+
         reader.setParameterValues(Collections.<String, Object>singletonMap("limit", 2));
         reader.setEntityManagerFactory(entityManagerFactory);
         reader.setPageSize(3);

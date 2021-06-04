@@ -15,10 +15,6 @@
  */
 package org.springframework.batch.item.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
@@ -30,8 +26,9 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.transform.Result;
 
 import org.apache.commons.io.FileUtils;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.core.io.FileSystemResource;
@@ -44,6 +41,9 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StringUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link StaxEventItemWriter}.
@@ -73,7 +73,7 @@ public class TransactionalStaxEventItemWriterTests {
 	private static final String TEST_STRING = "<!--" + ClassUtils.getShortName(StaxEventItemWriter.class)
 			+ "-testString-->";
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		resource = new FileSystemResource(File.createTempFile("StaxEventWriterOutputSourceTests", ".xml"));
 		writer = createItemWriter();
@@ -100,7 +100,7 @@ public class TransactionalStaxEventItemWriterTests {
 		});
 		writer.close();
 		String content = outputFileContent();
-		assertTrue("Wrong content: " + content, content.contains(TEST_STRING));
+		assertTrue(content.contains(TEST_STRING), "Wrong content: " + content);
 	}
 
 	/**
@@ -120,9 +120,9 @@ public class TransactionalStaxEventItemWriterTests {
 				catch (XMLStreamException e) {
 					throw new RuntimeException(e);
 				}
-				
+
 			}
-			
+
 		});
 		writer.open(executionContext);
 		try {
@@ -159,8 +159,8 @@ public class TransactionalStaxEventItemWriterTests {
 		});
 		writer.close();
 		String content = outputFileContent();
-		assertEquals("Wrong content: " + content, 1, StringUtils.countOccurrencesOf(content, ("<header/>")));
-		assertEquals("Wrong content: " + content, 1, StringUtils.countOccurrencesOf(content, TEST_STRING));
+		assertEquals(1, StringUtils.countOccurrencesOf(content, ("<header/>")), "Wrong content: " + content);
+		assertEquals(1, StringUtils.countOccurrencesOf(content, TEST_STRING), "Wrong content: " + content);
 	}
 
 	/**
@@ -180,9 +180,9 @@ public class TransactionalStaxEventItemWriterTests {
 				catch (XMLStreamException e) {
 					throw new RuntimeException(e);
 				}
-				
+
 			}
-			
+
 		});
 		writer.open(executionContext);
 		new TransactionTemplate(transactionManager).execute(new TransactionCallback<Void>() {
@@ -220,8 +220,8 @@ public class TransactionalStaxEventItemWriterTests {
 		}
 		writer.close();
 		String content = outputFileContent();
-		assertEquals("Wrong content: " + content, 1, StringUtils.countOccurrencesOf(content, ("<header/>")));
-		assertEquals("Wrong content: " + content, 1, StringUtils.countOccurrencesOf(content, TEST_STRING));
+		assertEquals(1, StringUtils.countOccurrencesOf(content, ("<header/>")), "Wrong content: " + content);
+		assertEquals(1, StringUtils.countOccurrencesOf(content, TEST_STRING), "Wrong content: " + content);
 	}
 
 	/**

@@ -18,24 +18,27 @@ package org.springframework.batch.item.support;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemStreamSupport;
 import org.springframework.batch.item.support.CompositeItemStream;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * @author Dave Syer
  * 
  */
-public class CompositeItemStreamTests extends TestCase {
+public class CompositeItemStreamTests {
 
 	private CompositeItemStream manager = new CompositeItemStream();
 
 	private List<String> list = new ArrayList<>();
 
-	public void testRegisterAndOpen() {
+	@Test
+ public void testRegisterAndOpen() {
 		ItemStreamSupport stream = new ItemStreamSupport() {
                     @Override
 			public void open(ExecutionContext executionContext) {
@@ -48,7 +51,8 @@ public class CompositeItemStreamTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testRegisterTwice() {
+	@Test
+ public void testRegisterTwice() {
 		ItemStreamSupport stream = new ItemStreamSupport() {
             @Override
 			public void open(ExecutionContext executionContext) {
@@ -62,9 +66,10 @@ public class CompositeItemStreamTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testMark() {
+	@Test
+ public void testMark() {
 		manager.register(new ItemStreamSupport() {
-                    @Override 
+                    @Override
 			public void update(ExecutionContext executionContext) {
                                 super.update(executionContext);
 				list.add("bar");
@@ -74,7 +79,8 @@ public class CompositeItemStreamTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testClose() {
+	@Test
+ public void testClose() {
 		manager.register(new ItemStreamSupport() {
                     @Override
 			public void close() {
@@ -86,9 +92,10 @@ public class CompositeItemStreamTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testCloseDoesNotUnregister() {
+	@Test
+ public void testCloseDoesNotUnregister() {
 		manager.setStreams(new ItemStream[] { new ItemStreamSupport() {
-                    @Override 
+                    @Override
 			public void open(ExecutionContext executionContext) {
                                 super.open(executionContext);
 				list.add("bar");

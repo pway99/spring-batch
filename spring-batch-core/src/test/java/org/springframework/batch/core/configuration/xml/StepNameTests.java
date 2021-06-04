@@ -15,19 +15,15 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.step.StepLocator;
 import org.springframework.beans.factory.BeanCreationException;
@@ -38,44 +34,49 @@ import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourceArrayPropertyEditor;
 import org.springframework.util.ClassUtils;
 
-@RunWith(Parameterized.class)
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+
 public class StepNameTests {
 
 	private Map<String, StepLocator> stepLocators = new HashMap<>();
 
 	private ApplicationContext context;
 
-	public StepNameTests(Resource resource) throws Exception {
-		try {
-			context = new FileSystemXmlApplicationContext("file:///" + resource.getFile().getAbsolutePath());
-		}
-		catch (BeanDefinitionParsingException e) {
-			return;
-		}
-		catch (BeanCreationException e) {
-			return;
-		}
-		Map<String, StepLocator> stepLocators = context.getBeansOfType(StepLocator.class);
-		this.stepLocators = stepLocators;
+	public void initStepNameTests(Resource resource) throws Exception {
+	try {
+	context = new FileSystemXmlApplicationContext("file:///" + resource.getFile().getAbsolutePath());
+	}
+	catch (BeanDefinitionParsingException e) {
+		return;
+	}
+	catch (BeanCreationException e) {
+		return;
+	}
+	Map<String, StepLocator> stepLocators = context.getBeansOfType(StepLocator.class);
+	this.stepLocators = stepLocators;
 	}
 
-	@Test
-	public void testStepNames() throws Exception {
-		for (String name : stepLocators.keySet()) {
-			StepLocator stepLocator = stepLocators.get(name);
-			Collection<String> stepNames = stepLocator.getStepNames();
-			Job job = (Job) context.getBean(name);
-			String jobName = job.getName();
-			assertTrue("Job has no steps: "+jobName, !stepNames.isEmpty());
-			for (String registeredName : stepNames) {
-				String stepName = stepLocator.getStep(registeredName).getName();
-				assertEquals("Step name not equal to registered value: " + stepName + "!=" + registeredName + ", " + jobName,
-						stepName, registeredName);
-			}
-		}
+	@MethodSource("data")
+ @ParameterizedTest
+	public void testStepNames(Resource resource) throws Exception {
+	initStepNameTests(resource);
+	for (String name : stepLocators.keySet()) {
+	StepLocator stepLocator = stepLocators.get(name);
+	Collection<String> stepNames = stepLocator.getStepNames();
+	Job job = (Job) context.getBean(name);
+	String jobName = job.getName();
+	assertTrue(!stepNames.isEmpty(), "Job has no steps: " + jobName);
+	for (String registeredName : stepNames) {
+	String stepName = stepLocator.getStep(registeredName).getName();
+	assertEquals(
+		stepName, registeredName, "Step name not equal to registered value: " + stepName + "!=" + registeredName + ", " + jobName);
+	}
+	}
 	}
 
-	@Parameters
+
 	public static List<Object[]> data() throws Exception {
 		List<Object[]> list = new ArrayList<>();
 		ResourceArrayPropertyEditor editor = new ResourceArrayPropertyEditor();

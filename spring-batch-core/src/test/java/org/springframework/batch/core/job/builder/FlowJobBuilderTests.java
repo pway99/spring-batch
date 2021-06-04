@@ -17,10 +17,9 @@ package org.springframework.batch.core.job.builder;
 
 import java.util.Arrays;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -50,6 +49,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
@@ -102,7 +102,7 @@ public class FlowJobBuilderTests {
 		}
 	};
 
-	@Before
+	@BeforeEach
 	public void init() throws Exception {
 		jobRepository = new MapJobRepositoryFactoryBean().getObject();
 		execution = jobRepository.createJobExecution("flow", new JobParameters());

@@ -15,10 +15,8 @@
  */
 package org.springframework.batch.integration.chunk;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemWriter;
@@ -26,27 +24,28 @@ import org.springframework.batch.item.support.PassThroughItemProcessor;
 import org.springframework.integration.channel.DirectChannel;
 import org.springframework.integration.dsl.IntegrationFlow;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author Mahmoud Ben Hassine
  */
 public class RemoteChunkingWorkerBuilderTest {
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	private ItemProcessor<String, String> itemProcessor = new PassThroughItemProcessor<>();
 	private ItemWriter<String> itemWriter = items -> { };
 
 	@Test
 	public void itemProcessorMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("itemProcessor must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		IntegrationFlow integrationFlow = new RemoteChunkingWorkerBuilder<String, String>()
-				.itemProcessor(null)
-				.build();
+		.itemProcessor(null)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "itemProcessor must not be null");
 
 		// then
 		// expected exception
@@ -54,14 +53,16 @@ public class RemoteChunkingWorkerBuilderTest {
 
 	@Test
 	public void itemWriterMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("itemWriter must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		IntegrationFlow integrationFlow = new RemoteChunkingWorkerBuilder<String, String>()
-				.itemWriter(null)
-				.build();
+		.itemWriter(null)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "itemWriter must not be null");
 
 		// then
 		// expected exception
@@ -69,14 +70,16 @@ public class RemoteChunkingWorkerBuilderTest {
 
 	@Test
 	public void inputChannelMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("inputChannel must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		IntegrationFlow integrationFlow = new RemoteChunkingWorkerBuilder<String, String>()
-				.inputChannel(null)
-				.build();
+		.inputChannel(null)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "inputChannel must not be null");
 
 		// then
 		// expected exception
@@ -84,14 +87,16 @@ public class RemoteChunkingWorkerBuilderTest {
 
 	@Test
 	public void outputChannelMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("outputChannel must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		IntegrationFlow integrationFlow = new RemoteChunkingWorkerBuilder<String, String>()
-				.outputChannel(null)
-				.build();
+		.outputChannel(null)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "outputChannel must not be null");
 
 		// then
 		// expected exception
@@ -99,14 +104,16 @@ public class RemoteChunkingWorkerBuilderTest {
 
 	@Test
 	public void testMandatoryItemWriter() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		// given
 		RemoteChunkingWorkerBuilder<String, String> builder = new RemoteChunkingWorkerBuilder<>();
 
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("An ItemWriter must be provided");
-
 		// when
 		builder.build();
+
+		 // then
+		 // expected exception
+	 }, "An ItemWriter must be provided");
 
 		// then
 		// expected exception
@@ -114,15 +121,18 @@ public class RemoteChunkingWorkerBuilderTest {
 
 	@Test
 	public void testMandatoryInputChannel() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		// given
 		RemoteChunkingWorkerBuilder<String, String> builder = new RemoteChunkingWorkerBuilder<String, String>()
-				.itemWriter(items -> { });
-
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("An InputChannel must be provided");
+		.itemWriter(items -> {
+		});
 
 		// when
 		builder.build();
+
+		 // then
+		 // expected exception
+	 }, "An InputChannel must be provided");
 
 		// then
 		// expected exception
@@ -130,16 +140,19 @@ public class RemoteChunkingWorkerBuilderTest {
 
 	@Test
 	public void testMandatoryOutputChannel() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		// given
 		RemoteChunkingWorkerBuilder<String, String> builder = new RemoteChunkingWorkerBuilder<String, String>()
-				.itemWriter(items -> { })
-				.inputChannel(new DirectChannel());
-
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("An OutputChannel must be provided");
+		.itemWriter(items -> {
+		})
+		.inputChannel(new DirectChannel());
 
 		// when
 		builder.build();
+
+		 // then
+		 // expected exception
+	 }, "An OutputChannel must be provided");
 
 		// then
 		// expected exception
@@ -160,7 +173,7 @@ public class RemoteChunkingWorkerBuilderTest {
 		IntegrationFlow integrationFlow = builder.build();
 
 		// then
-		Assert.assertNotNull(integrationFlow);
+		Assertions.assertNotNull(integrationFlow);
 	}
 
 }

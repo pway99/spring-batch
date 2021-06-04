@@ -17,7 +17,7 @@ package org.springframework.batch.core.configuration.xml;
 
 import java.util.ArrayList;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -29,8 +29,7 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
-
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dan Garrette
@@ -50,7 +49,7 @@ public abstract class AbstractJobParserTests {
 	@Autowired
 	protected ArrayList<String> stepNamesList = new ArrayList<>();
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		mapJobRepositoryFactoryBean.clear();
 		stepNamesList.clear();

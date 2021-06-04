@@ -17,9 +17,10 @@ package org.springframework.batch.core.configuration.xml;
 
 import java.lang.reflect.Field;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -33,11 +34,11 @@ import org.springframework.batch.core.test.namespace.config.DummyNamespaceHandle
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.ReflectionUtils;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 /**
@@ -45,9 +46,9 @@ import static org.junit.Assert.*;
  *
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class TaskletParserBeanPropertiesTests {
-	
+
 	@Autowired
 	@Qualifier("job1")
 	private Job job1;
@@ -74,8 +75,8 @@ public class TaskletParserBeanPropertiesTests {
 
 	@Autowired
 	private MapJobRepositoryFactoryBean mapJobRepositoryFactoryBean;
-	
-	@Before
+
+	@BeforeEach
 	public void setUp() {
 		mapJobRepositoryFactoryBean.clear();
 	}

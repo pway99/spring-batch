@@ -15,18 +15,19 @@
  */
 package org.springframework.batch.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -98,9 +99,11 @@ public class BatchStatusTests {
 		}
 	}
 
-	@Test(expected=NullPointerException.class)
+	@Test
 	public void testGetStatusNullCode() {
+	 assertThrows(NullPointerException.class, () -> {
 		assertNull(BatchStatus.valueOf(null));
+	 });
 	}
 
 	@Test

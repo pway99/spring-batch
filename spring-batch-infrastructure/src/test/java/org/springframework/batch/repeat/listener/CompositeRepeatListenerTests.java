@@ -18,17 +18,19 @@ package org.springframework.batch.repeat.listener;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.RepeatListener;
 import org.springframework.batch.repeat.context.RepeatContextSupport;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 /**
  * @author Dave Syer
  * 
  */
-public class CompositeRepeatListenerTests extends TestCase {
+public class CompositeRepeatListenerTests {
 
 	private CompositeRepeatListener listener = new CompositeRepeatListener();
 	private RepeatContext context = new RepeatContextSupport(null);
@@ -38,7 +40,8 @@ public class CompositeRepeatListenerTests extends TestCase {
 	/**
 	 * Test method for {@link CompositeRepeatListener#setListeners(RepeatListener[])}.
 	 */
-	public void testSetListeners() {
+	@Test
+ public void testSetListeners() {
 		listener.setListeners(new RepeatListener[] { new RepeatListenerSupport() {
             @Override
 			public void open(RepeatContext context) {
@@ -58,7 +61,8 @@ public class CompositeRepeatListenerTests extends TestCase {
 	 * Test method for
 	 * {@link CompositeRepeatListener#register(RepeatListener)}.
 	 */
-	public void testSetListener() {
+	@Test
+ public void testSetListener() {
 		listener.register(new RepeatListenerSupport() {
             @Override
 			public void before(RepeatContext context) {
@@ -69,7 +73,8 @@ public class CompositeRepeatListenerTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testClose() {
+	@Test
+ public void testClose() {
 		listener.register(new RepeatListenerSupport() {
             @Override
 			public void close(RepeatContext context) {
@@ -80,7 +85,8 @@ public class CompositeRepeatListenerTests extends TestCase {
 		assertEquals(1, list.size());
 	}
 
-	public void testOnError() {
+	@Test
+ public void testOnError() {
 		listener.register(new RepeatListenerSupport() {
             @Override
 			public void onError(RepeatContext context, Throwable e) {

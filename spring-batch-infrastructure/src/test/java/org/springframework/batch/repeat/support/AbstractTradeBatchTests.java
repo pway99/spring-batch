@@ -18,7 +18,7 @@ package org.springframework.batch.repeat.support;
 
 import java.util.List;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.file.FlatFileItemReader;
@@ -45,7 +45,7 @@ public abstract class AbstractTradeBatchTests {
 
 	protected TradeItemReader provider;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		provider = new TradeItemReader(resource);
 		provider.open(new ExecutionContext());

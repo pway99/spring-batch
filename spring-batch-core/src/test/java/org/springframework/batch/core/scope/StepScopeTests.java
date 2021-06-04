@@ -15,19 +15,13 @@
  */
 package org.springframework.batch.core.scope;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.scope.context.StepContext;
@@ -35,6 +29,12 @@ import org.springframework.batch.core.scope.context.StepSynchronizationManager;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.ObjectFactory;
 import org.springframework.context.support.StaticApplicationContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -48,13 +48,13 @@ public class StepScopeTests {
 
 	private StepContext context;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		StepSynchronizationManager.release();
 		context = StepSynchronizationManager.register(stepExecution);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		StepSynchronizationManager.close();
 	}

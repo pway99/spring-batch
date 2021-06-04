@@ -15,29 +15,29 @@
  */
 package org.springframework.batch.core.scope.context;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.After;
-import org.junit.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.RepeatStatus;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
  * 
  */
 public class StepContextRepeatCallbackTests {
-	
+
 	private StepExecution stepExecution = new StepExecution("foo", new JobExecution(0L), 123L);
 	private boolean addedAttribute = false;
 	private boolean removedAttribute = false;
-	
-	@After
+
+	@AfterEach
 	public void cleanUpStepContext() {
 		StepSynchronizationManager.close();
 	}
@@ -51,7 +51,7 @@ public class StepContextRepeatCallbackTests {
 				return RepeatStatus.FINISHED;
 			}
 		};
-		assertEquals(RepeatStatus.FINISHED, callback.doInIteration(null));		
+		assertEquals(RepeatStatus.FINISHED, callback.doInIteration(null));
 		assertEquals(ExitStatus.EXECUTING, stepExecution.getExitStatus());
 	}
 
@@ -71,7 +71,7 @@ public class StepContextRepeatCallbackTests {
 				return RepeatStatus.FINISHED;
 			}
 		};
-		assertEquals(RepeatStatus.FINISHED, callback.doInIteration(null));		
+		assertEquals(RepeatStatus.FINISHED, callback.doInIteration(null));
 		assertTrue(addedAttribute);
 		callback.doInIteration(null);
 		assertTrue(removedAttribute);

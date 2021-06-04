@@ -22,9 +22,9 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.xmlunit.builder.Input;
 import org.xmlunit.diff.DefaultNodeMatcher;
 import org.xmlunit.diff.ElementSelectors;
@@ -43,10 +43,10 @@ import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StopWatch;
 
-import static org.junit.Assert.assertThat;
+import static org.hamcrest.MatcherAssert.assertThat;
 
 public abstract class AbstractStaxEventWriterItemWriterTests {
-	
+
 	private Log logger = LogFactory.getLog(getClass());
 
 	private static final int MAX_WRITE = 100;
@@ -103,7 +103,7 @@ public abstract class AbstractStaxEventWriterItemWriterTests {
 						.withNodeMatcher(new DefaultNodeMatcher(ElementSelectors.byNameAndText)));
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		File directory = new File("target/data");
@@ -119,7 +119,7 @@ public abstract class AbstractStaxEventWriterItemWriterTests {
 
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		outputFile.delete();
 	}

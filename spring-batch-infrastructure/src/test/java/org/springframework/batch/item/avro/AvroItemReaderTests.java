@@ -17,11 +17,13 @@
 package org.springframework.batch.item.avro;
 
 import org.apache.avro.generic.GenericRecord;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.avro.example.User;
 import org.springframework.batch.item.avro.support.AvroItemReaderTestSupport;
 import org.springframework.core.io.ClassPathResource;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author David Turanski
@@ -69,13 +71,17 @@ public class AvroItemReaderTests extends AvroItemReaderTestSupport {
 		verify(itemReader, plainOldUsers());
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void dataResourceDoesNotExist() {
+	 assertThrows(IllegalStateException.class, () -> {
 		new AvroItemReader<User>(new ClassPathResource("doesnotexist"), schemaResource);
+	 });
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void schemaResourceDoesNotExist() {
+	 assertThrows(IllegalStateException.class, () -> {
 		new AvroItemReader<User>(dataResource, new ClassPathResource("doesnotexist"));
+	 });
 	}
 }

@@ -16,10 +16,11 @@
 package org.springframework.batch.core.step.builder;
 
 import java.util.List;
+
 import javax.sql.DataSource;
 
-import org.junit.After;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ChunkListener;
@@ -53,8 +54,7 @@ import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.lang.Nullable;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Test for registering a listener class that implements different listeners interfaces
@@ -79,7 +79,7 @@ public class RegisterMultiListenerTests {
 
 	private GenericApplicationContext context;
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		jobLauncher = null;
 		job = null;

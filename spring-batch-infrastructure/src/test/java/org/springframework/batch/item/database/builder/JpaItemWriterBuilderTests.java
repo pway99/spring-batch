@@ -17,12 +17,13 @@ package org.springframework.batch.item.database.builder;
 
 import java.util.Arrays;
 import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
@@ -30,8 +31,8 @@ import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -45,14 +46,14 @@ public class JpaItemWriterBuilderTests {
 	@Mock
 	private EntityManager entityManager;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		TransactionSynchronizationManager.bindResource(this.entityManagerFactory,
 				new EntityManagerHolder(this.entityManager));
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		TransactionSynchronizationManager.unbindResource(this.entityManagerFactory);
 	}
@@ -81,7 +82,7 @@ public class JpaItemWriterBuilderTests {
 			fail("Should fail if no EntityManagerFactory is provided");
 		}
 		catch (IllegalStateException ise) {
-			assertEquals("Incorrect message", "EntityManagerFactory must be provided", ise.getMessage());
+			assertEquals("EntityManagerFactory must be provided", ise.getMessage(), "Incorrect message");
 		}
 	}
 

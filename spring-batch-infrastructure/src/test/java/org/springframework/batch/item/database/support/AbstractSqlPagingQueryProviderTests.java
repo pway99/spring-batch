@@ -15,15 +15,15 @@
  */
 package org.springframework.batch.item.database.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.database.Order;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Thomas Risberg
@@ -36,7 +36,7 @@ public abstract class AbstractSqlPagingQueryProviderTests {
 	protected int pageSize;
 
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		if (pagingQueryProvider == null) {
 			throw new IllegalArgumentException("pagingQueryProvider can't be null");
@@ -44,7 +44,7 @@ public abstract class AbstractSqlPagingQueryProviderTests {
 		pagingQueryProvider.setSelectClause("id, name, age");
 		pagingQueryProvider.setFromClause("foo");
 		pagingQueryProvider.setWhereClause("bar = 1");
-		
+
 		Map<String, Order> sortKeys = new LinkedHashMap<>();
 		sortKeys.put("id", Order.ASCENDING);
 		pagingQueryProvider.setSortKeys(sortKeys);
@@ -55,14 +55,14 @@ public abstract class AbstractSqlPagingQueryProviderTests {
 	@Test
 	public void testQueryContainsSortKey(){
 		String s = pagingQueryProvider.generateFirstPageQuery(pageSize).toLowerCase();
-		assertTrue("Wrong query: "+s, s.contains("id asc"));		
+		assertTrue(s.contains("id asc"), "Wrong query: " + s);
 	}
 
 	@Test
 	public void testQueryContainsSortKeyDesc(){
 		pagingQueryProvider.getSortKeys().put("id", Order.DESCENDING);
 		String s = pagingQueryProvider.generateFirstPageQuery(pageSize).toLowerCase();
-		assertTrue("Wrong query: "+s, s.contains("id desc"));		
+		assertTrue(s.contains("id desc"), "Wrong query: " + s);
 	}
 
 	@Test
@@ -104,7 +104,7 @@ public abstract class AbstractSqlPagingQueryProviderTests {
 		String s = pagingQueryProvider.generateJumpToItemQuery(45, pageSize);
 		assertEquals(getJumpToItemQueryForFirstPageWithMultipleSortKeys(), s);
 	}
-	
+
 	@Test
 	public void testRemoveKeyWordsFollowedBySpaceChar() {
 		String selectClause = "SELECT id, 'yes', false";
@@ -113,7 +113,7 @@ public abstract class AbstractSqlPagingQueryProviderTests {
 		pagingQueryProvider.setSelectClause(selectClause);
 		pagingQueryProvider.setFromClause(fromClause);
 		pagingQueryProvider.setWhereClause(whereClause);
-		
+
 		assertEquals("id, 'yes', false", pagingQueryProvider.getSelectClause());
 		assertEquals("test.verification_table", pagingQueryProvider.getFromClause());
 		assertEquals("TRUE", pagingQueryProvider.getWhereClause());
@@ -146,7 +146,7 @@ public abstract class AbstractSqlPagingQueryProviderTests {
 		assertEquals("test.verification_table", pagingQueryProvider.getFromClause());
 		assertEquals("TRUE", pagingQueryProvider.getWhereClause());
 	}
-	
+
 	@Test
 	public abstract void testGenerateFirstPageQuery();
 
@@ -158,24 +158,24 @@ public abstract class AbstractSqlPagingQueryProviderTests {
 
 	@Test
 	public abstract void testGenerateJumpToItemQueryForFirstPage();
-	
+
 	@Test
 	public abstract void testGenerateFirstPageQueryWithGroupBy();
-	
+
 	@Test
 	public abstract void testGenerateRemainingPagesQueryWithGroupBy();
-	
+
 	@Test
 	public abstract void testGenerateJumpToItemQueryWithGroupBy();
-	
+
 	@Test
 	public abstract void testGenerateJumpToItemQueryForFirstPageWithGroupBy();
 
 	public abstract String getFirstPageSqlWithMultipleSortKeys();
-	
+
 	public abstract String getRemainingSqlWithMultipleSortKeys();
-	
+
 	public abstract String getJumpToItemQueryWithMultipleSortKeys();
-	
+
 	public abstract String getJumpToItemQueryForFirstPageWithMultipleSortKeys();
 }

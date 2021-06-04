@@ -15,13 +15,13 @@
  */
 package org.springframework.batch.item.jms;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import javax.jms.Message;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 
 /**
@@ -30,8 +30,8 @@ import org.junit.Test;
  *
  */
 public class JmsMethodArgumentsKeyGeneratorTests {
-	
-	private JmsMethodArgumentsKeyGenerator methodArgumentsKeyGenerator = new JmsMethodArgumentsKeyGenerator(); 
+
+	private JmsMethodArgumentsKeyGenerator methodArgumentsKeyGenerator = new JmsMethodArgumentsKeyGenerator();
 
 	@Test
 	public void testGetKeyFromMessage() throws Exception {

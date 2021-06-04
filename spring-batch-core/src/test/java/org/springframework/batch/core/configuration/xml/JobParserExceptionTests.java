@@ -15,14 +15,14 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
 import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.beans.factory.parsing.BeanDefinitionParsingException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 public class JobParserExceptionTests {
@@ -60,7 +60,7 @@ public class JobParserExceptionTests {
 		}
 		catch (BeanCreationException e) {
 			String message = e.getMessage();
-			assertTrue("Wrong message: "+message, message.matches(".*Missing state for \\[StateTransition: \\[state=.*s2, pattern=\\*, next=.*s3\\]\\]"));
+			assertTrue(message.matches(".*Missing state for \\[StateTransition: \\[state=.*s2, pattern=\\*, next=.*s3\\]\\]"), "Wrong message: " + message);
 		}
 	}
 
@@ -73,7 +73,7 @@ public class JobParserExceptionTests {
 		}
 		catch (BeanDefinitionParsingException e) {
 			String message = e.getMessage();
-			assertTrue("Wrong message: "+message, message.startsWith("Configuration problem: You are using a version of the spring-batch XSD"));
+			assertTrue(message.startsWith("Configuration problem: You are using a version of the spring-batch XSD"), "Wrong message: " + message);
 		} catch (BeanDefinitionStoreException e) {
 			// Probably the internet is not available and the schema validation failed.
 			fail("Wrong exception when schema didn't match: " + e.getMessage());

@@ -15,37 +15,43 @@
  */
 package org.springframework.batch.core.job;
 
-import static org.mockito.Mockito.mock;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.JobParametersValidator;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 public class CompositeJobParametersValidatorTests {
 
 	private CompositeJobParametersValidator compositeJobParametersValidator;
 	private JobParameters parameters = new JobParameters();
 	
-	@Before
+	@BeforeEach
 	public void setUp(){
 		compositeJobParametersValidator = new CompositeJobParametersValidator();
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testValidatorsCanNotBeNull() throws Exception{
+	 assertThrows(IllegalArgumentException.class, () -> {
 		compositeJobParametersValidator.setValidators(null);
 		compositeJobParametersValidator.afterPropertiesSet();
+	 });
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testValidatorsCanNotBeEmpty() throws Exception{
+	 assertThrows(IllegalArgumentException.class, () -> {
 		compositeJobParametersValidator.setValidators(new ArrayList<>());
 		compositeJobParametersValidator.afterPropertiesSet();
+	 });
 	}
 	
 	@Test

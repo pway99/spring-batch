@@ -16,18 +16,22 @@
 
 package org.springframework.batch.repeat.callback;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.batch.repeat.RepeatCallback;
 import org.springframework.batch.repeat.RepeatContext;
+import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.batch.repeat.support.RepeatTemplate;
 
-public class NestedRepeatCallbackTests extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
+public class NestedRepeatCallbackTests {
 
 	int count = 0;
 
-	public void testExecute() throws Exception {
+	@Test
+ public void testExecute() throws Exception {
 		NestedRepeatCallback callback = new NestedRepeatCallback(new RepeatTemplate(), new RepeatCallback() {
             @Override
 			public RepeatStatus doInIteration(RepeatContext context) throws Exception {

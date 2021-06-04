@@ -15,16 +15,12 @@
  */
 package org.springframework.batch.core.step;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -35,6 +31,12 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link AbstractStep}.
@@ -142,7 +144,7 @@ public class NonAbstractStepTests {
 
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		tested.setJobRepository(repository);
 		repository.add(execution);
@@ -194,10 +196,10 @@ public class NonAbstractStepTests {
 
 		assertEquals(ExitStatus.COMPLETED, execution.getExitStatus());
 
-		assertTrue("Execution context modifications made by listener should be persisted",
-				repository.saved.containsKey("beforeStep"));
-		assertTrue("Execution context modifications made by listener should be persisted",
-				repository.saved.containsKey("afterStep"));
+		assertTrue(
+		repository.saved.containsKey("beforeStep"), "Execution context modifications made by listener should be persisted");
+		assertTrue(
+		repository.saved.containsKey("afterStep"), "Execution context modifications made by listener should be persisted");
 	}
 
 	@Test
@@ -229,10 +231,10 @@ public class NonAbstractStepTests {
 
 		assertEquals(ExitStatus.FAILED.getExitCode(), execution.getExitStatus().getExitCode());
 		String exitDescription = execution.getExitStatus().getExitDescription();
-		assertTrue("Wrong message: " + exitDescription, exitDescription.contains("crash"));
+		assertTrue(exitDescription.contains("crash"), "Wrong message: " + exitDescription);
 
-		assertTrue("Execution context modifications made by listener should be persisted",
-				repository.saved.containsKey("afterStep"));
+		assertTrue(
+		repository.saved.containsKey("afterStep"), "Execution context modifications made by listener should be persisted");
 	}
 
 	/**
@@ -267,8 +269,8 @@ public class NonAbstractStepTests {
 
 		assertEquals("STOPPED", execution.getExitStatus().getExitCode());
 
-		assertTrue("Execution context modifications made by listener should be persisted",
-				repository.saved.containsKey("afterStep"));
+		assertTrue(
+		repository.saved.containsKey("afterStep"), "Execution context modifications made by listener should be persisted");
 	}
 
 	@Test
@@ -291,8 +293,8 @@ public class NonAbstractStepTests {
 
 		assertEquals("FUNNY", execution.getExitStatus().getExitCode());
 
-		assertTrue("Execution context modifications made by listener should be persisted",
-				repository.saved.containsKey("afterStep"));
+		assertTrue(
+		repository.saved.containsKey("afterStep"), "Execution context modifications made by listener should be persisted");
 	}
 
 	/**
@@ -331,10 +333,12 @@ public class NonAbstractStepTests {
 	/**
 	 * JobRepository is a required property.
 	 */
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testAfterPropertiesSet() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		tested.setJobRepository(null);
 		tested.afterPropertiesSet();
+	 });
 	}
 
 }

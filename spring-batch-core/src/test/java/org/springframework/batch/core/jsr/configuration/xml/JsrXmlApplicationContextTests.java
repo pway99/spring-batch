@@ -15,15 +15,15 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Properties;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.factory.config.BeanDefinition;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>
@@ -43,8 +43,8 @@ public class JsrXmlApplicationContextTests {
 		BeanDefinition beanDefinition = applicationContext.getBeanDefinition(JOB_PARAMETERS_BEAN_DEFINITION_NAME);
 		Properties properties = (Properties) beanDefinition.getConstructorArgumentValues().getGenericArgumentValue(Properties.class).getValue();
 
-		assertNotNull("Properties should not be null", properties);
-		assertTrue("Properties should be empty", properties.isEmpty());
+		assertNotNull(properties, "Properties should not be null");
+		assertTrue(properties.isEmpty(), "Properties should be empty");
 	}
 
 	@Test
@@ -58,8 +58,8 @@ public class JsrXmlApplicationContextTests {
 		BeanDefinition beanDefinition = applicationContext.getBeanDefinition(JOB_PARAMETERS_BEAN_DEFINITION_NAME);
 		Properties storedProperties = (Properties) beanDefinition.getConstructorArgumentValues().getGenericArgumentValue(Properties.class).getValue();
 
-		assertNotNull("Properties should not be null", storedProperties);
-		assertFalse("Properties not be empty", storedProperties.isEmpty());
+		assertNotNull(storedProperties, "Properties should not be null");
+		assertFalse(storedProperties.isEmpty(), "Properties not be empty");
 		assertEquals("prop1val", storedProperties.getProperty("prop1key"));
 	}
 }

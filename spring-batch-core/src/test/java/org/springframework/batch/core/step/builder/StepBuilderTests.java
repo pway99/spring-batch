@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Function;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
@@ -49,8 +49,7 @@ import org.springframework.batch.item.support.PassThroughItemProcessor;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.lang.Nullable;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer

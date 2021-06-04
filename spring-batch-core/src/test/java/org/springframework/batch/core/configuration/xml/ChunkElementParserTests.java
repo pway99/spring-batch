@@ -20,7 +20,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.step.item.SimpleChunkProcessor;
@@ -44,12 +44,11 @@ import org.springframework.retry.listener.RetryListenerSupport;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StringUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dan Garrette
@@ -64,10 +63,10 @@ public class ChunkElementParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ChunkElementSimpleAttributeParserTests-context.xml");
 		Object step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		Object chunkProcessor = ReflectionTestUtils.getField(tasklet, "chunkProcessor");
-		assertTrue("Wrong processor type", chunkProcessor instanceof SimpleChunkProcessor);
+		assertTrue(chunkProcessor instanceof SimpleChunkProcessor, "Wrong processor type");
 	}
 
 	@Test
@@ -76,7 +75,7 @@ public class ChunkElementParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ChunkElementLateBindingParserTests-context.xml");
 		Step step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 	}
 
 	@Test
@@ -85,7 +84,7 @@ public class ChunkElementParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ChunkElementSkipAndRetryAttributeParserTests-context.xml");
 		Step step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 	}
 
 	@Test
@@ -95,7 +94,7 @@ public class ChunkElementParserTests {
 			ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ChunkElementIllegalSkipAndRetryAttributeParserTests-context.xml");
 		Step step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		 assertNotNull(step, "Step not parsed");
 		fail("Expected BeanCreationException");
 		} catch (BeanCreationException e) {
 			// expected
@@ -151,12 +150,12 @@ public class ChunkElementParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ChunkElementTransactionalAttributeParserTests-context.xml");
 		Object step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		Object chunkProcessor = ReflectionTestUtils.getField(tasklet, "chunkProcessor");
 		Boolean processorTransactional = (Boolean) ReflectionTestUtils.getField(chunkProcessor,
 				"processorTransactional");
-		assertFalse("Flag not set", processorTransactional);
+		assertFalse(processorTransactional, "Flag not set");
 	}
 
 	@Test
@@ -165,7 +164,7 @@ public class ChunkElementParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ChunkElementIllegalAttributeParserTests-context.xml");
 		Object step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		Object chunkProcessor = ReflectionTestUtils.getField(tasklet, "chunkProcessor");
 		assertTrue(chunkProcessor instanceof SimpleChunkProcessor<?, ?>);
@@ -180,8 +179,8 @@ public class ChunkElementParserTests {
 		}
 		catch (BeanCreationException e) {
 			String msg = e.getMessage();
-			assertTrue("Wrong message: " + msg, msg
-					.contains("The field 'processor-transactional' cannot be false if 'reader-transactional"));
+			assertTrue(msg
+			.contains("The field 'processor-transactional' cannot be false if 'reader-transactional"), "Wrong message: " + msg);
 		}
 
 	}

@@ -15,16 +15,16 @@
  */
 package org.springframework.batch.sample.jsr352;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.Properties;
 
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.JobExecution;
-import java.util.Properties;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>
@@ -37,7 +37,7 @@ import static org.junit.Assert.assertTrue;
 public class JsrConfigSampleTests {
 	private Properties properties = new Properties();
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		properties.setProperty("remoteServiceURL", "https://api.example.com");
 	}

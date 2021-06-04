@@ -15,53 +15,53 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Lucas Ward
  *
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class JobExecutionListenerMethodAttributeParserTests {
 
 	public static boolean beforeCalled = false;
 	public static boolean afterCalled = false;
-	
+
 	@Autowired
 	Job job;
-	
+
 	@Autowired
 	JobRepository jobRepository;
-	
+
 	@Test
 	public void testListeners() throws Exception{
-		JobExecution jobExecution = jobRepository.createJobExecution("testJob", new JobParametersBuilder().addLong("now", 
+		JobExecution jobExecution = jobRepository.createJobExecution("testJob", new JobParametersBuilder().addLong("now",
 				System.currentTimeMillis()).toJobParameters());
 		job.execute(jobExecution);
 		assertTrue(beforeCalled);
 		assertTrue(afterCalled);
 	}
-	
+
 	public static class TestComponent{
-		
+
 		public void before(JobExecution jobExecution){
 			beforeCalled = true;
 		}
-		
+
 		public void after(){
 			afterCalled = true;
 		}
 	}
-	
+
 }

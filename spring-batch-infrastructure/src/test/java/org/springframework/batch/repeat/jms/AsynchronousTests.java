@@ -18,17 +18,18 @@ package org.springframework.batch.repeat.jms;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.Session;
 import javax.jms.TextMessage;
 import javax.sql.DataSource;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.container.jms.BatchMessageListenerContainer;
 import org.springframework.batch.jms.ExternalRetryInBatchTests;
@@ -38,17 +39,16 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.listener.SessionAwareMessageListener;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.ClassUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/org/springframework/batch/jms/jms-context.xml")
 @DirtiesContext
-@Ignore //FIXME https://github.com/spring-projects/spring-batch/issues/3852
+@Disabled //FIXME https://github.com/spring-projects/spring-batch/issues/3852
 public class AsynchronousTests {
 
 	protected String[] getConfigLocations() {
@@ -69,7 +69,7 @@ public class AsynchronousTests {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Before
+	@BeforeEach
 	public void onSetUp() throws Exception {
 		String foo = "";
 		int count = 0;
@@ -85,10 +85,10 @@ public class AsynchronousTests {
 		// Add a couple of messages...
 		jmsTemplate.convertAndSend("queue", "foo");
 		jmsTemplate.convertAndSend("queue", "bar");
-		
+
 	}
 
-	@After
+	@AfterEach
 	public void onTearDown() throws Exception {
 		container.stop();
 		// Need to give the container time to shutdown
@@ -186,7 +186,7 @@ public class AsynchronousTests {
 		int count = jdbcTemplate.queryForObject("select count(*) from T_BARS", Integer.class);
 		assertEquals(0, count);
 
-		assertTrue("Foo not on queue", msgs.contains("foo"));
+		assertTrue(msgs.contains("foo"), "Foo not on queue");
 
 	}
 

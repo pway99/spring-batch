@@ -18,6 +18,7 @@ package org.springframework.batch.container.jms;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+
 import javax.jms.ConnectionFactory;
 import javax.jms.JMSException;
 import javax.jms.Message;
@@ -26,17 +27,17 @@ import javax.jms.MessageListener;
 import javax.jms.Session;
 
 import org.aopalliance.aop.Advice;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.repeat.interceptor.RepeatOperationsInterceptor;
 import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.batch.repeat.support.RepeatTemplate;
 import org.springframework.util.ReflectionUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -66,7 +67,7 @@ public class BatchMessageListenerContainerTests {
 		when(consumer.receive(1000)).thenReturn(message);
 
 		boolean received = doExecute(session, consumer);
-		assertTrue("Message not received", received);
+		assertTrue(received, "Message not received");
 
 	}
 
@@ -86,7 +87,7 @@ public class BatchMessageListenerContainerTests {
 		when(session.getTransacted()).thenReturn(false);
 
 		boolean received = doExecute(session, consumer);
-		assertFalse("Message not received", received);
+		assertFalse(received, "Message not received");
 
 	}
 
@@ -98,7 +99,7 @@ public class BatchMessageListenerContainerTests {
 		container.setSessionTransacted(true);
 		try {
 			boolean received = doTestWithException(new IllegalStateException("No way!"), true, 2);
-			assertFalse("Message received", received);
+			assertFalse(received, "Message received");
 			fail("Expected IllegalStateException");
 		} catch (IllegalStateException e) {
 			assertEquals("No way!", e.getMessage());
@@ -112,7 +113,7 @@ public class BatchMessageListenerContainerTests {
 		container = getContainer(template);
 		container.setSessionTransacted(false);
 		boolean received = doTestWithException(new IllegalStateException("No way!"), false, 2);
-		assertTrue("Message not received but listener not transactional so this should be true", received);
+		assertTrue(received, "Message not received but listener not transactional so this should be true");
 	}
 
 	@Test
@@ -123,7 +124,7 @@ public class BatchMessageListenerContainerTests {
 		container.setSessionTransacted(false);
 		try {
 			boolean received = doTestWithException(new RuntimeException("No way!"), false, 2);
-			assertTrue("Message not received but listener not transactional so this should be true", received);
+			assertTrue(received, "Message not received but listener not transactional so this should be true");
 		}
 		catch (RuntimeException e) {
 			assertEquals("No way!", e.getMessage());

@@ -22,13 +22,14 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.sql.DataSource;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -39,14 +40,13 @@ import org.springframework.batch.core.test.AbstractIntegrationTests;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"/simple-job-launcher-context.xml"})
 public class JdbcJobRepositoryTests extends AbstractIntegrationTests {
 
@@ -72,7 +72,7 @@ public class JdbcJobRepositoryTests extends AbstractIntegrationTests {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Before
+	@BeforeEach
 	public void onSetUpInTransaction() throws Exception {
 		super.setUp();
 		job = new JobSupport("test-job");
@@ -208,8 +208,8 @@ public class JdbcJobRepositoryTests extends AbstractIntegrationTests {
 			Thread.sleep(200);
 		}
 
-		assertEquals("Timed out waiting for JobExecution to be created", 1, list.size());
-		assertTrue("JobExecution not created in thread: " + list.get(0), list.get(0) instanceof JobExecution);
+		assertEquals(1, list.size(), "Timed out waiting for JobExecution to be created");
+		assertTrue(list.get(0) instanceof JobExecution, "JobExecution not created in thread: " + list.get(0));
 		return (JobExecution) list.get(0);
 	}
 

@@ -16,15 +16,14 @@
 
 package org.springframework.batch.core.test.repository;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.CompletionService;
 import java.util.concurrent.ExecutorCompletionService;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.repository.dao.MapExecutionContextDao;
@@ -35,6 +34,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
@@ -115,7 +115,7 @@ public class ConcurrentMapExecutionContextDaoTests {
 			completionService.take().get();
 
 		}
-		
+
 		executor.shutdown();
 
 	}

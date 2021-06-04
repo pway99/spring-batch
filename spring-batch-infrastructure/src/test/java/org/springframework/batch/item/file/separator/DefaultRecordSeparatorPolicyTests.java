@@ -16,62 +16,77 @@
 
 package org.springframework.batch.item.file.separator;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class DefaultRecordSeparatorPolicyTests extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class DefaultRecordSeparatorPolicyTests {
 
 	DefaultRecordSeparatorPolicy policy = new DefaultRecordSeparatorPolicy();
-	
-	public void testNormalLine() throws Exception {
+
+	@Test
+ public void testNormalLine() throws Exception {
 		assertTrue(policy.isEndOfRecord("a string"));
 	}
 
-	public void testQuoteUnterminatedLine() throws Exception {
+	@Test
+ public void testQuoteUnterminatedLine() throws Exception {
 		assertFalse(policy.isEndOfRecord("a string\"one"));
 	}
 
-	public void testEmptyLine() throws Exception {
+	@Test
+ public void testEmptyLine() throws Exception {
 		assertTrue(policy.isEndOfRecord(""));
 	}
 
-	public void testNullLine() throws Exception {
+	@Test
+ public void testNullLine() throws Exception {
 		assertTrue(policy.isEndOfRecord(null));
 	}
-	
-	public void testPostProcess() throws Exception {
+
+	@Test
+ public void testPostProcess() throws Exception {
 		String line = "foo\nbar";
 		assertEquals(line, policy.postProcess(line));
 	}
-	
-	public void testPreProcessWithQuote() throws Exception {
+
+	@Test
+ public void testPreProcessWithQuote() throws Exception {
 		String line = "foo\"bar";
-		assertEquals(line+"\n", policy.preProcess(line));		
+		assertEquals(line+"\n", policy.preProcess(line));
 	}
 
-	public void testPreProcessWithNotDefaultQuote() throws Exception {
+	@Test
+ public void testPreProcessWithNotDefaultQuote() throws Exception {
 		String line = "foo'bar";
 		policy.setQuoteCharacter("'");
-		assertEquals(line+"\n", policy.preProcess(line));		
+		assertEquals(line+"\n", policy.preProcess(line));
 	}
-	
-	public void testPreProcessWithoutQuote() throws Exception {
+
+	@Test
+ public void testPreProcessWithoutQuote() throws Exception {
 		String line = "foo";
-		assertEquals(line, policy.preProcess(line));		
+		assertEquals(line, policy.preProcess(line));
 	}
 
-	public void testContinuationMarkerNotEnd() throws Exception {
+	@Test
+ public void testContinuationMarkerNotEnd() throws Exception {
 		String line = "foo\\";
-		assertFalse(policy.isEndOfRecord(line));		
+		assertFalse(policy.isEndOfRecord(line));
 	}
 
-	public void testNotDefaultContinuationMarkerNotEnd() throws Exception {
+	@Test
+ public void testNotDefaultContinuationMarkerNotEnd() throws Exception {
 		String line = "foo bar";
 		policy.setContinuation("bar");
-		assertFalse(policy.isEndOfRecord(line));		
+		assertFalse(policy.isEndOfRecord(line));
 	}
 
-	public void testContinuationMarkerRemoved() throws Exception {
+	@Test
+ public void testContinuationMarkerRemoved() throws Exception {
 		String line = "foo\\";
-		assertEquals("foo", policy.preProcess(line));		
+		assertEquals("foo", policy.preProcess(line));
 	}
 }

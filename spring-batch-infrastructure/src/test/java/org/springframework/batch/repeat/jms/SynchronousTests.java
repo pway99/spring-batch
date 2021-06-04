@@ -16,9 +16,6 @@
 
 package org.springframework.batch.repeat.jms;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,9 +24,9 @@ import javax.jms.JMSException;
 import javax.jms.Session;
 import javax.sql.DataSource;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.repeat.RepeatCallback;
 import org.springframework.batch.repeat.RepeatContext;
@@ -45,17 +42,19 @@ import org.springframework.jms.core.JmsTemplate;
 import org.springframework.jms.core.SessionCallback;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/org/springframework/batch/jms/jms-context.xml")
 @DirtiesContext
-@Ignore //FIXME https://github.com/spring-projects/spring-batch/issues/3852
+@Disabled //FIXME https://github.com/spring-projects/spring-batch/issues/3852
 public class SynchronousTests implements ApplicationContextAware {
 
 	@Autowired
@@ -166,7 +165,7 @@ public class SynchronousTests implements ApplicationContextAware {
 
 		// ... and so did the message session. The rollback should have restored
 		// the queue, so this should now be non-null
-		assertTrue("Foo not on queue", msgs.contains("foo"));
+		assertTrue(msgs.contains("foo"), "Foo not on queue");
 	}
 
 	@Transactional
@@ -202,7 +201,7 @@ public class SynchronousTests implements ApplicationContextAware {
 					@Override
 					public Void doInJms(Session session) throws JMSException {
 						try {
-							assertTrue("Not a SessionProxy - wrong spring version?", session instanceof SessionProxy);
+							assertTrue(session instanceof SessionProxy, "Not a SessionProxy - wrong spring version?");
 							((SessionProxy) session).getTargetSession().rollback();
 						}
 						catch (JMSException e) {
@@ -232,8 +231,8 @@ public class SynchronousTests implements ApplicationContextAware {
 		assertEquals(2, count);
 
 		// ...but the JMS session rolled back, so the message is still there
-		assertTrue("Foo not on queue", msgs.contains("foo"));
-		assertTrue("Bar not on queue", msgs.contains("bar"));
+		assertTrue(msgs.contains("foo"), "Foo not on queue");
+		assertTrue(msgs.contains("bar"), "Bar not on queue");
 
 	}
 

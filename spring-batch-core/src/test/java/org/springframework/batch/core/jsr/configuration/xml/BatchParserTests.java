@@ -15,7 +15,8 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.configuration.xml.DummyItemProcessor;
@@ -26,10 +27,9 @@ import org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostP
 import org.springframework.beans.factory.support.GenericBeanDefinition;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BatchParserTests {
 

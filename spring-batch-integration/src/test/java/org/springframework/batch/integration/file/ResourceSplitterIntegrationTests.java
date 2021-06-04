@@ -15,14 +15,13 @@
  */
 package org.springframework.batch.integration.file;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.io.Resource;
@@ -33,14 +32,15 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Dave Syer
  *
  */
 @ContextConfiguration()
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @MessageEndpoint
 public class ResourceSplitterIntegrationTests {
 
@@ -67,7 +67,7 @@ public class ResourceSplitterIntegrationTests {
 
 	@SuppressWarnings("unchecked")
 	@Test
-	@Ignore //FIXME
+	@Disabled //FIXME
 	// This broke with Integration 2.0 in a milestone, so watch out when upgrading...
 	public void testVanillaConversion() throws Exception {
 		resources.send(new GenericMessage<>("classpath:*-context.xml"));

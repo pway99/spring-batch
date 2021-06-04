@@ -15,16 +15,13 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 import java.util.Date;
 
 import javax.batch.runtime.Metric;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -33,6 +30,11 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.item.util.ExecutionContextUserSupport;
 import org.springframework.util.ClassUtils;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
+
 public class JsrStepExecutionTests {
 
 	private StepExecution stepExecution;
@@ -40,7 +42,7 @@ public class JsrStepExecutionTests {
 	//The API that sets the persisted user data is on the JsrStepContext so the key within the ExecutionContext is JsrStepContext
 	private ExecutionContextUserSupport executionContextUserSupport = new ExecutionContextUserSupport(ClassUtils.getShortName(JsrStepContext.class));
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		JobExecution jobExecution = new JobExecution(1L, new JobParametersBuilder().addString("key", "value").toJobParameters());
 
@@ -63,9 +65,11 @@ public class JsrStepExecutionTests {
 		jsrStepExecution = new JsrStepExecution(stepExecution);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testWithNullStepExecution() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new JsrStepExecution(null);
+	 });
 	}
 
 	@Test

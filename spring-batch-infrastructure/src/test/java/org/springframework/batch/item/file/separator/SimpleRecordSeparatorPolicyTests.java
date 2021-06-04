@@ -16,30 +16,38 @@
 
 package org.springframework.batch.item.file.separator;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
-public class SimpleRecordSeparatorPolicyTests extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class SimpleRecordSeparatorPolicyTests {
 
 	SimpleRecordSeparatorPolicy policy = new SimpleRecordSeparatorPolicy();
-	
-	public void testNormalLine() throws Exception {
+
+	@Test
+ public void testNormalLine() throws Exception {
 		assertTrue(policy.isEndOfRecord("a string"));
 	}
 
-	public void testEmptyLine() throws Exception {
+	@Test
+ public void testEmptyLine() throws Exception {
 		assertTrue(policy.isEndOfRecord(""));
 	}
 
-	public void testNullLine() throws Exception {
+	@Test
+ public void testNullLine() throws Exception {
 		assertTrue(policy.isEndOfRecord(null));
 	}
-	
-	public void testPostProcess() throws Exception {
+
+	@Test
+ public void testPostProcess() throws Exception {
 		String line = "foo\nbar";
 		assertEquals(line, policy.postProcess(line));
 	}
 
-	public void testPreProcess() throws Exception {
+	@Test
+ public void testPreProcess() throws Exception {
 		String line = "foo\nbar";
 		assertEquals(line, policy.preProcess(line));
 	}

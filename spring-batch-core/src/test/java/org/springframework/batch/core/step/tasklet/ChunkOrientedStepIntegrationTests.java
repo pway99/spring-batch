@@ -15,10 +15,15 @@
  */
 package org.springframework.batch.core.step.tasklet;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -35,23 +40,18 @@ import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.batch.repeat.support.RepeatTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author Dave Syer
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/org/springframework/batch/core/repository/dao/sql-dao-test.xml")
 public class ChunkOrientedStepIntegrationTests {
 
@@ -71,7 +71,7 @@ public class ChunkOrientedStepIntegrationTests {
 		return new ListItemReader<>(Arrays.asList(args));
 	}
 
-	@Before
+	@BeforeEach
 	public void onSetUp() throws Exception {
 
 		step = new TaskletStep("stepName");
@@ -90,7 +90,7 @@ public class ChunkOrientedStepIntegrationTests {
 
 	@SuppressWarnings("serial")
 	@Test
-	@Ignore
+	@Disabled
 	public void testStatusForCommitFailedException() throws Exception {
 
 		step.setTasklet(new TestingChunkOrientedTasklet<>(getReader(new String[] { "a", "b", "c" }),

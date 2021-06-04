@@ -18,6 +18,7 @@ package org.springframework.batch.core.jsr.configuration.xml;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Properties;
+
 import javax.batch.api.BatchProperty;
 import javax.batch.api.Batchlet;
 import javax.batch.api.Decider;
@@ -31,7 +32,7 @@ import javax.batch.runtime.JobExecution;
 import javax.batch.runtime.context.JobContext;
 import javax.inject.Inject;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.jsr.AbstractJsrTestCase;
@@ -39,8 +40,7 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.lang.Nullable;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * <p>

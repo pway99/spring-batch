@@ -15,16 +15,15 @@
  */
 package org.springframework.batch.core.test.ldif;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.net.MalformedURLException;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -36,10 +35,11 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"/simple-job-launcher-context.xml", "/applicationContext-test1.xml"})
 public class LdifReaderTests {
 
@@ -62,7 +62,7 @@ public class LdifReaderTests {
 		actual = new UrlResource("file:target/test-outputs/output.ldif");
 	}
 
-	@Before
+	@BeforeEach
 	public void checkFiles() {
 		Assert.isTrue(expected.exists(), "Expected does not exist.");
 	}
@@ -94,11 +94,11 @@ public class LdifReaderTests {
 			int lineNum = 1;
 			for (String expectedLine = null; (expectedLine = expectedReader.readLine()) != null; lineNum++) {
 				String actualLine = actualReader.readLine();
-				assertEquals("Line number " + lineNum + " does not match.", expectedLine, actualLine);
+				assertEquals(expectedLine, actualLine, "Line number " + lineNum + " does not match.");
 			}
 
 			String actualLine = actualReader.readLine();
-			assertEquals("More lines than expected.  There should not be a line number " + lineNum + ".", null, actualLine);
+			assertEquals(null, actualLine, "More lines than expected.  There should not be a line number " + lineNum + ".");
 		}
 		finally {
 			expectedReader.close();

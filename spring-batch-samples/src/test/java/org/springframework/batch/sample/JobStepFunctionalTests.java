@@ -16,12 +16,11 @@
 
 package org.springframework.batch.sample;
 
-import static org.junit.Assert.assertEquals;
-
 import javax.sql.DataSource;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.converter.DefaultJobParametersConverter;
 import org.springframework.batch.support.PropertiesConverter;
 import org.springframework.batch.test.JobLauncherTestUtils;
@@ -29,14 +28,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Sample using a step to launch a job.
  *
  * @author Dave Syer
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration
 public class JobStepFunctionalTests {
 	@Autowired

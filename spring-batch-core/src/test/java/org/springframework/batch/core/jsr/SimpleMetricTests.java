@@ -15,18 +15,21 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.junit.Assert.assertEquals;
-
 import javax.batch.runtime.Metric;
 import javax.batch.runtime.Metric.MetricType;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class SimpleMetricTests {
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNullType() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new SimpleMetric(null, 0);
+	 });
 	}
 
 	@Test

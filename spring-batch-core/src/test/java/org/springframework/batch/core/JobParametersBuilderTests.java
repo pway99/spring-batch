@@ -22,18 +22,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.job.SimpleJob;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -59,10 +58,7 @@ public class JobParametersBuilderTests {
 
 	private Date date = new Date(System.currentTimeMillis());
 
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
-
-	@Before
+	@BeforeEach
 	public void initialize() {
 		this.job = new SimpleJob("simpleJob");
 		this.jobExplorer = mock(JobExplorer.class);
@@ -204,10 +200,10 @@ public class JobParametersBuilderTests {
 
 	@Test
 	public void testGetNextJobParametersNoIncrementer(){
-		expectedException.expect(IllegalArgumentException.class);
-		expectedException.expectMessage("No job parameters incrementer found for job=simpleJob");
+	 assertThrows(IllegalArgumentException.class, () -> {
 		initializeForNextJobParameters();
 		this.parametersBuilder.getNextJobParameters(this.job);
+	 }, "No job parameters incrementer found for job=simpleJob");
 	}
 
 	@Test
@@ -247,10 +243,12 @@ public class JobParametersBuilderTests {
 		baseJobParametersVerify(this.parametersBuilder.toJobParameters(), 4);
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testMissingJobExplorer() {
+	 assertThrows(IllegalStateException.class, () -> {
 		this.parametersBuilder = new JobParametersBuilder();
 		this.parametersBuilder.getNextJobParameters(this.job);
+	 });
 	}
 
 	private void initializeForNextJobParameters() {

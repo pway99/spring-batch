@@ -15,18 +15,13 @@
  */
 package org.springframework.batch.core.job.flow.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.job.flow.FlowExecution;
 import org.springframework.batch.core.job.flow.FlowExecutionException;
@@ -34,6 +29,13 @@ import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.job.flow.FlowExecutor;
 import org.springframework.batch.core.job.flow.State;
 import org.springframework.batch.core.job.flow.StateSupport;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -46,22 +48,26 @@ public class SimpleFlowTests {
 
 	protected FlowExecutor executor = new JobFlowExecutorSupport();
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		flow = new SimpleFlow("job");
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testEmptySteps() throws Exception {
-		flow.setStateTransitions(Collections.<StateTransition> emptyList());
+	 assertThrows(IllegalArgumentException.class, () -> {
+		flow.setStateTransitions(Collections.<StateTransition>emptyList());
 		flow.afterPropertiesSet();
+	 });
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNoNextStepSpecified() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		flow.setStateTransitions(Collections.singletonList(StateTransition.createStateTransition(new StateSupport(
-				"step"), "foo")));
+		"step"), "foo")));
 		flow.afterPropertiesSet();
+	 });
 	}
 
 	@Test
@@ -74,11 +80,13 @@ public class SimpleFlowTests {
 		assertEquals("step", execution.getName());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNoEndStep() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		flow.setStateTransitions(Collections.singletonList(StateTransition.createStateTransition(new StateSupport(
-				"step"), ExitStatus.FAILED.getExitCode(), "step")));
+		"step"), ExitStatus.FAILED.getExitCode(), "step")));
 		flow.afterPropertiesSet();
+	 });
 	}
 
 	@Test
@@ -103,7 +111,7 @@ public class SimpleFlowTests {
 		catch (FlowExecutionException e) {
 			// expected
 			String message = e.getMessage();
-			assertTrue("Wrong message: " + message, message.toLowerCase().contains("next state not found"));
+			assertTrue(message.toLowerCase().contains("next state not found"), "Wrong message: " + message);
 		}
 	}
 

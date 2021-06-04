@@ -16,6 +16,7 @@
 package org.springframework.batch.item.xml;
 
 import java.io.IOException;
+
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.events.Attribute;
 import javax.xml.stream.events.StartElement;
@@ -28,8 +29,7 @@ import org.springframework.batch.item.sample.Foo;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.oxm.Unmarshaller;
 import org.springframework.oxm.XmlMappingException;
-
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StaxEventItemReaderCommonTests extends AbstractItemStreamItemReaderTests {
 
@@ -74,10 +74,10 @@ public class StaxEventItemReaderCommonTests extends AbstractItemStreamItemReader
 	protected void pointToEmptyInput(ItemReader<Foo> tested) throws Exception {
 		StaxEventItemReader<Foo> reader = (StaxEventItemReader<Foo>) tested;
 		reader.close();
-		
+
 		reader.setResource(new ByteArrayResource("<foos />".getBytes()));
 		reader.afterPropertiesSet();
-		
+
 		reader.open(new ExecutionContext());
 	}
 

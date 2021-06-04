@@ -16,22 +16,29 @@
 
 package org.springframework.batch.repeat.policy;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.repeat.CompletionPolicy;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.batch.repeat.RepeatContext;
+import org.springframework.batch.repeat.RepeatStatus;
 
-public class CompositeCompletionPolicyTests extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-	public void testEmptyPolicies() throws Exception {
+public class CompositeCompletionPolicyTests {
+
+	@Test
+ public void testEmptyPolicies() throws Exception {
 		CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
 		RepeatContext context = policy.start(null);
 		assertNotNull(context);
 		assertFalse(policy.isComplete(context));
 	}
 
-	public void testTrivialPolicies() throws Exception {
+	@Test
+ public void testTrivialPolicies() throws Exception {
 		CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
 		policy.setPolicies(new CompletionPolicy[] { new MockCompletionPolicySupport(),
 				new MockCompletionPolicySupport() });
@@ -43,7 +50,8 @@ public class CompositeCompletionPolicyTests extends TestCase {
 		assertEquals(1, context.getStartedCount());
 	}
 
-	public void testNonTrivialPolicies() throws Exception {
+	@Test
+ public void testNonTrivialPolicies() throws Exception {
 		CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
 		policy.setPolicies(new CompletionPolicy[] { new MockCompletionPolicySupport(),
 				new MockCompletionPolicySupport() {
@@ -56,7 +64,8 @@ public class CompositeCompletionPolicyTests extends TestCase {
 		assertTrue(policy.isComplete(context));
 	}
 
-	public void testNonTrivialPoliciesWithResult() throws Exception {
+	@Test
+ public void testNonTrivialPoliciesWithResult() throws Exception {
 		CompositeCompletionPolicy policy = new CompositeCompletionPolicy();
 		policy.setPolicies(new CompletionPolicy[] { new MockCompletionPolicySupport(),
 				new MockCompletionPolicySupport() {

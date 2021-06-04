@@ -16,6 +16,8 @@
 
 package org.springframework.batch.repeat;
 
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.repeat.RepeatException;
 
 public class RepeatExceptionTests extends AbstractExceptionTests {
@@ -30,7 +32,8 @@ public class RepeatExceptionTests extends AbstractExceptionTests {
 		return new RepeatException(msg, t);
 	}
 
-	public void testNothing() throws Exception {
+	@Test
+ public void testNothing() throws Exception {
 		// fool coverage tools...
 	}
 }

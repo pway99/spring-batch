@@ -20,10 +20,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -36,10 +35,10 @@ import org.springframework.batch.core.configuration.annotation.StepBuilderFactor
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.item.json.GsonJsonObjectReader;
 import org.springframework.batch.item.json.JacksonJsonObjectMarshaller;
-import org.springframework.batch.item.json.JsonItemReader;
 import org.springframework.batch.item.json.JsonFileItemWriter;
-import org.springframework.batch.item.json.builder.JsonItemReaderBuilder;
+import org.springframework.batch.item.json.JsonItemReader;
 import org.springframework.batch.item.json.builder.JsonFileItemWriterBuilder;
+import org.springframework.batch.item.json.builder.JsonItemReaderBuilder;
 import org.springframework.batch.sample.domain.trade.Trade;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -57,11 +56,11 @@ public class JsonSupportIntegrationTests {
 	private static final String INPUT_FILE_DIRECTORY = "src/test/resources/org/springframework/batch/item/json/";
 	private static final String OUTPUT_FILE_DIRECTORY = "target/";
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		Files.deleteIfExists(Paths.get("build", "trades.json"));
 	}
-	
+
 	@Configuration
 	@EnableBatchProcessing
 	public static class JobConfiguration {
@@ -114,7 +113,7 @@ public class JsonSupportIntegrationTests {
 		Job job = context.getBean(Job.class);
 		JobExecution jobExecution = jobLauncher.run(job, new JobParameters());
 
-		Assert.assertEquals(ExitStatus.COMPLETED.getExitCode(), jobExecution.getExitStatus().getExitCode());
+		Assertions.assertEquals(ExitStatus.COMPLETED.getExitCode(), jobExecution.getExitStatus().getExitCode());
 		assertFileEquals(
 				new File(INPUT_FILE_DIRECTORY + "trades.json"),
 				new File(OUTPUT_FILE_DIRECTORY + "trades.json"));
@@ -123,7 +122,7 @@ public class JsonSupportIntegrationTests {
 	private void assertFileEquals(File expected, File actual) throws Exception {
 		String expectedHash = DigestUtils.md5DigestAsHex(new FileInputStream(expected));
 		String actualHash = DigestUtils.md5DigestAsHex(new FileInputStream(actual));
-		Assert.assertEquals(expectedHash, actualHash);
+		Assertions.assertEquals(expectedHash, actualHash);
 	}
 
 }

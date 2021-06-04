@@ -15,10 +15,9 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+
 import org.springframework.batch.core.jsr.AbstractJsrTestCase;
 import org.springframework.beans.PropertyValue;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
@@ -26,14 +25,10 @@ import org.springframework.beans.factory.parsing.BeanDefinitionParsingException;
 import org.springframework.beans.factory.support.BeanDefinitionRegistry;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class JsrSplitParsingTests extends AbstractJsrTestCase {
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	@Test
 	public void testOneFlowInSplit() {
@@ -55,7 +50,7 @@ public class JsrSplitParsingTests extends AbstractJsrTestCase {
 
 		RuntimeBeanReference runtimeBeanReferenceValue = (RuntimeBeanReference) propertyValue.getValue();
 
-		Assert.assertTrue("RuntimeBeanReference should have a name of jsr352splitTaskExecutor" , "jsr352splitTaskExecutor".equals(runtimeBeanReferenceValue.getBeanName()));
+		Assertions.assertTrue("jsr352splitTaskExecutor".equals(runtimeBeanReferenceValue.getBeanName()), "RuntimeBeanReference should have a name of jsr352splitTaskExecutor");
 		context.close();
 	}
 
@@ -64,7 +59,7 @@ public class JsrSplitParsingTests extends AbstractJsrTestCase {
 		ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("/org/springframework/batch/core/jsr/configuration/xml/default-split-task-executor-context.xml");
 		BeanDefinitionRegistry registry = (BeanDefinitionRegistry) context.getBeanFactory();
 		PropertyValue propertyValue = new JsrSplitParser(null).getSplitTaskExecutorPropertyValue(registry);
-		Assert.assertTrue("Task executor not an instance of SimpleAsyncTaskExecutor" , (propertyValue.getValue() instanceof SimpleAsyncTaskExecutor));
+		Assertions.assertTrue((propertyValue.getValue() instanceof SimpleAsyncTaskExecutor), "Task executor not an instance of SimpleAsyncTaskExecutor");
 		context.close();
 	}
 

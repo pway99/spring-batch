@@ -15,15 +15,16 @@
  */
 package org.springframework.batch.jsr.item;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.when;
-
 import javax.batch.api.chunk.ItemProcessor;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.when;
 
 public class ItemProcessorAdapterTests {
 
@@ -31,16 +32,18 @@ public class ItemProcessorAdapterTests {
 	@Mock
 	private ItemProcessor delegate;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
 		adapter = new ItemProcessorAdapter<>(delegate);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testCreateWithNull() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		adapter = new ItemProcessorAdapter<>(null);
+	 });
 	}
 
 	@Test

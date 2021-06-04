@@ -15,9 +15,27 @@
  */
 package org.springframework.batch.core.jsr.partition;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
+import java.io.Serializable;
+import java.util.Collection;
+import java.util.Properties;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.batch.api.BatchProperty;
+import javax.batch.api.partition.PartitionAnalyzer;
+import javax.batch.api.partition.PartitionCollector;
+import javax.batch.api.partition.PartitionMapper;
+import javax.batch.api.partition.PartitionPlan;
+import javax.batch.api.partition.PartitionPlanImpl;
+import javax.batch.api.partition.PartitionReducer;
+import javax.batch.runtime.BatchStatus;
+import javax.inject.Inject;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -31,28 +49,11 @@ import org.springframework.batch.core.repository.support.MapJobRepositoryFactory
 import org.springframework.batch.core.step.JobRepositorySupport;
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.util.StopWatch;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import javax.batch.api.BatchProperty;
-import javax.batch.api.partition.PartitionAnalyzer;
-import javax.batch.api.partition.PartitionCollector;
-import javax.batch.api.partition.PartitionMapper;
-import javax.batch.api.partition.PartitionPlan;
-import javax.batch.api.partition.PartitionPlanImpl;
-import javax.batch.api.partition.PartitionReducer;
-import javax.batch.runtime.BatchStatus;
-import javax.inject.Inject;
-import java.io.Serializable;
-import java.util.Collection;
-import java.util.Properties;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-@Ignore // FIXME https://github.com/spring-projects/spring-batch/issues/3850
+@Disabled // FIXME https://github.com/spring-projects/spring-batch/issues/3850
 public class JsrPartitionHandlerTests extends AbstractJsrTestCase {
 
 	private JsrPartitionHandler handler;
@@ -62,7 +63,7 @@ public class JsrPartitionHandlerTests extends AbstractJsrTestCase {
 	private BatchPropertyContext propertyContext;
 	private JsrStepExecutionSplitter stepSplitter;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		JobExecution jobExecution = new JobExecution(1L);
 		jobExecution.setJobInstance(new JobInstance(1L, "job"));

@@ -19,11 +19,9 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.ItemReadListener;
@@ -57,11 +55,12 @@ import org.springframework.retry.RetryListener;
 import org.springframework.retry.backoff.NoBackOffPolicy;
 import org.springframework.retry.policy.MapRetryContextCache;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.mock;
@@ -71,12 +70,9 @@ import static org.mockito.Mockito.when;
 /**
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {RemoteChunkingManagerStepBuilderTest.BatchConfiguration.class})
 public class RemoteChunkingManagerStepBuilderTest {
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	@Autowired
 	private JobRepository jobRepository;
@@ -89,14 +85,16 @@ public class RemoteChunkingManagerStepBuilderTest {
 
 	@Test
 	public void inputChannelMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("inputChannel must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		TaskletStep step = new RemoteChunkingManagerStepBuilder<String, String>("step")
-				.inputChannel(null)
-				.build();
+		.inputChannel(null)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "inputChannel must not be null");
 
 		// then
 		// expected exception
@@ -104,14 +102,16 @@ public class RemoteChunkingManagerStepBuilderTest {
 
 	@Test
 	public void outputChannelMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("outputChannel must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		TaskletStep step = new RemoteChunkingManagerStepBuilder<String, String>("step")
-				.outputChannel(null)
-				.build();
+		.outputChannel(null)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "outputChannel must not be null");
 
 		// then
 		// expected exception
@@ -119,14 +119,16 @@ public class RemoteChunkingManagerStepBuilderTest {
 
 	@Test
 	public void messagingTemplateMustNotBeNull() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("messagingTemplate must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		TaskletStep step = new RemoteChunkingManagerStepBuilder<String, String>("step")
-				.messagingTemplate(null)
-				.build();
+		.messagingTemplate(null)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "messagingTemplate must not be null");
 
 		// then
 		// expected exception
@@ -134,14 +136,16 @@ public class RemoteChunkingManagerStepBuilderTest {
 
 	@Test
 	public void maxWaitTimeoutsMustBeGreaterThanZero() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("maxWaitTimeouts must be greater than zero");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		TaskletStep step = new RemoteChunkingManagerStepBuilder<String, String>("step")
-				.maxWaitTimeouts(-1)
-				.build();
+		.maxWaitTimeouts(-1)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "maxWaitTimeouts must be greater than zero");
 
 		// then
 		// expected exception
@@ -149,14 +153,16 @@ public class RemoteChunkingManagerStepBuilderTest {
 
 	@Test
 	public void throttleLimitMustNotBeGreaterThanZero() {
-		// given
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("throttleLimit must be greater than zero");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		// when
 		TaskletStep step = new RemoteChunkingManagerStepBuilder<String, String>("step")
-				.throttleLimit(-1L)
-				.build();
+		.throttleLimit(-1L)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "throttleLimit must be greater than zero");
 
 		// then
 		// expected exception
@@ -164,14 +170,16 @@ public class RemoteChunkingManagerStepBuilderTest {
 
 	@Test
 	public void testMandatoryInputChannel() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		// given
 		RemoteChunkingManagerStepBuilder<String, String> builder = new RemoteChunkingManagerStepBuilder<>("step");
 
-		this.expectedException.expect(IllegalArgumentException.class);
-		this.expectedException.expectMessage("An InputChannel must be provided");
-
 		// when
 		TaskletStep step = builder.build();
+
+		 // then
+		 // expected exception
+	 }, "An InputChannel must be provided");
 
 		// then
 		// expected exception
@@ -179,17 +187,19 @@ public class RemoteChunkingManagerStepBuilderTest {
 
 	@Test
 	public void eitherOutputChannelOrMessagingTemplateMustBeProvided() {
+	 assertThrows(IllegalStateException.class, () -> {
 		// given
 		RemoteChunkingManagerStepBuilder<String, String> builder = new RemoteChunkingManagerStepBuilder<String, String>("step")
-				.inputChannel(this.inputChannel)
-				.outputChannel(new DirectChannel())
-				.messagingTemplate(new MessagingTemplate());
-
-		this.expectedException.expect(IllegalStateException.class);
-		this.expectedException.expectMessage("You must specify either an outputChannel or a messagingTemplate but not both.");
+		.inputChannel(this.inputChannel)
+		.outputChannel(new DirectChannel())
+		.messagingTemplate(new MessagingTemplate());
 
 		// when
 		TaskletStep step = builder.build();
+
+		 // then
+		 // expected exception
+	 }, "You must specify either an outputChannel or a messagingTemplate but not both.");
 
 		// then
 		// expected exception
@@ -197,22 +207,25 @@ public class RemoteChunkingManagerStepBuilderTest {
 
 	@Test
 	public void testUnsupportedOperationExceptionWhenSpecifyingAnItemWriter() {
-		// given
-		this.expectedException.expect(UnsupportedOperationException.class);
-		this.expectedException.expectMessage("When configuring a manager " +
-				"step for remote chunking, the item writer will be automatically " +
-				"set to an instance of ChunkMessageChannelItemWriter. " +
-				"The item writer must not be provided in this case.");
+	 assertThrows(UnsupportedOperationException.class, () -> {
 
 		// when
 		TaskletStep step = new RemoteChunkingManagerStepBuilder<String, String>("step")
-				.reader(this.itemReader)
-				.writer(items -> { })
-				.repository(this.jobRepository)
-				.transactionManager(this.transactionManager)
-				.inputChannel(this.inputChannel)
-				.outputChannel(this.outputChannel)
-				.build();
+		.reader(this.itemReader)
+		.writer(items -> {
+		})
+		.repository(this.jobRepository)
+		.transactionManager(this.transactionManager)
+		.inputChannel(this.inputChannel)
+		.outputChannel(this.outputChannel)
+		.build();
+
+		 // then
+		 // expected exception
+	 }, "When configuring a manager " +
+		"step for remote chunking, the item writer will be automatically " +
+		"set to an instance of ChunkMessageChannelItemWriter. " +
+		"The item writer must not be provided in this case.");
 
 		// then
 		// expected exception
@@ -230,7 +243,7 @@ public class RemoteChunkingManagerStepBuilderTest {
 				.build();
 
 		// then
-		Assert.assertNotNull(taskletStep);
+		Assertions.assertNotNull(taskletStep);
 	}
 
 	/*
@@ -335,7 +348,7 @@ public class RemoteChunkingManagerStepBuilderTest {
 		taskletStep.execute(stepExecution);
 
 		// then
-		Assert.assertNotNull(taskletStep);
+		Assertions.assertNotNull(taskletStep);
 		ChunkOrientedTasklet tasklet = (ChunkOrientedTasklet) ReflectionTestUtils.getField(taskletStep, "tasklet");
 		SimpleChunkProvider provider = (SimpleChunkProvider) ReflectionTestUtils.getField(tasklet, "chunkProvider");
 		SimpleChunkProcessor processor = (SimpleChunkProcessor) ReflectionTestUtils.getField(tasklet, "chunkProcessor");
@@ -343,22 +356,22 @@ public class RemoteChunkingManagerStepBuilderTest {
 		MessagingTemplate messagingTemplate = (MessagingTemplate) ReflectionTestUtils.getField(itemWriter, "messagingGateway");
 		CompositeItemStream compositeItemStream = (CompositeItemStream) ReflectionTestUtils.getField(taskletStep, "stream");
 
-		Assert.assertEquals(ReflectionTestUtils.getField(provider, "itemReader"), itemReader);
-		Assert.assertFalse((Boolean) ReflectionTestUtils.getField(tasklet, "buffering"));
-		Assert.assertEquals(ReflectionTestUtils.getField(taskletStep, "jobRepository"), this.jobRepository);
-		Assert.assertEquals(ReflectionTestUtils.getField(taskletStep, "transactionManager"), this.transactionManager);
-		Assert.assertEquals(ReflectionTestUtils.getField(taskletStep, "transactionAttribute"), transactionAttribute);
-		Assert.assertEquals(ReflectionTestUtils.getField(itemWriter, "replyChannel"), this.inputChannel);
-		Assert.assertEquals(ReflectionTestUtils.getField(messagingTemplate, "defaultDestination"), this.outputChannel);
-		Assert.assertEquals(ReflectionTestUtils.getField(processor, "itemProcessor"), itemProcessor);
+		Assertions.assertEquals(ReflectionTestUtils.getField(provider, "itemReader"), itemReader);
+		Assertions.assertFalse((Boolean) ReflectionTestUtils.getField(tasklet, "buffering"));
+		Assertions.assertEquals(ReflectionTestUtils.getField(taskletStep, "jobRepository"), this.jobRepository);
+		Assertions.assertEquals(ReflectionTestUtils.getField(taskletStep, "transactionManager"), this.transactionManager);
+		Assertions.assertEquals(ReflectionTestUtils.getField(taskletStep, "transactionAttribute"), transactionAttribute);
+		Assertions.assertEquals(ReflectionTestUtils.getField(itemWriter, "replyChannel"), this.inputChannel);
+		Assertions.assertEquals(ReflectionTestUtils.getField(messagingTemplate, "defaultDestination"), this.outputChannel);
+		Assertions.assertEquals(ReflectionTestUtils.getField(processor, "itemProcessor"), itemProcessor);
 
-		Assert.assertEquals((int) ReflectionTestUtils.getField(taskletStep, "startLimit"), 3);
-		Assert.assertTrue((Boolean) ReflectionTestUtils.getField(taskletStep, "allowStartIfComplete"));
+		Assertions.assertEquals((int) ReflectionTestUtils.getField(taskletStep, "startLimit"), 3);
+		Assertions.assertTrue((Boolean) ReflectionTestUtils.getField(taskletStep, "allowStartIfComplete"));
 		Object stepOperationsUsed = ReflectionTestUtils.getField(taskletStep, "stepOperations");
-		Assert.assertEquals(stepOperationsUsed, stepOperations);
+		Assertions.assertEquals(stepOperationsUsed, stepOperations);
 
-		Assert.assertEquals(((List)ReflectionTestUtils.getField(compositeItemStream, "streams")).size(), 2);
-		Assert.assertNotNull(ReflectionTestUtils.getField(processor, "keyGenerator"));
+		Assertions.assertEquals(((List)ReflectionTestUtils.getField(compositeItemStream, "streams")).size(), 2);
+		Assertions.assertNotNull(ReflectionTestUtils.getField(processor, "keyGenerator"));
 
 		verify(skipListener, atLeastOnce()).onSkipInProcess(any(), any());
 		verify(retryListener, atLeastOnce()).open(any(), any());
@@ -367,8 +380,8 @@ public class RemoteChunkingManagerStepBuilderTest {
 		verify(itemReadListener, atLeastOnce()).beforeRead();
 		verify(itemWriteListener, atLeastOnce()).beforeWrite(any());
 
-		Assert.assertEquals(stepExecution.getSkipCount(), 2);
-		Assert.assertEquals(stepExecution.getRollbackCount(), 3);
+		Assertions.assertEquals(stepExecution.getSkipCount(), 2);
+		Assertions.assertEquals(stepExecution.getRollbackCount(), 3);
 	}
 
 	@Configuration

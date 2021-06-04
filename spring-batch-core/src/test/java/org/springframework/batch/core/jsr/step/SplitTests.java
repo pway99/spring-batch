@@ -32,10 +32,9 @@ import javax.batch.runtime.StepExecution;
 import javax.batch.runtime.context.JobContext;
 import javax.inject.Inject;
 
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mahmoud Ben Hassine
@@ -63,7 +62,7 @@ public class SplitTests {
 		assertEquals("COMPLETED", jobExecution.getExitStatus());
 		assertEquals(5, stepExecutions.size());
 	}
-	
+
 	@Test
 	public void testDecisionAfterSplit() {
 		// given

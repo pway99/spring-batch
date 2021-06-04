@@ -15,17 +15,16 @@
  */
 package org.springframework.batch.sample;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Iterator;
 import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.sample.domain.mail.internal.TestMailErrorHandler;
@@ -37,7 +36,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.mail.MailMessage;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dan Garrette
@@ -45,7 +45,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  *
  * @Since 2.1
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/simple-job-launcher-context.xml", "/jobs/mailJob.xml", "/job-runner-context.xml" })
 public class MailJobFunctionalTests {
 
@@ -83,14 +83,14 @@ public class MailJobFunctionalTests {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Before
+	@BeforeEach
 	public void before() {
 		mailSender.clear();
 		errorHandler.clear();
 		jdbcTemplate.update("create table USERS (ID INTEGER, NAME VARCHAR(40), EMAIL VARCHAR(20))");
 	}
 
-	@After
+	@AfterEach
 	public void after() throws Exception {
 		jdbcTemplate.update("drop table USERS");
 	}

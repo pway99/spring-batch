@@ -17,13 +17,13 @@ package org.springframework.batch.item.database;
 
 import javax.persistence.EntityManagerFactory;
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.item.database.orm.JpaNamedQueryProvider;
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * Integration Test for {@link JpaPagingItemReader} and {@link JpaNamedQueryProvider}.
@@ -31,13 +31,13 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Parikshit Dutta
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations={"JpaPagingItemReaderCommonTests-context.xml"})
 public class JpaPagingItemReaderNamedQueryIntegrationTests extends AbstractPagingItemReaderParameterTests {
 
 	@Autowired
 	private EntityManagerFactory entityManagerFactory;
-	
+
 	@Override
 	protected AbstractPagingItemReader<Foo> getItemReader() throws Exception {
 

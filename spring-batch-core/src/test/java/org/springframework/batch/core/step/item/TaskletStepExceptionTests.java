@@ -15,8 +15,11 @@
  */
 package org.springframework.batch.core.step.item;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.Collection;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -45,12 +48,9 @@ import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.UnexpectedRollbackException;
 import org.springframework.transaction.support.DefaultTransactionStatus;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
-
-import java.util.Collection;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.batch.core.BatchStatus.COMPLETED;
 import static org.springframework.batch.core.BatchStatus.FAILED;
 import static org.springframework.batch.core.BatchStatus.STOPPED;
@@ -76,7 +76,7 @@ public class TaskletStepExceptionTests {
 
 	static JobInterruptedException interruptedException = new JobInterruptedException("");
 
-	@Before
+	@BeforeEach
 	public void init() {
 		taskletStep = new TaskletStep();
 		taskletStep.setTasklet(new ExceptionTasklet());
@@ -348,7 +348,7 @@ public class TaskletStepExceptionTests {
 			}
 
 		});
-		
+
 		taskletStep.setTransactionManager(new FailingRollbackTransactionManager());
 
 		jobRepository.setFailOnUpdateExecutionContext(true);
@@ -415,7 +415,7 @@ public class TaskletStepExceptionTests {
 			}
 
 		});
-		
+
 		taskletStep.setTransactionManager(new FailingRollbackTransactionManager());
 
 		jobRepository.setFailOnUpdateStepExecution(1);
@@ -590,15 +590,15 @@ public class TaskletStepExceptionTests {
 			return null;
 		}
 	}
-	
+
 	@SuppressWarnings("serial")
 	private static class FailingRollbackTransactionManager extends ResourcelessTransactionManager {
-		
+
 		@Override
 		protected void doRollback(DefaultTransactionStatus status) throws TransactionException {
 			super.doRollback(status);
 			throw new RuntimeException("Expected exception in rollback");
-		}		
+		}
 	}
 
 }

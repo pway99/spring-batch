@@ -15,13 +15,12 @@
  */
 package org.springframework.batch.item.file.transform;
 
-import static org.junit.Assert.assertEquals;
-
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer

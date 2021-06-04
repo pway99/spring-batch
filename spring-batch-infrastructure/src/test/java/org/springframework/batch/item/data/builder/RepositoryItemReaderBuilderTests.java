@@ -21,8 +21,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -33,9 +33,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 /**
@@ -60,7 +60,7 @@ public class RepositoryItemReaderBuilderTests {
 
 	private ArgumentCaptor<PageRequest> pageRequestContainer;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		this.sorts = new HashMap<>();
@@ -83,8 +83,8 @@ public class RepositoryItemReaderBuilderTests {
 				.name("bar")
 				.build();
 		String result = (String) reader.read();
-		assertEquals("Result returned from reader was not expected value.", TEST_CONTENT, result);
-		assertEquals("page size was not expected value.", 10, this.pageRequestContainer.getValue().getPageSize());
+		assertEquals(TEST_CONTENT, result, "Result returned from reader was not expected value.");
+		assertEquals(10, this.pageRequestContainer.getValue().getPageSize(), "page size was not expected value.");
 	}
 
 	@Test
@@ -98,8 +98,8 @@ public class RepositoryItemReaderBuilderTests {
 				.maxItemCount(5)
 				.name("bar").build();
 		String result = (String) reader.read();
-		assertEquals("Result returned from reader was not expected value.", TEST_CONTENT, result);
-		assertEquals("page size was not expected value.", 10, this.pageRequestContainer.getValue().getPageSize());
+		assertEquals(TEST_CONTENT, result, "Result returned from reader was not expected value.");
+		assertEquals(10, this.pageRequestContainer.getValue().getPageSize(), "page size was not expected value.");
 	}
 
 	@Test
@@ -119,7 +119,7 @@ public class RepositoryItemReaderBuilderTests {
 				this.pageRequestContainer.capture())).thenReturn(this.page);
 
 		String result = (String) reader.read();
-		assertEquals("Result returned from reader was not expected value.", TEST_CONTENT, result);
+		assertEquals(TEST_CONTENT, result, "Result returned from reader was not expected value.");
 		verifyMultiArgRead(arg1Captor, arg2Captor, arg3Captor, result);
 	}
 
@@ -132,7 +132,7 @@ public class RepositoryItemReaderBuilderTests {
 				.methodName("foo")
 				.name("bar")
 				.build();
-		assertNull("Result returned from reader was not null.", reader.read());
+		assertNull(reader.read(), "Result returned from reader was not null.");
 	}
 
 	@Test
@@ -145,7 +145,7 @@ public class RepositoryItemReaderBuilderTests {
 				.pageSize(2)
 				.build();
 		reader.read();
-		assertEquals("page size was not expected value.", 2, this.pageRequestContainer.getValue().getPageSize());
+		assertEquals(2, this.pageRequestContainer.getValue().getPageSize(), "page size was not expected value.");
 	}
 
 	@Test
@@ -159,8 +159,8 @@ public class RepositoryItemReaderBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.",
-					"methodName is required.", iae.getMessage());
+			assertEquals(
+			"methodName is required.", iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 		try {
 			new RepositoryItemReaderBuilder<>().repository(this.repository)
@@ -172,8 +172,8 @@ public class RepositoryItemReaderBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.",
-					"methodName is required.", iae.getMessage());
+			assertEquals(
+			"methodName is required.", iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 
@@ -189,8 +189,8 @@ public class RepositoryItemReaderBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalStateException ise) {
-			assertEquals("IllegalStateException name was not set when saveState was true.",
-					"A name is required when saveState is set to true.", ise.getMessage());
+			assertEquals(
+			"A name is required when saveState is set to true.", ise.getMessage(), "IllegalStateException name was not set when saveState was true.");
 		}
 		// No IllegalStateException for a name that is not set, should not be thrown since
 		// saveState was false.
@@ -213,8 +213,8 @@ public class RepositoryItemReaderBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException sorts did not match the expected result.", "sorts map is required.",
-					iae.getMessage());
+			assertEquals("sorts map is required.",
+			iae.getMessage(), "IllegalArgumentException sorts did not match the expected result.");
 		}
 	}
 
@@ -229,8 +229,8 @@ public class RepositoryItemReaderBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.",
-					"repository is required.", iae.getMessage());
+			assertEquals(
+			"repository is required.", iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 
@@ -286,11 +286,11 @@ public class RepositoryItemReaderBuilderTests {
 	}
 
 	private void verifyMultiArgRead(ArgumentCaptor<String> arg1Captor, ArgumentCaptor<String> arg2Captor, ArgumentCaptor<String> arg3Captor, String result) {
-		assertEquals("Result returned from reader was not expected value.", TEST_CONTENT, result);
-		assertEquals("ARG1 for calling method did not match expected result", ARG1, arg1Captor.getValue());
-		assertEquals("ARG2 for calling method did not match expected result", ARG2, arg2Captor.getValue());
-		assertEquals("ARG3 for calling method did not match expected result", ARG3, arg3Captor.getValue());
-		assertEquals("Result Total Pages did not match expected result", 10,
-				this.pageRequestContainer.getValue().getPageSize());
+		assertEquals(TEST_CONTENT, result, "Result returned from reader was not expected value.");
+		assertEquals(ARG1, arg1Captor.getValue(), "ARG1 for calling method did not match expected result");
+		assertEquals(ARG2, arg2Captor.getValue(), "ARG2 for calling method did not match expected result");
+		assertEquals(ARG3, arg3Captor.getValue(), "ARG3 for calling method did not match expected result");
+		assertEquals(10,
+		this.pageRequestContainer.getValue().getPageSize(), "Result Total Pages did not match expected result");
 	}
 }

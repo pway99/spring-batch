@@ -15,8 +15,14 @@
  */
 package org.springframework.batch.core.job.flow;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -35,23 +41,17 @@ import org.springframework.batch.core.job.flow.support.state.SplitState;
 import org.springframework.batch.core.job.flow.support.state.StepState;
 import org.springframework.batch.core.jsr.configuration.support.BatchPropertyContext;
 import org.springframework.batch.core.jsr.partition.JsrPartitionHandler;
-import org.springframework.batch.core.jsr.step.PartitionStep;
 import org.springframework.batch.core.jsr.partition.JsrStepExecutionSplitter;
+import org.springframework.batch.core.jsr.step.PartitionStep;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.dao.JobExecutionDao;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.lang.Nullable;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -70,7 +70,7 @@ public class FlowJobTests {
 
 	private JobExecutionDao jobExecutionDao;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MapJobRepositoryFactoryBean factory = new MapJobRepositoryFactoryBean();
 		factory.afterPropertiesSet();

@@ -15,8 +15,16 @@
  */
 package org.springframework.batch.core.jsr.job.flow;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import javax.batch.api.Decider;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -47,17 +55,10 @@ import org.springframework.batch.core.repository.dao.JobExecutionDao;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.lang.Nullable;
-
-import javax.batch.api.Decider;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -77,7 +78,7 @@ public class JsrFlowJobTests {
 
 	private JobExecutionDao jobExecutionDao;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		job = new JsrFlowJob();
 		MapJobRepositoryFactoryBean jobRepositoryFactory = new MapJobRepositoryFactoryBean();

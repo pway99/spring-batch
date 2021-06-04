@@ -15,18 +15,19 @@
  */
 package org.springframework.batch.item.adapter;
 
-import static org.junit.Assert.*;
-import org.junit.runner.RunWith;
-import org.junit.Test;
-
 import java.util.Collections;
 import java.util.List;
 
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.batch.item.sample.FooService;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * Tests for {@link PropertyExtractingDelegatingItemWriter}
@@ -34,7 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
  * @author Robert Kasanicky
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "pe-delegating-item-writer.xml")
 public class PropertyExtractingDelegatingItemProcessorIntegrationTests {
 

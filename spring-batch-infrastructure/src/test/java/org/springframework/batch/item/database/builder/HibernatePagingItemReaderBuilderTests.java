@@ -17,12 +17,13 @@ package org.springframework.batch.item.database.builder;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import javax.sql.DataSource;
 
 import org.hibernate.SessionFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.database.HibernateItemReaderHelper;
@@ -40,10 +41,9 @@ import org.springframework.jdbc.datasource.init.DataSourceInitializer;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.test.util.ReflectionTestUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Michael Minella
@@ -55,13 +55,13 @@ public class HibernatePagingItemReaderBuilderTests {
 
 	private ConfigurableApplicationContext context;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.context = new AnnotationConfigApplicationContext(HibernatePagingItemReaderBuilderTests.TestDataSourceConfiguration.class);
 		this.sessionFactory = (SessionFactory) context.getBean("sessionFactory");
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		if(this.context != null) {
 			this.context.close();

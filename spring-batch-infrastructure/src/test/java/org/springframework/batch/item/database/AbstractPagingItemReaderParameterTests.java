@@ -17,10 +17,11 @@ package org.springframework.batch.item.database;
 
 import javax.sql.DataSource;
 
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.sample.Foo;
@@ -38,12 +39,12 @@ public abstract class AbstractPagingItemReaderParameterTests {
 	@Autowired
 	protected DataSource dataSource;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		tested = getItemReader();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		((ItemStream)tested).close();
 	}
@@ -54,19 +55,19 @@ public abstract class AbstractPagingItemReaderParameterTests {
 		((ItemStream)tested).open(executionContext);
 
 		Foo foo2 = tested.read();
-		Assert.assertEquals(2, foo2.getValue());
+		Assertions.assertEquals(2, foo2.getValue());
 
 		Foo foo3 = tested.read();
-		Assert.assertEquals(3, foo3.getValue());
+		Assertions.assertEquals(3, foo3.getValue());
 
 		Foo foo4 = tested.read();
-		Assert.assertEquals(4, foo4.getValue());
+		Assertions.assertEquals(4, foo4.getValue());
 
 		Foo foo5 = tested.read();
-		Assert.assertEquals(5, foo5.getValue());
+		Assertions.assertEquals(5, foo5.getValue());
 
 		Object o = tested.read();
-		Assert.assertNull(o);
+		Assertions.assertNull(o);
 	}
 
 	@Test
@@ -76,13 +77,13 @@ public abstract class AbstractPagingItemReaderParameterTests {
 		((ItemStream)tested).open(executionContext);
 
 		Foo foo4 = tested.read();
-		Assert.assertEquals(4, foo4.getValue());
+		Assertions.assertEquals(4, foo4.getValue());
 
 		Foo foo5 = tested.read();
-		Assert.assertEquals(5, foo5.getValue());
+		Assertions.assertEquals(5, foo5.getValue());
 
 		Object o = tested.read();
-		Assert.assertNull(o);
+		Assertions.assertNull(o);
 	}
 
 	@Test
@@ -92,15 +93,15 @@ public abstract class AbstractPagingItemReaderParameterTests {
 		((ItemStream)tested).open(executionContext);
 
 		Foo foo5 = tested.read();
-		Assert.assertEquals(5, foo5.getValue());
+		Assertions.assertEquals(5, foo5.getValue());
 
 		Object o = tested.read();
-		Assert.assertNull(o);
+		Assertions.assertNull(o);
 	}
-	
+
 	protected String getName() {
 		return tested.getClass().getSimpleName();
 	}
-	
+
 	protected abstract AbstractPagingItemReader<Foo> getItemReader() throws Exception;
 }

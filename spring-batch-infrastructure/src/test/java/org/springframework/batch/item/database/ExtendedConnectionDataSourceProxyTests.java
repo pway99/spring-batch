@@ -15,15 +15,6 @@
  */
 package org.springframework.batch.item.database;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.ResultSet;
@@ -34,7 +25,8 @@ import java.util.logging.Logger;
 
 import javax.sql.DataSource;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -44,6 +36,16 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class ExtendedConnectionDataSourceProxyTests {
 
@@ -66,29 +68,29 @@ public class ExtendedConnectionDataSourceProxyTests {
 
 		Connection con1 = csds.getConnection();
 		Connection con2 = csds.getConnection();
-		assertNotSame("shouldn't be the same connection", con1, con2);
+		assertNotSame(con1, con2, "shouldn't be the same connection");
 
-		assertTrue("should be able to close connection", csds.shouldClose(con1));
+		assertTrue(csds.shouldClose(con1), "should be able to close connection");
 		con1.close();
-		assertTrue("should be able to close connection", csds.shouldClose(con2));
+		assertTrue(csds.shouldClose(con2), "should be able to close connection");
 		con2.close();
 
 		Connection con3 = csds.getConnection();
 		csds.startCloseSuppression(con3);
 		Connection con3_1 = csds.getConnection();
-		assertSame("should be same connection", con3_1, con3);
-		assertFalse("should not be able to close connection", csds.shouldClose(con3));
+		assertSame(con3_1, con3, "should be same connection");
+		assertFalse(csds.shouldClose(con3), "should not be able to close connection");
 		con3_1.close(); // no mock call for this - should be suppressed
 		Connection con3_2 = csds.getConnection();
-		assertSame("should be same connection", con3_2, con3);
+		assertSame(con3_2, con3, "should be same connection");
 		Connection con4 = csds.getConnection();
-		assertNotSame("shouldn't be same connection", con4, con3);
+		assertNotSame(con4, con3, "shouldn't be same connection");
 		csds.stopCloseSuppression(con3);
-		assertTrue("should be able to close connection", csds.shouldClose(con3));
+		assertTrue(csds.shouldClose(con3), "should be able to close connection");
 		con3_1 = null;
 		con3_2 = null;
 		con3.close();
-		assertTrue("should be able to close connection", csds.shouldClose(con4));
+		assertTrue(csds.shouldClose(con4), "should be able to close connection");
 		con4.close();
 
 
@@ -110,18 +112,18 @@ public class ExtendedConnectionDataSourceProxyTests {
 		Connection con1 = csds.getConnection();
 		csds.startCloseSuppression(con1);
 		Connection con1_1 = csds.getConnection();
-		assertSame("should be same connection", con1_1, con1);
+		assertSame(con1_1, con1, "should be same connection");
 		con1_1.close(); // no mock call for this - should be suppressed
 		Connection con1_2 = csds.getConnection();
-		assertSame("should be same connection", con1_2, con1);
+		assertSame(con1_2, con1, "should be same connection");
 		Connection con2 = csds.getConnection();
-		assertNotSame("shouldn't be same connection", con2, con1);
+		assertNotSame(con2, con1, "shouldn't be same connection");
 		csds.stopCloseSuppression(con1);
-		assertTrue("should be able to close connection", csds.shouldClose(con1));
+		assertTrue(csds.shouldClose(con1), "should be able to close connection");
 		con1_1 = null;
 		con1_2 = null;
 		con1.close();
-		assertTrue("should be able to close connection", csds.shouldClose(con2));
+		assertTrue(csds.shouldClose(con2), "should be able to close connection");
 		con2.close();
 
 
@@ -231,11 +233,13 @@ public class ExtendedConnectionDataSourceProxyTests {
 
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void delegateIsRequired() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		ExtendedConnectionDataSourceProxy tested = new ExtendedConnectionDataSourceProxy(null);
 		tested.afterPropertiesSet();
+	 });
 	}
 
 	@Test

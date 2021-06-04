@@ -25,7 +25,7 @@ import java.util.List;
 
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Metrics;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -43,11 +43,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mahmoud Ben Hassine
@@ -168,7 +167,7 @@ public class BatchMetricsTests {
 			fail("There should be a meter of type LONG_TASK_TIMER named spring.batch.job.active" +
 					" registered in the global registry: " + e.getMessage());
 		}
-		
+
 		// Step 1 (tasklet) metrics
 
 		try {
@@ -181,7 +180,7 @@ public class BatchMetricsTests {
 			fail("There should be a meter of type TIMER named spring.batch.step" +
 					" registered in the global registry: " + e.getMessage());
 		}
-		
+
 		// Step 2 (simple chunk-oriented) metrics
 
 		try {
@@ -227,7 +226,7 @@ public class BatchMetricsTests {
 			fail("There should be a meter of type TIMER named spring.batch.chunk.write" +
 					" registered in the global registry: " + e.getMessage());
 		}
-		
+
 		// Step 3 (fault-tolerant chunk-oriented) metrics
 
 		try {

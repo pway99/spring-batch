@@ -19,9 +19,8 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
 import org.hsqldb.types.Types;
-import org.junit.Test;
-import org.junit.runners.JUnit4;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ReaderNotOpenException;
@@ -30,7 +29,9 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.SqlParameter;
 
-@RunWith(JUnit4.class)
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+
 public class StoredProcedureItemReaderCommonTests extends AbstractDatabaseItemStreamItemReaderTests {
 
     @Override
@@ -69,7 +70,7 @@ public class StoredProcedureItemReaderCommonTests extends AbstractDatabaseItemSt
 		reader.setParameters(
 				new SqlParameter[] {
 					new SqlParameter("from_id", Types.NUMERIC),
-					new SqlParameter("to_id", Types.NUMERIC)	
+					new SqlParameter("to_id", Types.NUMERIC)
 				});
 		reader.setPreparedStatementSetter(
 				new PreparedStatementSetter() {
@@ -83,14 +84,16 @@ public class StoredProcedureItemReaderCommonTests extends AbstractDatabaseItemSt
 		reader.setRowMapper(new FooRowMapper());
 		reader.setVerifyCursorPosition(false);
 		reader.afterPropertiesSet();
-		reader.open(new ExecutionContext());		
+		reader.open(new ExecutionContext());
 	}
 
-	@Test(expected=ReaderNotOpenException.class)
+	@Test
 	public void testReadBeforeOpen() throws Exception {
+	 assertThrows(ReaderNotOpenException.class, () -> {
 		testedAsStream().close();
 		tested = getItemReader();
 		tested.read();
+	 });
 	}
-	
+
 }

@@ -15,14 +15,11 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Set;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -33,8 +30,11 @@ import org.springframework.batch.item.ItemStream;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -42,7 +42,7 @@ import org.springframework.test.util.ReflectionTestUtils;
  *
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class StepWithBasicProcessTaskJobParserTests {
 
 	@Autowired
@@ -72,11 +72,11 @@ public class StepWithBasicProcessTaskJobParserTests {
 	public void testStepWithTask() throws Exception {
 		assertNotNull(job);
 		Object ci = ReflectionTestUtils.getField(factory, "commitInterval");
-		assertEquals("wrong chunk-size:", 10, ci);
+		assertEquals(10, ci, "wrong chunk-size:");
 		Object listeners = ReflectionTestUtils.getField(factory, "stepExecutionListeners");
-		assertEquals("wrong number of listeners:", 2, ((Set<StepExecutionListener>)listeners).size());
+		assertEquals(2, ((Set<StepExecutionListener>) listeners).size(), "wrong number of listeners:");
 		Object streams = ReflectionTestUtils.getField(factory, "streams");
-		assertEquals("wrong number of streams:", 1, ((ItemStream[])streams).length);
+		assertEquals(1, ((ItemStream[]) streams).length, "wrong number of streams:");
 		JobExecution jobExecution = jobRepository.createJobExecution(job.getName(), new JobParameters());
 		job.execute(jobExecution);
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());

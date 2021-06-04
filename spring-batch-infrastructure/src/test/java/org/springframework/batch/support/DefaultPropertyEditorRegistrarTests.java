@@ -16,16 +16,18 @@
 
 package org.springframework.batch.support;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collections;
 import java.util.Properties;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.beans.BeanWrapperImpl;
 import org.springframework.beans.MutablePropertyValues;
 import org.springframework.beans.propertyeditors.CustomNumberEditor;
 import org.springframework.beans.propertyeditors.PropertiesEditor;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DefaultPropertyEditorRegistrarTests {
 
@@ -43,11 +45,13 @@ public class DefaultPropertyEditorRegistrarTests {
 		assertEquals(4, result.numbers[3]);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetCustomEditorsWithInvalidTypeName() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
 		mapper.setCustomEditors(Collections.singletonMap("FOO", new CustomNumberEditor(Long.class, true)));
+	 });
 	}
 
 	@Test
@@ -63,11 +67,13 @@ public class DefaultPropertyEditorRegistrarTests {
 
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSetCustomEditorsWithInvalidType() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		DefaultPropertyEditorRegistrar mapper = new DefaultPropertyEditorRegistrar();
 		mapper.setCustomEditors(Collections.singletonMap(new Object(), new CustomNumberEditor(Long.class, true)));
+	 });
 	}
 
 	@SuppressWarnings("unused")
@@ -76,7 +82,7 @@ public class DefaultPropertyEditorRegistrarTests {
 
 		private long number;
 
-		
+
 		public void setNumbers(int[] numbers) {
 			this.numbers = numbers;
 		}

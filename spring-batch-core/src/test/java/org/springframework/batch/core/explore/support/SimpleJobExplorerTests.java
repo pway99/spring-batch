@@ -16,16 +16,11 @@
 
 package org.springframework.batch.core.explore.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
@@ -35,6 +30,13 @@ import org.springframework.batch.core.repository.dao.ExecutionContextDao;
 import org.springframework.batch.core.repository.dao.JobExecutionDao;
 import org.springframework.batch.core.repository.dao.JobInstanceDao;
 import org.springframework.batch.core.repository.dao.StepExecutionDao;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * Test {@link SimpleJobExplorer}.
@@ -61,7 +63,7 @@ public class SimpleJobExplorerTests {
 
 	private JobExecution jobExecution = new JobExecution(jobInstance, 1234L, new JobParameters(), null);
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		jobExecutionDao = mock(JobExecutionDao.class);
@@ -184,10 +186,12 @@ public class SimpleJobExplorerTests {
 		assertEquals(4, jobExplorer.getJobInstanceCount("myJob"));
 	}
 
-	@Test(expected=NoSuchJobException.class)
+	@Test
 	public void testGetJobInstanceCountException() throws Exception {
+	 assertThrows(NoSuchJobException.class, () -> {
 		when(jobInstanceDao.getJobInstanceCount("throwException")).thenThrow(new NoSuchJobException("expected"));
 
 		jobExplorer.getJobInstanceCount("throwException");
+	 });
 	}
 }

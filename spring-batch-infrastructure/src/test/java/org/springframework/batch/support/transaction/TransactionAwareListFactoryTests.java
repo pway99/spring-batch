@@ -16,19 +16,19 @@
 
 package org.springframework.batch.support.transaction;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Arrays;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TransactionAwareListFactoryTests {
 
@@ -36,7 +36,7 @@ public class TransactionAwareListFactoryTests {
 
 	private List<String> list;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		list = TransactionAwareProxyFactory.createTransactionalList(Arrays.asList("foo", "bar", "spam"));
 	}

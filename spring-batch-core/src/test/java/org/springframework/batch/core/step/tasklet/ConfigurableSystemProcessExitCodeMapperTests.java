@@ -15,16 +15,16 @@
  */
 package org.springframework.batch.core.step.tasklet;
 
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.fail;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.step.tasklet.ConfigurableSystemProcessExitCodeMapper;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link ConfigurableSystemProcessExitCodeMapper}

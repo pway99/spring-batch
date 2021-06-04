@@ -15,14 +15,12 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.util.Date;
 import java.util.Properties;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobInstance;
@@ -30,11 +28,15 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.converter.JobParametersConverterSupport;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class JsrJobExecutionTests {
 
 	private JsrJobExecution adapter;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		JobInstance instance = new JobInstance(2L, "job name");
 
@@ -54,9 +56,11 @@ public class JsrJobExecutionTests {
 		adapter = new JsrJobExecution(execution, new JobParametersConverterSupport());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testCreateWithNull() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		adapter = new JsrJobExecution(null, new JobParametersConverterSupport());
+	 });
 	}
 
 	@Test

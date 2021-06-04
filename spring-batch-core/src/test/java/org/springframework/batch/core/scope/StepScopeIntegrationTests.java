@@ -15,15 +15,11 @@
  */
 package org.springframework.batch.core.scope;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecution;
@@ -32,10 +28,14 @@ import org.springframework.batch.item.ExecutionContext;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class StepScopeIntegrationTests {
 
 	private static final String PROXY_TO_STRING_REGEX = "class .*\\$Proxy\\d+";
@@ -60,8 +60,8 @@ public class StepScopeIntegrationTests {
 	@Qualifier("double")
 	private Step doubleEnhanced;
 
-	@Before
-	@After
+	@BeforeEach
+	@AfterEach
 	public void start() {
 		StepSynchronizationManager.close();
 		TestStep.reset();
@@ -81,8 +81,8 @@ public class StepScopeIntegrationTests {
 		String collaborator = (String) TestStep.getContext().getAttribute("collaborator");
 		assertNotNull(collaborator);
 		assertEquals("bar", collaborator);
-		assertTrue("Scoped proxy not created", ((String) TestStep.getContext().getAttribute("collaborator.class"))
-				.matches(PROXY_TO_STRING_REGEX));
+		assertTrue(((String) TestStep.getContext().getAttribute("collaborator.class"))
+		.matches(PROXY_TO_STRING_REGEX), "Scoped proxy not created");
 	}
 
 	@Test
@@ -95,8 +95,8 @@ public class StepScopeIntegrationTests {
 		String parent = (String) TestStep.getContext().getAttribute("parent");
 		assertNotNull(parent);
 		assertEquals("bar", parent);
-		assertTrue("Scoped proxy not created", ((String) TestStep.getContext().getAttribute("parent.class"))
-				.matches(PROXY_TO_STRING_REGEX));
+		assertTrue(((String) TestStep.getContext().getAttribute("parent.class"))
+		.matches(PROXY_TO_STRING_REGEX), "Scoped proxy not created");
 	}
 
 	@Test

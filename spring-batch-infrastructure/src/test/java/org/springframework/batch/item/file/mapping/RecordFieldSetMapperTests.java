@@ -15,13 +15,12 @@
  */
 package org.springframework.batch.item.file.mapping;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
 import org.springframework.batch.item.file.transform.FieldSet;
-
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mahmoud Ben Hassine
@@ -38,9 +37,9 @@ public class RecordFieldSetMapperTests {
 		Person person = recordFieldSetMapper.mapFieldSet(fieldSet);
 
 		// then
-		Assert.assertNotNull(person);
-		Assert.assertEquals(1, person.id());
-		Assert.assertEquals("foo", person.name());
+		Assertions.assertNotNull(person);
+		Assertions.assertEquals(1, person.id());
+		Assertions.assertEquals("foo", person.name());
 	}
 
 	@Test
@@ -55,7 +54,7 @@ public class RecordFieldSetMapperTests {
 			fail("Should fail when fields count is not equal to record components count");
 		} catch (IllegalArgumentException e) {
 			// then
-			Assert.assertEquals("Fields count must be equal to record components count", e.getMessage());
+			Assertions.assertEquals("Fields count must be equal to record components count", e.getMessage());
 		}
 	}
 
@@ -71,7 +70,7 @@ public class RecordFieldSetMapperTests {
 			fail("Should fail when field names are not specified");
 		} catch (IllegalArgumentException e) {
 			// then
-			Assert.assertEquals("Field names must specified", e.getMessage());
+			Assertions.assertEquals("Field names must specified", e.getMessage());
 		}
 	}
 

@@ -15,12 +15,12 @@
  */
 package org.springframework.batch.sample.domain.trade.internal;
 
-import static org.junit.Assert.assertEquals;
-
 import java.math.BigDecimal;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.sample.domain.trade.CustomerCredit;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link CustomerCreditIncreaseProcessor}.
@@ -38,7 +38,7 @@ public class CustomerCreditIncreaseProcessorTests {
 		final BigDecimal oldCredit = new BigDecimal("10.54");
 		CustomerCredit customerCredit = new CustomerCredit();
 		customerCredit.setCredit(oldCredit);
-		
+
 		assertEquals(oldCredit.add(CustomerCreditIncreaseProcessor.FIXED_AMOUNT),tested.process(customerCredit).getCredit());
 	}
 }

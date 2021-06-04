@@ -16,11 +16,11 @@
 package org.springframework.batch.sample;
 
 import org.apache.activemq.broker.BrokerService;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -31,14 +31,14 @@ import org.springframework.context.annotation.AnnotationConfigApplicationContext
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabase;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * Base class for remote partitioning tests.
  *
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @PropertySource("classpath:remote-partitioning.properties")
 public abstract class RemotePartitioningJobFunctionalTests {
 
@@ -58,7 +58,7 @@ public abstract class RemotePartitioningJobFunctionalTests {
 
 	protected abstract Class<?> getWorkerConfigurationClass();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.brokerService = new BrokerService();
 		this.brokerService.addConnector(this.brokerUrl);
@@ -77,11 +77,11 @@ public abstract class RemotePartitioningJobFunctionalTests {
 		JobExecution jobExecution = this.jobLauncherTestUtils.launchJob();
 
 		// then
-		Assert.assertEquals(ExitStatus.COMPLETED.getExitCode(), jobExecution.getExitStatus().getExitCode());
-		Assert.assertEquals(4, jobExecution.getStepExecutions().size()); // master + 3 workers
+		Assertions.assertEquals(ExitStatus.COMPLETED.getExitCode(), jobExecution.getExitStatus().getExitCode());
+		Assertions.assertEquals(4, jobExecution.getStepExecutions().size()); // master + 3 workers
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		this.workerApplicationContext.close();
 		this.brokerService.stop();

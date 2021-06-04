@@ -15,16 +15,17 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-
 import javax.batch.api.listener.JobListener;
 import javax.batch.operations.BatchRuntimeException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 public class JobListenerAdapterTests {
 
@@ -32,15 +33,17 @@ public class JobListenerAdapterTests {
 	@Mock
 	private JobListener delegate;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		adapter = new JobListenerAdapter(delegate);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testCreateWithNull() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		adapter = new JobListenerAdapter(null);
+	 });
 	}
 
 	@Test
@@ -50,11 +53,13 @@ public class JobListenerAdapterTests {
 		verify(delegate).beforeJob();
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testBeforeJobException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		doThrow(new Exception("expected")).when(delegate).beforeJob();
 
 		adapter.beforeJob(null);
+	 });
 	}
 
 	@Test
@@ -64,10 +69,12 @@ public class JobListenerAdapterTests {
 		verify(delegate).afterJob();
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testAfterJobException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		doThrow(new Exception("expected")).when(delegate).afterJob();
 
 		adapter.afterJob(null);
+	 });
 	}
 }

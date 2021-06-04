@@ -18,7 +18,8 @@ package org.springframework.batch.core.repository.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -27,11 +28,14 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Dave Syer
  *
  */
-public class JdbcJobDaoQueryTests extends TestCase {
+public class JdbcJobDaoQueryTests {
 
 	JdbcJobExecutionDao jobExecutionDao;
 
@@ -41,8 +45,8 @@ public class JdbcJobDaoQueryTests extends TestCase {
 	 * (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	@Override
-	protected void setUp() throws Exception {
+	@BeforeEach
+	public void setUp() throws Exception {
 
 		jobExecutionDao = new JdbcJobExecutionDao();
 		jobExecutionDao.setJobExecutionIncrementer(new DataFieldMaxValueIncrementer() {
@@ -65,7 +69,8 @@ public class JdbcJobDaoQueryTests extends TestCase {
 		});
 	}
 
-	public void testTablePrefix() throws Exception {
+	@Test
+ public void testTablePrefix() throws Exception {
 		jobExecutionDao.setTablePrefix("FOO_");
 		jobExecutionDao.setJdbcTemplate(new JdbcTemplate() {
 			@Override
@@ -79,7 +84,7 @@ public class JdbcJobDaoQueryTests extends TestCase {
 		jobExecutionDao.saveJobExecution(jobExecution);
 		assertEquals(1, list.size());
 		String query = list.get(0);
-		assertTrue("Query did not contain FOO_:" + query, query.indexOf("FOO_") >= 0);
+		assertTrue(query.indexOf("FOO_") >= 0, "Query did not contain FOO_:" + query);
 	}
 
 }

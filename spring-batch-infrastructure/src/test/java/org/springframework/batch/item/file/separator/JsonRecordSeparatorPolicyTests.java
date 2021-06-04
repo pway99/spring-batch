@@ -15,12 +15,12 @@
  */
 package org.springframework.batch.item.file.separator;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JsonRecordSeparatorPolicyTests {
-	
+
 	private JsonRecordSeparatorPolicy policy = new JsonRecordSeparatorPolicy();
 
 	@Test

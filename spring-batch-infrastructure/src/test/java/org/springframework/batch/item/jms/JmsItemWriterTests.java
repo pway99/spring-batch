@@ -16,13 +16,15 @@
 
 package org.springframework.batch.item.jms;
 
-import static org.mockito.Mockito.mock;
-
 import java.util.Arrays;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.jms.core.JmsOperations;
 import org.springframework.jms.core.JmsTemplate;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.mock;
 
 public class JmsItemWriterTests {
 
@@ -38,10 +40,12 @@ public class JmsItemWriterTests {
 		itemWriter.write(Arrays.asList("foo", "bar"));
 	}
 	
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testTemplateWithNoDefaultDestination() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		JmsTemplate jmsTemplate = new JmsTemplate();
-		itemWriter.setJmsTemplate(jmsTemplate);		
+		itemWriter.setJmsTemplate(jmsTemplate);
+	 });
 	}
 
 }

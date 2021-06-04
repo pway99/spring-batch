@@ -20,8 +20,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.neo4j.ogm.session.Session;
@@ -29,9 +29,9 @@ import org.neo4j.ogm.session.SessionFactory;
 
 import org.springframework.batch.item.data.Neo4jItemReader;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 /**
@@ -48,7 +48,7 @@ public class Neo4jItemReaderBuilderTests {
 	@Mock
 	private Session session;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 	}
@@ -71,9 +71,9 @@ public class Neo4jItemReaderBuilderTests {
 						.thenReturn(result);
 		when(result.iterator()).thenReturn(Arrays.asList("foo", "bar", "baz").iterator());
 
-		assertEquals("The expected value was not returned by reader.", "foo", itemReader.read());
-		assertEquals("The expected value was not returned by reader.", "bar", itemReader.read());
-		assertEquals("The expected value was not returned by reader.", "baz", itemReader.read());
+		assertEquals("foo", itemReader.read(), "The expected value was not returned by reader.");
+		assertEquals("bar", itemReader.read(), "The expected value was not returned by reader.");
+		assertEquals("baz", itemReader.read(), "The expected value was not returned by reader.");
 	}
 
 	@Test
@@ -94,8 +94,8 @@ public class Neo4jItemReaderBuilderTests {
 				.thenReturn(result);
 		when(result.iterator()).thenReturn(Arrays.asList("foo", "bar", "baz").iterator());
 
-		assertEquals("The expected value was not returned by reader.", "foo", itemReader.read());
-		assertNull("The expected value was not should be null.", itemReader.read());
+		assertEquals("foo", itemReader.read(), "The expected value was not returned by reader.");
+		assertNull(itemReader.read(), "The expected value was not should be null.");
 	}
 
 	@Test
@@ -122,7 +122,7 @@ public class Neo4jItemReaderBuilderTests {
 						.thenReturn(result);
 		when(result.iterator()).thenReturn(Arrays.asList("foo", "bar", "baz").iterator());
 
-		assertEquals("The expected value was not returned by reader.", "foo", itemReader.read());
+		assertEquals("foo", itemReader.read(), "The expected value was not returned by reader.");
 	}
 
 	@Test
@@ -139,8 +139,8 @@ public class Neo4jItemReaderBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.",
-					"sessionFactory is required.", iae.getMessage());
+			assertEquals(
+			"sessionFactory is required.", iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 
@@ -284,8 +284,8 @@ public class Neo4jItemReaderBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.", message,
-					iae.getMessage());
+			assertEquals(message,
+			iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 }

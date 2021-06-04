@@ -16,11 +16,10 @@
 
 package org.springframework.batch.item.file.transform;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Unit tests for {@link FormatterLineAggregator}
@@ -39,7 +38,7 @@ public class FormatterLineAggregatorTests {
 		}
 	};
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		aggregator = new FormatterLineAggregator<>();
 		aggregator.setFieldExtractor(defaultFieldExtractor);

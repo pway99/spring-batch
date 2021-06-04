@@ -15,15 +15,18 @@
  */
 package org.springframework.batch.item.mail;
 
-import static org.junit.Assert.*;
-
 import javax.mail.MessagingException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailMessage;
 import org.springframework.mail.MailSendException;
 import org.springframework.mail.SimpleMailMessage;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -32,7 +35,7 @@ import org.springframework.mail.SimpleMailMessage;
  *
  */
 public class DefaultMailErrorHandlerTests {
-	
+
 	private DefaultMailErrorHandler handler = new DefaultMailErrorHandler();
 
 	/**
@@ -47,16 +50,18 @@ public class DefaultMailErrorHandlerTests {
 			fail("Expected MailException");
 		} catch (MailException e) {
 			String msg = e.getMessage();
-			assertTrue("Wrong message: "+msg, msg.matches(".*SimpleMailMessage: f;.*"));
+			assertTrue(msg.matches(".*SimpleMailMessage: f;.*"), "Wrong message: " + msg);
 		}
 	}
 
 	/**
 	 * Test method for {@link DefaultMailErrorHandler#handle(MailMessage, Exception)}.
 	 */
-	@Test(expected=MailSendException.class)
+	@Test
 	public void testHandle() {
+	 assertThrows(MailSendException.class, () -> {
 		handler.handle(new SimpleMailMessage(), new MessagingException());
+	 });
 	}
 
 }

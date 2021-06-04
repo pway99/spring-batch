@@ -15,21 +15,23 @@
  */
 package org.springframework.batch.item.support;
 
-import org.junit.BeforeClass;
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.script.ScriptEngineFactory;
+import javax.script.ScriptEngineManager;
+
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.scripting.bsh.BshScriptEvaluator;
 import org.springframework.scripting.groovy.GroovyScriptEvaluator;
 
-import javax.script.ScriptEngineFactory;
-import javax.script.ScriptEngineManager;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assume.assumeTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assumptions.assumeTrue;
 
 /**
  * <p>
@@ -42,7 +44,7 @@ import static org.junit.Assume.assumeTrue;
 public class ScriptItemProcessorTests {
 	private static List<String> availableLanguages = new ArrayList<>();
 
-	@BeforeClass
+	@BeforeAll
 	public static void populateAvailableEngines() {
 		List<ScriptEngineFactory> scriptEngineFactories = new ScriptEngineManager().getEngineFactories();
 
@@ -59,7 +61,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("item.toUpperCase();", "javascript");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -70,7 +72,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("function process(item) { return item.toUpperCase(); } process(item);", "javascript");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -81,7 +83,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("$item.upcase", "jruby");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -92,7 +94,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("def process(item) $item.upcase end \n process($item)", "jruby");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -103,7 +105,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("item.toUpperCase();", "bsh");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -114,7 +116,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("String process(String item) { return item.toUpperCase(); } process(item);", "bsh");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -125,7 +127,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("item.toUpperCase();", "groovy");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -136,7 +138,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("def process(item) { return item.toUpperCase() } \n process(item)", "groovy");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -149,7 +151,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScript(resource);
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -162,34 +164,42 @@ public class ScriptItemProcessorTests {
 
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", true, scriptItemProcessor.process("Hello World"));
+		assertEquals(true, scriptItemProcessor.process("Hello World"), "Incorrect transformed value");
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testNoScriptSet() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		ScriptItemProcessor<String, Object> scriptItemProcessor = new ScriptItemProcessor<>();
 		scriptItemProcessor.afterPropertiesSet();
+	 });
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testScriptSourceAndScriptResourceSet() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		ScriptItemProcessor<String, Object> scriptItemProcessor = new ScriptItemProcessor<>();
 		scriptItemProcessor.setScriptSource("blah", "blah");
 		scriptItemProcessor.setScript(new ClassPathResource("blah"));
 		scriptItemProcessor.afterPropertiesSet();
+	 });
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testNoScriptSetWithoutInitBean() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		ScriptItemProcessor<String, Object> scriptItemProcessor = new ScriptItemProcessor<>();
 		scriptItemProcessor.process("blah");
+	 });
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testScriptSourceWithNoLanguage() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		ScriptItemProcessor<String, Object> scriptItemProcessor = new ScriptItemProcessor<>();
 		scriptItemProcessor.setScriptSource("function process(item) { return item.toUpperCase(); } process(item);", null);
 		scriptItemProcessor.afterPropertiesSet();
+	 });
 	}
 
 	@Test
@@ -201,7 +211,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("function process(param) { return param.toUpperCase(); } process(someOtherVarName);", "javascript");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -213,7 +223,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("String process(String item) { return item.toUpperCase(); } process(item);", "bsh");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	@Test
@@ -225,7 +235,7 @@ public class ScriptItemProcessorTests {
 		scriptItemProcessor.setScriptSource("def process(item) { return item.toUpperCase() } \n process(item)", "groovy");
 		scriptItemProcessor.afterPropertiesSet();
 
-		assertEquals("Incorrect transformed value", "SS", scriptItemProcessor.process("ss"));
+		assertEquals("SS", scriptItemProcessor.process("ss"), "Incorrect transformed value");
 	}
 
 	private boolean languageExists(String engineName) {

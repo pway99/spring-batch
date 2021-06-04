@@ -15,15 +15,16 @@
  */
 package org.springframework.batch.item.file;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.Comparator;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ResourceAware;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
-import java.util.Comparator;
-
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests to ensure that the current Resource is correctly being set on items that implement ResourceAware.
@@ -52,7 +53,7 @@ public class MultiResourceItemReaderResourceAwareTests {
 	/**
 	 * Setup the tested reader to read from the test resources.
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		itemReader.setLineMapper(new FooLineMapper());

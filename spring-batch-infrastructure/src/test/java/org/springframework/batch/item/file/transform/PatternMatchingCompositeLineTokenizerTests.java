@@ -16,15 +16,17 @@
 
 package org.springframework.batch.item.file.transform;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.lang.Nullable;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Ben Hale
@@ -35,10 +37,12 @@ public class PatternMatchingCompositeLineTokenizerTests {
 
 	private PatternMatchingCompositeLineTokenizer tokenizer = new PatternMatchingCompositeLineTokenizer();
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNoTokenizers() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		tokenizer.afterPropertiesSet();
 		tokenizer.tokenize("a line");
+	 });
 	}
 
 	@Test
@@ -74,11 +78,13 @@ public class PatternMatchingCompositeLineTokenizerTests {
 		assertEquals("bar", fields.readString(1));
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testNoMatch() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		tokenizer.setTokenizers(Collections.singletonMap("foo", (LineTokenizer) new DelimitedLineTokenizer()));
 		tokenizer.afterPropertiesSet();
 		tokenizer.tokenize("nomatch");
+	 });
 	}
 
 	@Test

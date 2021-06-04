@@ -15,17 +15,14 @@
  */
 package org.springframework.batch.core.listener;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.springframework.batch.core.listener.JobListenerMetaData.AFTER_JOB;
-
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;
@@ -33,6 +30,11 @@ import org.springframework.batch.core.annotation.AfterJob;
 import org.springframework.batch.core.annotation.BeforeJob;
 import org.springframework.batch.core.configuration.xml.AbstractTestComponent;
 import org.springframework.core.Ordered;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.springframework.batch.core.listener.JobListenerMetaData.AFTER_JOB;
 
 /**
  * @author Lucas Ward
@@ -42,7 +44,7 @@ public class JobListenerFactoryBeanTests {
 
 	JobListenerFactoryBean factoryBean;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		factoryBean = new JobListenerFactoryBean();
 	}
@@ -129,7 +131,7 @@ public class JobListenerFactoryBeanTests {
 			}
 		};
 		JobExecutionListener listener = JobListenerFactoryBean.getListener(delegate);
-		assertTrue("Listener is not of correct type", listener instanceof Ordered);
+		assertTrue(listener instanceof Ordered, "Listener is not of correct type");
 		assertEquals(3, ((Ordered) listener).getOrder());
 	}
 
@@ -170,16 +172,18 @@ public class JobListenerFactoryBeanTests {
 		assertTrue(delegate.isExecuted());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testWrongSignatureAnnotation() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		AbstractTestComponent delegate = new AbstractTestComponent() {
-			@AfterJob
-			public void aMethod(Integer item) {
-				executed = true;
-			}
+		@AfterJob
+		public void aMethod(Integer item) {
+		executed = true;
+		}
 		};
 		factoryBean.setDelegate(delegate);
 		factoryBean.getObject();
+	 });
 	}
 
 	@Test
@@ -217,19 +221,21 @@ public class JobListenerFactoryBeanTests {
 		assertTrue(delegate.isExecuted());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testWrongSignatureNamedMethod() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		AbstractTestComponent delegate = new AbstractTestComponent() {
-			@SuppressWarnings("unused")
-			public void aMethod(Integer item) {
-				executed = true;
-			}
+		@SuppressWarnings("unused")
+		public void aMethod(Integer item) {
+		executed = true;
+		}
 		};
 		factoryBean.setDelegate(delegate);
 		Map<String, String> metaDataMap = new HashMap<>();
 		metaDataMap.put(AFTER_JOB.getPropertyName(), "aMethod");
 		factoryBean.setMetaDataMap(metaDataMap);
 		factoryBean.getObject();
+	 });
 	}
 
 	private class JobListenerWithInterface implements JobExecutionListener {

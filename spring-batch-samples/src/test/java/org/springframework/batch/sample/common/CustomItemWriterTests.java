@@ -15,15 +15,15 @@
  */
 package org.springframework.batch.sample.common;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.support.transaction.TransactionAwareProxyFactory;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Unit test class that was used as part of the Reference Documentation. I'm

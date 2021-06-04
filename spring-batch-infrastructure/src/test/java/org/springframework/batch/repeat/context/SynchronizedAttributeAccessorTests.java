@@ -21,33 +21,42 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.core.AttributeAccessorSupport;
 
-public class SynchronizedAttributeAccessorTests extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class SynchronizedAttributeAccessorTests {
 
 	SynchronizedAttributeAccessor accessor = new SynchronizedAttributeAccessor();
 
-	public void testHashCode() {
+	@Test
+ public void testHashCode() {
 		SynchronizedAttributeAccessor another = new SynchronizedAttributeAccessor();
 		accessor.setAttribute("foo", "bar");
 		another.setAttribute("foo", "bar");
 		assertEquals(accessor, another);
-		assertEquals("Object.hashCode() contract broken", accessor.hashCode(), another.hashCode());
+		assertEquals(accessor.hashCode(), another.hashCode(), "Object.hashCode() contract broken");
 	}
 
-	public void testToStringWithNoAttributes() throws Exception {
+	@Test
+ public void testToStringWithNoAttributes() throws Exception {
 		assertNotNull(accessor.toString());
 	}
 
-	public void testToStringWithAttributes() throws Exception {
+	@Test
+ public void testToStringWithAttributes() throws Exception {
 		accessor.setAttribute("foo", "bar");
 		accessor.setAttribute("spam", "bucket");
 		assertNotNull(accessor.toString());
 	}
 
-	public void testAttributeNames() {
+	@Test
+ public void testAttributeNames() {
 		accessor.setAttribute("foo", "bar");
 		accessor.setAttribute("spam", "bucket");
 		List<String> list = Arrays.asList(accessor.attributeNames());
@@ -55,19 +64,22 @@ public class SynchronizedAttributeAccessorTests extends TestCase {
 		assertTrue(list.contains("foo"));
 	}
 
-	public void testEqualsSameType() {
+	@Test
+ public void testEqualsSameType() {
 		SynchronizedAttributeAccessor another = new SynchronizedAttributeAccessor();
 		accessor.setAttribute("foo", "bar");
 		another.setAttribute("foo", "bar");
 		assertEquals(accessor, another);
 	}
 
-	public void testEqualsSelf() {
+	@Test
+ public void testEqualsSelf() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals(accessor, accessor);
 	}
 
-	public void testEqualsWrongType() {
+	@Test
+ public void testEqualsWrongType() {
 		accessor.setAttribute("foo", "bar");
 		Map<String, String> another = Collections.singletonMap("foo", "bar");
 		// Accessor and another are instances of unrelated classes, they should
@@ -75,7 +87,8 @@ public class SynchronizedAttributeAccessorTests extends TestCase {
 		assertFalse(accessor.equals(another));
 	}
 
-	public void testEqualsSupport() {
+	@Test
+ public void testEqualsSupport() {
 		@SuppressWarnings("serial")
 		AttributeAccessorSupport another = new AttributeAccessorSupport() {
 		};
@@ -84,27 +97,32 @@ public class SynchronizedAttributeAccessorTests extends TestCase {
 		assertEquals(accessor, another);
 	}
 
-	public void testGetAttribute() {
+	@Test
+ public void testGetAttribute() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals("bar", accessor.getAttribute("foo"));
 	}
 
-	public void testSetAttributeIfAbsentWhenAlreadyPresent() {
+	@Test
+ public void testSetAttributeIfAbsentWhenAlreadyPresent() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals("bar", accessor.setAttributeIfAbsent("foo", "spam"));
 	}
 
-	public void testSetAttributeIfAbsentWhenNotAlreadyPresent() {
+	@Test
+ public void testSetAttributeIfAbsentWhenNotAlreadyPresent() {
 		assertEquals(null, accessor.setAttributeIfAbsent("foo", "bar"));
 		assertEquals("bar", accessor.getAttribute("foo"));
 	}
 
-	public void testHasAttribute() {
+	@Test
+ public void testHasAttribute() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals(true, accessor.hasAttribute("foo"));
 	}
 
-	public void testRemoveAttribute() {
+	@Test
+ public void testRemoveAttribute() {
 		accessor.setAttribute("foo", "bar");
 		assertEquals("bar", accessor.getAttribute("foo"));
 		accessor.removeAttribute("foo");

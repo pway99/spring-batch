@@ -15,16 +15,16 @@
  */
 package org.springframework.batch.core.listener;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author Dave Syer
@@ -36,7 +36,7 @@ public class JobParameterExecutionContextCopyListenerTests {
 
 	private StepExecution stepExecution;
 
-	@Before
+	@BeforeEach
 	public void createExecution() {
 		JobParameters jobParameters = new JobParametersBuilder().addString("foo", "bar").toJobParameters();
 		stepExecution = new StepExecution("foo", new JobExecution(new JobInstance(123L, "job"), jobParameters));

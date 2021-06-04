@@ -15,17 +15,18 @@
  */
 package org.springframework.batch.item.database;
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.sample.Foo;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * Tests for {@link JdbcCursorItemReader}
  * 
  * @author Robert Kasanicky
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class JdbcCursorItemReaderIntegrationTests extends AbstractGenericDataSourceItemReaderIntegrationTests {
 
     @Override
@@ -35,7 +36,7 @@ public class JdbcCursorItemReaderIntegrationTests extends AbstractGenericDataSou
 		result.setSql("select ID, NAME, VALUE from T_FOOS");
 		result.setIgnoreWarnings(true);
 		result.setVerifyCursorPosition(true);
-		
+
 		result.setRowMapper(new FooRowMapper());
 		result.setFetchSize(10);
 		result.setMaxRows(100);
@@ -45,6 +46,6 @@ public class JdbcCursorItemReaderIntegrationTests extends AbstractGenericDataSou
 		return result;
 	}
 
-	
-	
+
+
 }

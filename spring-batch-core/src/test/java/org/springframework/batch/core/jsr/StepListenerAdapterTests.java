@@ -15,20 +15,22 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import javax.batch.api.listener.StepListener;
 import javax.batch.operations.BatchRuntimeException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class StepListenerAdapterTests {
 
@@ -38,16 +40,18 @@ public class StepListenerAdapterTests {
 	@Mock
 	private StepExecution execution;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
 		adapter = new StepListenerAdapter(delegate);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testCreateWithNull() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		adapter = new StepListenerAdapter(null);
+	 });
 	}
 
 	@Test
@@ -57,11 +61,13 @@ public class StepListenerAdapterTests {
 		verify(delegate).beforeStep();
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testBeforeStepException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		doThrow(new Exception("expected")).when(delegate).beforeStep();
 
 		adapter.beforeStep(null);
+	 });
 	}
 
 	@Test
@@ -74,10 +80,12 @@ public class StepListenerAdapterTests {
 		verify(delegate).afterStep();
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testAfterStepException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		doThrow(new Exception("expected")).when(delegate).afterStep();
 
 		adapter.afterStep(null);
+	 });
 	}
 }

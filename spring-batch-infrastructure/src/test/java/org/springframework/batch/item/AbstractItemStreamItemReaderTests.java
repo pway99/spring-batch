@@ -15,12 +15,12 @@
  */
 package org.springframework.batch.item;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.sample.Foo;
-import org.junit.Before;
-import org.junit.After;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Common tests for readers implementing both {@link ItemReader} and
@@ -39,13 +39,13 @@ public abstract class AbstractItemStreamItemReaderTests extends AbstractItemRead
 	}
 
     @Override
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		super.setUp();
 		testedAsStream().open(executionContext);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		testedAsStream().close();
 	}
@@ -94,9 +94,9 @@ public abstract class AbstractItemStreamItemReaderTests extends AbstractItemRead
 
 		Foo foo2 = tested.read();
 		assertEquals(2, foo2.getValue());
-		
+
 		testedAsStream().update(executionContext);
-		
+
 		Foo foo3 = tested.read();
 		assertEquals(3, foo3.getValue());
 

@@ -17,11 +17,13 @@
 package org.springframework.batch.item.avro.builder;
 
 import org.apache.avro.generic.GenericRecord;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.avro.AvroItemReader;
 import org.springframework.batch.item.avro.example.User;
 import org.springframework.batch.item.avro.support.AvroItemReaderTestSupport;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author David Turanski
@@ -66,20 +68,27 @@ public class AvroItemReaderBuilderTests extends AvroItemReaderTestSupport {
 		verify(avroItemReader, avroGeneratedUsers());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void itemReaderWithNoSchemaStringShouldFail() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new AvroItemReaderBuilder<GenericRecord>().schema("").resource(dataResource).build();
 
+	 });
+
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void itemReaderWithPartialConfigurationShouldFail() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new AvroItemReaderBuilder<GenericRecord>().resource(dataResource).build();
+	 });
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void itemReaderWithNoInputsShouldFail() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new AvroItemReaderBuilder<GenericRecord>().schema(schemaResource).build();
+	 });
 	}
 
 }

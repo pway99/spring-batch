@@ -15,16 +15,17 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-
 import javax.batch.api.chunk.listener.ItemProcessListener;
 import javax.batch.operations.BatchRuntimeException;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 public class ItemProcessListenerAdapterTests {
 
@@ -32,15 +33,17 @@ public class ItemProcessListenerAdapterTests {
 	@Mock
 	private ItemProcessListener delegate;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		adapter = new ItemProcessListenerAdapter<>(delegate);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNullCreation() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		adapter = new ItemProcessListenerAdapter<>(null);
+	 });
 	}
 
 	@Test
@@ -52,14 +55,16 @@ public class ItemProcessListenerAdapterTests {
 		verify(delegate).beforeProcess(item);
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testBeforeProcessException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		Exception exception = new Exception("This should occur");
 		String item = "This is the bad item";
 
 		doThrow(exception).when(delegate).beforeProcess(item);
 
 		adapter.beforeProcess(item);
+	 });
 	}
 
 	@Test
@@ -72,8 +77,9 @@ public class ItemProcessListenerAdapterTests {
 		verify(delegate).afterProcess(item, result);
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testAfterProcessException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		String item = "This is the input";
 		String result = "This is the output";
 		Exception exception = new Exception("This is expected");
@@ -81,6 +87,7 @@ public class ItemProcessListenerAdapterTests {
 		doThrow(exception).when(delegate).afterProcess(item, result);
 
 		adapter.afterProcess(item, result);
+	 });
 	}
 
 	@Test
@@ -93,8 +100,9 @@ public class ItemProcessListenerAdapterTests {
 		verify(delegate).onProcessError(item, cause);
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testOnProcessErrorException() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		String item = "This is the input";
 		Exception cause = new Exception("This was the cause");
 		Exception exception = new Exception("This is expected");
@@ -102,5 +110,6 @@ public class ItemProcessListenerAdapterTests {
 		doThrow(exception).when(delegate).onProcessError(item, cause);
 
 		adapter.onProcessError(item, cause);
+	 });
 	}
 }

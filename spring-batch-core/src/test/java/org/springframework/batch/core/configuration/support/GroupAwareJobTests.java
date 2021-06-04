@@ -15,11 +15,11 @@
  */
 package org.springframework.batch.core.configuration.support;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.job.JobSupport;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer

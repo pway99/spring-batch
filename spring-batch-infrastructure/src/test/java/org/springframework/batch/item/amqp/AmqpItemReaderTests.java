@@ -16,16 +16,17 @@
 
 package org.springframework.batch.item.amqp;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.core.Message;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * <p>
@@ -36,10 +37,12 @@ import static org.junit.Assert.fail;
  * @author Will Schipp
  */
 public class AmqpItemReaderTests {
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullAmqpTemplate() {
-        new AmqpItemReader<String>(null);
-    }
+	 assertThrows(IllegalArgumentException.class, () -> {
+	  new AmqpItemReader<String>(null);
+	 });
+	}
 
     @Test
     public void testNoItemType() {
@@ -94,11 +97,13 @@ public class AmqpItemReaderTests {
 
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     public void testNullItemType() {
-        final AmqpTemplate amqpTemplate = mock(AmqpTemplate.class);
+	 assertThrows(IllegalArgumentException.class, () -> {
+	  final AmqpTemplate amqpTemplate = mock(AmqpTemplate.class);
 
-        final AmqpItemReader<String> amqpItemReader = new AmqpItemReader<>(amqpTemplate);
-        amqpItemReader.setItemType(null);
-    }
+	  final AmqpItemReader<String> amqpItemReader = new AmqpItemReader<>(amqpTemplate);
+	  amqpItemReader.setItemType(null);
+	 });
+	}
 }

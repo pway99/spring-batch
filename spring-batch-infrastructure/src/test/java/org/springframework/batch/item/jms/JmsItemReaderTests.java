@@ -16,20 +16,21 @@
 
 package org.springframework.batch.item.jms;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Date;
 
 import javax.jms.Message;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.jms.core.JmsOperations;
 import org.springframework.jms.core.JmsTemplate;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 public class JmsItemReaderTests {
 
@@ -98,18 +99,22 @@ public class JmsItemReaderTests {
 		assertEquals(message, itemReader.read());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testTemplateWithNoDefaultDestination() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		JmsTemplate jmsTemplate = new JmsTemplate();
 		jmsTemplate.setReceiveTimeout(100L);
-		itemReader.setJmsTemplate(jmsTemplate);		
+		itemReader.setJmsTemplate(jmsTemplate);
+	 });
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testTemplateWithNoTimeout() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		JmsTemplate jmsTemplate = new JmsTemplate();
 		jmsTemplate.setDefaultDestinationName("foo");
-		itemReader.setJmsTemplate(jmsTemplate);		
+		itemReader.setJmsTemplate(jmsTemplate);
+	 });
 	}
 
 }

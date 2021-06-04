@@ -16,14 +16,6 @@
 
 package org.springframework.batch.core.job;
 
-import static org.mockito.Mockito.mock;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -31,8 +23,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -58,6 +51,14 @@ import org.springframework.batch.core.repository.dao.StepExecutionDao;
 import org.springframework.batch.core.repository.support.SimpleJobRepository;
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.batch.item.ExecutionContext;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.mock;
 
 /**
  * Tests for DefaultJobLifecycle. MapJobDao and MapStepExecutionDao are used
@@ -97,7 +98,7 @@ public class SimpleJobTests {
 
 	private SimpleJob job;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		jobInstanceDao = new MapJobInstanceDao();
@@ -337,8 +338,8 @@ public class SimpleJobTests {
 
 		assertEquals(1, jobExecution.getFailureExceptions().size());
 		Throwable ex = jobExecution.getFailureExceptions().get(0);
-		assertTrue("Wrong message in exception: " + ex.getMessage(),
-				ex.getMessage().indexOf("start limit exceeded") >= 0);
+		assertTrue(
+		ex.getMessage().indexOf("start limit exceeded") >= 0, "Wrong message in exception: " + ex.getMessage());
 	}
 
 	@Test
@@ -377,8 +378,8 @@ public class SimpleJobTests {
 
 		job.execute(jobExecution);
 		ExitStatus exitStatus = jobExecution.getExitStatus();
-		assertTrue("Wrong message in execution: " + exitStatus, exitStatus.getExitDescription().indexOf(
-				"no steps configured") >= 0);
+		assertTrue(exitStatus.getExitDescription().indexOf(
+		"no steps configured") >= 0, "Wrong message in execution: " + exitStatus);
 	}
 
 	@Test
@@ -499,10 +500,10 @@ public class SimpleJobTests {
 		assertEquals(BatchStatus.STOPPED, jobExecution.getStatus());
 		assertEquals(1, jobExecution.getAllFailureExceptions().size());
 		Throwable expected = jobExecution.getAllFailureExceptions().get(0);
-		assertTrue("Wrong exception " + expected, expected instanceof JobInterruptedException);
+		assertTrue(expected instanceof JobInterruptedException, "Wrong exception " + expected);
 		assertEquals("JobExecution interrupted.", expected.getMessage());
 
-		assertNull("Second step was not supposed to be executed", step2.passedInStepContext);
+		assertNull(step2.passedInStepContext, "Second step was not supposed to be executed");
 	}
 
 	@Test

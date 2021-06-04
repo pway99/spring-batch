@@ -17,9 +17,8 @@ package org.springframework.batch.item.database.support;
 
 import javax.sql.DataSource;
 
-import junit.framework.TestCase;
-
-import static org.mockito.Mockito.mock;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.jdbc.support.incrementer.Db2LuwMaxValueIncrementer;
 import org.springframework.jdbc.support.incrementer.Db2MainframeMaxValueIncrementer;
@@ -31,27 +30,32 @@ import org.springframework.jdbc.support.incrementer.PostgresSequenceMaxValueIncr
 import org.springframework.jdbc.support.incrementer.SqlServerMaxValueIncrementer;
 import org.springframework.jdbc.support.incrementer.SybaseMaxValueIncrementer;
 
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+
 /**
  * @author Lucas Ward
  * @author Will Schipp
  * @author Drummond Dawson
  */
-public class DefaultDataFieldMaxValueIncrementerFactoryTests extends TestCase {
+public class DefaultDataFieldMaxValueIncrementerFactoryTests {
 
 	private DefaultDataFieldMaxValueIncrementerFactory factory;
-	
+
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-    @Override
-	protected void setUp() throws Exception {
-		super.setUp();
-		
+    @BeforeEach
+	public void setUp() throws Exception {
+
 		DataSource dataSource = mock(DataSource.class);
 		factory = new DefaultDataFieldMaxValueIncrementerFactory(dataSource);
 	}
-	
-	public void testSupportedDatabaseType(){
+
+	@Test
+ public void testSupportedDatabaseType() {
 		assertTrue(factory.isSupportedIncrementerType("db2"));
 		assertTrue(factory.isSupportedIncrementerType("db2zos"));
 		assertTrue(factory.isSupportedIncrementerType("mysql"));
@@ -63,12 +67,14 @@ public class DefaultDataFieldMaxValueIncrementerFactoryTests extends TestCase {
 		assertTrue(factory.isSupportedIncrementerType("sybase"));
 		assertTrue(factory.isSupportedIncrementerType("sqlite"));
 	}
-	
-	public void testUnsupportedDatabaseType(){
+
+	@Test
+ public void testUnsupportedDatabaseType() {
 		assertFalse(factory.isSupportedIncrementerType("invalidtype"));
 	}
-	
-	public void testInvalidDatabaseType(){
+
+	@Test
+ public void testInvalidDatabaseType() {
 		try{
 			factory.getIncrementer("invalidtype", "NAME");
 			fail();
@@ -77,8 +83,9 @@ public class DefaultDataFieldMaxValueIncrementerFactoryTests extends TestCase {
 			//expected
 		}
 	}
-	
-	public void testNullIncrementerName(){
+
+	@Test
+ public void testNullIncrementerName() {
 		try{
 			factory.getIncrementer("db2", null);
 			fail();
@@ -87,45 +94,55 @@ public class DefaultDataFieldMaxValueIncrementerFactoryTests extends TestCase {
 			//expected
 		}
 	}
-	
-	public void testDb2(){
+
+	@Test
+ public void testDb2() {
 		assertTrue(factory.getIncrementer("db2", "NAME") instanceof Db2LuwMaxValueIncrementer);
 	}
-	
-	public void testDb2zos(){
+
+	@Test
+ public void testDb2zos() {
 		assertTrue(factory.getIncrementer("db2zos", "NAME") instanceof Db2MainframeMaxValueIncrementer);
 	}
 
-	public void testMysql(){
+	@Test
+ public void testMysql() {
 		assertTrue(factory.getIncrementer("mysql", "NAME") instanceof MySQLMaxValueIncrementer);
 	}
 
-	public void testOracle(){
+	@Test
+ public void testOracle() {
 		factory.setIncrementerColumnName("ID");
 		assertTrue(factory.getIncrementer("oracle", "NAME") instanceof OracleSequenceMaxValueIncrementer);
 	}
 
-	public void testDerby(){
+	@Test
+ public void testDerby() {
 		assertTrue(factory.getIncrementer("derby", "NAME") instanceof DerbyMaxValueIncrementer);
 	}
 
-	public void testHsql(){
+	@Test
+ public void testHsql() {
 		assertTrue(factory.getIncrementer("hsql", "NAME") instanceof HsqlMaxValueIncrementer);
 	}
-	
-	public void testPostgres(){
+
+	@Test
+ public void testPostgres() {
 		assertTrue(factory.getIncrementer("postgres", "NAME") instanceof PostgresSequenceMaxValueIncrementer);
 	}
 
-	public void testMsSqlServer(){
+	@Test
+ public void testMsSqlServer() {
 		assertTrue(factory.getIncrementer("sqlserver", "NAME") instanceof SqlServerMaxValueIncrementer);
 	}
 
-	public void testSybase(){
+	@Test
+ public void testSybase() {
 		assertTrue(factory.getIncrementer("sybase", "NAME") instanceof SybaseMaxValueIncrementer);
 	}
 
-	public void testSqlite(){
+	@Test
+ public void testSqlite() {
 		assertTrue(factory.getIncrementer("sqlite", "NAME") instanceof SqliteMaxValueIncrementer);
 	}
 

@@ -16,20 +16,14 @@
 
 package org.springframework.batch.core.step.item;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.ItemProcessListener;
@@ -61,13 +55,16 @@ import org.springframework.batch.support.transaction.ResourcelessTransactionMana
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.lang.Nullable;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+
 /**
  * Tests for {@link SimpleStepFactoryBean}.
  */
 public class SimpleStepFactoryBeanTests {
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	private List<Exception> listened = new ArrayList<>();
 
@@ -87,37 +84,37 @@ public class SimpleStepFactoryBeanTests {
 
 	private SimpleJob job = new SimpleJob();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		job.setJobRepository(repository);
 		job.setBeanName("simpleJob");
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testMandatoryProperties() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		new SimpleStepFactoryBean<String, String>().getObject();
+	 });
 	}
 
 	@Test
 	public void testMandatoryReader() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		SimpleStepFactoryBean<String, String> factory = new SimpleStepFactoryBean<>();
 		factory.setItemWriter(writer);
 
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("ItemReader must be provided");
-
 		factory.getObject();
+	 }, "ItemReader must be provided");
 	}
 
 	@Test
 	public void testMandatoryWriter() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		SimpleStepFactoryBean<String, String> factory = new SimpleStepFactoryBean<>();
 		factory.setItemReader(reader);
 
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("ItemWriter must be provided");
-
 		factory.getObject();
+	 }, "ItemWriter must be provided");
 	}
 
 	@Test
@@ -322,7 +319,7 @@ public class SimpleStepFactoryBeanTests {
 		assertEquals(expectedListenerCallCount, chunkListener.beforeCount);
 		assertEquals(1, chunkListener.failedCount);
 		assertEquals("1234123415", writeListener.trail);
-		assertTrue("Listener order not as expected: " + writeListener.trail, writeListener.trail.startsWith("1234"));
+		assertTrue(writeListener.trail.startsWith("1234"), "Listener order not as expected: " + writeListener.trail);
 	}
 
 	/**
@@ -456,7 +453,7 @@ public class SimpleStepFactoryBeanTests {
 
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
 		for (String type : new String[] { "read", "write", "process", "chunk" }) {
-			assertTrue("Missing listener call: " + type + " from " + listenerCalls, listenerCalls.contains(type));
+			assertTrue(listenerCalls.contains(type), "Missing listener call: " + type + " from " + listenerCalls);
 		}
 	}
 

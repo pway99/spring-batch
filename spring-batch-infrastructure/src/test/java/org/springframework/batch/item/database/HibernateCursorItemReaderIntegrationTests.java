@@ -15,12 +15,12 @@
  */
 package org.springframework.batch.item.database;
 
-import static org.junit.Assert.fail;
-
 import org.hibernate.StatelessSession;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.sample.Foo;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link HibernateCursorItemReader} using {@link StatelessSession}.

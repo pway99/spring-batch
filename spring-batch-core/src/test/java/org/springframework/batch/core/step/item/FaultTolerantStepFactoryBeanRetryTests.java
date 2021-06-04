@@ -25,8 +25,8 @@ import java.util.Map;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
@@ -58,9 +58,8 @@ import org.springframework.retry.policy.MapRetryContextCache;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.util.StringUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -99,7 +98,7 @@ public class FaultTolerantStepFactoryBeanRetryTests {
 	};
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		factory = new FaultTolerantStepFactoryBean<>();
@@ -651,8 +650,8 @@ public class FaultTolerantStepFactoryBeanRetryTests {
 		step.execute(stepExecution);
 		String message = stepExecution.getFailureExceptions().get(0)
 				.getMessage();
-		assertTrue("Wrong message: " + message,
-				message.contains("Write error - planned but not skippable."));
+		assertTrue(
+		message.contains("Write error - planned but not skippable."), "Wrong message: " + message);
 
 		List<String> expectedOutput = Arrays.asList(StringUtils
 				.commaDelimitedListToStringArray(""));

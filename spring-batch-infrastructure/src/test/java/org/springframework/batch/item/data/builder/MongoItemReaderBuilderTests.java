@@ -21,8 +21,8 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
@@ -32,9 +32,9 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoOperations;
 import org.springframework.data.mongodb.core.query.Query;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.when;
 
@@ -51,7 +51,7 @@ public class MongoItemReaderBuilderTests {
 
 	private ArgumentCaptor<Query> queryContainer;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		this.sortOptions = new HashMap<>();
@@ -65,7 +65,7 @@ public class MongoItemReaderBuilderTests {
 
 		when(template.find(this.queryContainer.capture(), eq(String.class))).thenReturn(new ArrayList<>());
 
-		assertNull("reader should not return result", reader.read());
+		assertNull(reader.read(), "reader should not return result");
 
 		Query query = this.queryContainer.getValue();
 		assertEquals(50, query.getLimit());
@@ -82,7 +82,7 @@ public class MongoItemReaderBuilderTests {
 
 		when(this.template.find(this.queryContainer.capture(), eq(String.class))).thenReturn(new ArrayList<>());
 
-		assertNull("reader should not return result", reader.read());
+		assertNull(reader.read(), "reader should not return result");
 
 		Query query = this.queryContainer.getValue();
 		assertEquals(1, query.getFieldsObject().get("name"));
@@ -98,7 +98,7 @@ public class MongoItemReaderBuilderTests {
 
 		when(this.template.find(this.queryContainer.capture(), eq(String.class))).thenReturn(new ArrayList<>());
 
-		assertNull("reader should not return result", reader.read());
+		assertNull(reader.read(), "reader should not return result");
 
 		Query query = this.queryContainer.getValue();
 		assertEquals("{ $natural : 1}", query.getHint());
@@ -117,7 +117,7 @@ public class MongoItemReaderBuilderTests {
 		when(this.template.find(this.queryContainer.capture(), eq(String.class), collectionContainer.capture()))
 				.thenReturn(new ArrayList<>());
 
-		assertNull("reader should not return result", reader.read());
+		assertNull(reader.read(), "reader should not return result");
 
 		Query query = this.queryContainer.getValue();
 		assertEquals("{\"name\": \"foo\"}", query.getQueryObject().toJson());
@@ -138,7 +138,7 @@ public class MongoItemReaderBuilderTests {
 		when(this.template.find(this.queryContainer.capture(), eq(String.class), collectionContainer.capture()))
 				.thenReturn(new ArrayList<>());
 
-		assertNull("reader should not return result", reader.read());
+		assertNull(reader.read(), "reader should not return result");
 
 		Query query = this.queryContainer.getValue();
 		assertEquals("{\"name\": \"foo\"}", query.getQueryObject().toJson());
@@ -158,7 +158,7 @@ public class MongoItemReaderBuilderTests {
 
 		when(template.find(this.queryContainer.capture(), eq(String.class))).thenReturn(new ArrayList<>());
 
-		assertNull("reader should not return result", reader.read());
+		assertNull(reader.read(), "reader should not return result");
 
 		Query query = this.queryContainer.getValue();
 		assertEquals(50, query.getLimit());
@@ -175,7 +175,7 @@ public class MongoItemReaderBuilderTests {
 
 		when(template.find(this.queryContainer.capture(), eq(String.class))).thenReturn(new ArrayList<>());
 
-		assertNull("reader should not return result", reader.read());
+		assertNull(reader.read(), "reader should not return result");
 
 		Query query = this.queryContainer.getValue();
 		assertEquals(10, query.getLimit());
@@ -232,12 +232,12 @@ public class MongoItemReaderBuilderTests {
 			fail("Exception should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.", message,
-					iae.getMessage());
+			assertEquals(message,
+			iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 		catch (IllegalStateException ise) {
-			assertEquals("IllegalStateException message did not match the expected result.", message,
-					ise.getMessage());
+			assertEquals(message,
+			ise.getMessage(), "IllegalStateException message did not match the expected result.");
 		}
 	}
 

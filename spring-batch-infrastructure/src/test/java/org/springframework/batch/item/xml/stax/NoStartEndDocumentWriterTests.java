@@ -19,12 +19,13 @@ import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.events.XMLEvent;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 /**
  * Tests for {@link NoStartEndDocumentStreamWriter}
@@ -32,7 +33,7 @@ import static org.mockito.Mockito.times;
  * @author Robert Kasanicky
  * @author Will Schipp
  */
-public class NoStartEndDocumentWriterTests extends TestCase {
+public class NoStartEndDocumentWriterTests {
 
 	// object under test
 	private NoStartEndDocumentStreamWriter writer;
@@ -41,8 +42,8 @@ public class NoStartEndDocumentWriterTests extends TestCase {
 
 	private XMLEventFactory eventFactory = XMLEventFactory.newInstance();
 
-    @Override
-	protected void setUp() throws Exception {
+ @BeforeEach
+	public void setUp() throws Exception {
 		wrappedWriter = mock(XMLEventWriter.class);
 		writer = new NoStartEndDocumentStreamWriter(wrappedWriter);
 	}
@@ -51,7 +52,8 @@ public class NoStartEndDocumentWriterTests extends TestCase {
 	 * StartDocument and EndDocument events are not passed to the wrapped
 	 * writer.
 	 */
-	public void testNoStartEnd() throws Exception {
+	@Test
+ public void testNoStartEnd() throws Exception {
 		XMLEvent event = eventFactory.createComment("testEvent");
 
 		// mock expects only a single event
@@ -62,13 +64,14 @@ public class NoStartEndDocumentWriterTests extends TestCase {
 		writer.add(eventFactory.createEndDocument());
 
 	}
-	
+
 	/**
 	 * Close is not delegated to the wrapped writer. Instead, the wrapped writer is flushed.
 	 */
-	public void testClose() throws Exception {
+	@Test
+ public void testClose() throws Exception {
 		writer.close();
-		
+
 		verify(wrappedWriter, times(1)).flush();
 		verify(wrappedWriter, never()).close();
 	}

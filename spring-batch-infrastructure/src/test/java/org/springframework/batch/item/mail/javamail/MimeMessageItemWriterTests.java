@@ -15,11 +15,6 @@
  */
 package org.springframework.batch.item.mail.javamail;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.mockito.AdditionalMatchers.aryEq;
-
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Properties;
@@ -29,8 +24,9 @@ import javax.mail.MessagingException;
 import javax.mail.Session;
 import javax.mail.internet.MimeMessage;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.mail.MailErrorHandler;
 import org.springframework.mail.MailException;
 import org.springframework.mail.MailMessage;
@@ -38,6 +34,12 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.util.ReflectionUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.AdditionalMatchers.aryEq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Dave Syer
@@ -51,10 +53,10 @@ public class MimeMessageItemWriterTests {
 	private MimeMessageItemWriter writer = new MimeMessageItemWriter();
 
 	private JavaMailSender mailSender = mock(JavaMailSender.class);
-	
+
 	private Session session = Session.getDefaultInstance(new Properties());
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		writer.setJavaMailSender(mailSender);
 	}
@@ -73,24 +75,26 @@ public class MimeMessageItemWriterTests {
 
 	}
 
-	@Test(expected = MailSendException.class)
+	@Test
 	public void testDefaultErrorHandler() throws Exception {
+	 assertThrows(MailSendException.class, () -> {
 
 		MimeMessage foo = new MimeMessage(session);
 		MimeMessage bar = new MimeMessage(session);
-		MimeMessage[] items = new MimeMessage[] { foo, bar };
+		MimeMessage[] items = new MimeMessage[]{foo, bar};
 
 		// Spring 4.1 changed the send method to be vargs instead of an array
-		if(ReflectionUtils.findMethod(MailSender.class, "send", MimeMessage[].class) != null) {
-			mailSender.send(aryEq(items));
+		if (ReflectionUtils.findMethod(MailSender.class, "send", MimeMessage[].class) != null) {
+		mailSender.send(aryEq(items));
 		}
 		else {
-			mailSender.send(items);
+		mailSender.send(items);
 		}
 
-		when(mailSender).thenThrow(new MailSendException(Collections.singletonMap((Object)foo, (Exception)new MessagingException("FOO"))));
+		when(mailSender).thenThrow(new MailSendException(Collections.singletonMap((Object) foo, (Exception) new MessagingException("FOO"))));
 
 		writer.write(Arrays.asList(items));
+	 });
 	}
 
 	@Test

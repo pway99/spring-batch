@@ -20,16 +20,15 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.util.Assert;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link FileUtils}
@@ -127,7 +126,7 @@ public class FileUtilsTests {
 			dir1.delete();
 		}
 	}
-	
+
 	/**
 	 * If the directories on the file path do not exist, they should be created
 	 * This must be true also in append mode
@@ -170,37 +169,37 @@ public class FileUtilsTests {
 			file.delete();
 		}
 	}
-	
+
 	@Test
 	public void testCouldntCreateFile(){
 
 		@SuppressWarnings("serial")
 		File file = new File("new file"){
-			
+
 			@Override
 			public boolean exists() {
 				return false;
 			}
-			
+
 		};
 		try{
 			FileUtils.setUpOutputFile(file, false, false, false);
 			fail("Expected IOException because file doesn't exist");
 		}catch(ItemStreamException ex){
 			String message = ex.getMessage();
-			assertTrue("Wrong message: "+message, message.startsWith("Output file was not created"));
+			assertTrue(message.startsWith("Output file was not created"), "Wrong message: " + message);
 		}finally{
 			file.delete();
 		}
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		file.delete();
 		Assert.state(!file.exists(), "File delete failed");
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		file.delete();
 	}

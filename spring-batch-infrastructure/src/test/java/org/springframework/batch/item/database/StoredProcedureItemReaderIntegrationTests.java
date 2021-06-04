@@ -15,15 +15,16 @@
  */
 package org.springframework.batch.item.database;
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "stored-procedure-context.xml")
-public class StoredProcedureItemReaderIntegrationTests 
+public class StoredProcedureItemReaderIntegrationTests
 		extends AbstractDataSourceItemReaderIntegrationTests {
 
 	@Override

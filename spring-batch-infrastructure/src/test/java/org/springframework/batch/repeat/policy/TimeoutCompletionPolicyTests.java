@@ -16,12 +16,12 @@
 
 package org.springframework.batch.repeat.policy;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
-import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.batch.repeat.RepeatContext;
+import org.springframework.batch.repeat.RepeatStatus;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TimeoutCompletionPolicyTests {
 
@@ -40,7 +40,7 @@ public class TimeoutCompletionPolicyTests {
 		RepeatContext context = policy.start(null);
 		assertFalse(policy.isComplete(context, null));
 	}
-	
+
 	@Test
 	public void testNonContinuableResult() throws Exception {
 		TimeoutTerminationPolicy policy = new TimeoutTerminationPolicy();

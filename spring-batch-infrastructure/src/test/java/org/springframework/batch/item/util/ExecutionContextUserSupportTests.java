@@ -15,14 +15,17 @@
  */
 package org.springframework.batch.item.util;
 
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.util.ExecutionContextUserSupport;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link ExecutionContextUserSupport}.
  */
-public class ExecutionContextUserSupportTests extends TestCase {
+public class ExecutionContextUserSupportTests {
 
 	ExecutionContextUserSupport tested = new ExecutionContextUserSupport();
 
@@ -30,16 +33,16 @@ public class ExecutionContextUserSupportTests extends TestCase {
 	 * Regular usage scenario - prepends the name (supposed to be unique) to
 	 * argument.
 	 */
-	public void testGetKey() {
-		tested.setName("uniqueName");
+	@Test
+ public void testGetKey() {
 		assertEquals("uniqueName.key", tested.getKey("key"));
 	}
 
 	/**
 	 * Exception scenario - name must not be empty.
 	 */
-	public void testGetKeyWithNoNameSet() {
-		tested.setName("");
+	@Test
+ public void testGetKeyWithNoNameSet() {
 		try {
 			tested.getKey("arbitrary string");
 			fail();

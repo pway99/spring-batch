@@ -15,18 +15,18 @@
  */
 package org.springframework.batch.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.util.SerializationUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -216,15 +216,15 @@ public class JobExecutionTests {
 
 	@Test
 	public void testToString() throws Exception {
-		assertTrue("JobExecution string does not contain id", execution.toString().indexOf("id=") >= 0);
-		assertTrue("JobExecution string does not contain name: " + execution, execution.toString().indexOf("foo") >= 0);
+		assertTrue(execution.toString().indexOf("id=") >= 0, "JobExecution string does not contain id");
+		assertTrue(execution.toString().indexOf("foo") >= 0, "JobExecution string does not contain name: " + execution);
 	}
 
 	@Test
 	public void testToStringWithNullJob() throws Exception {
 		execution = new JobExecution(new JobInstance(null, "foo"), null);
-		assertTrue("JobExecution string does not contain id", execution.toString().indexOf("id=") >= 0);
-		assertTrue("JobExecution string does not contain job: " + execution, execution.toString().indexOf("job=") >= 0);
+		assertTrue(execution.toString().indexOf("id=") >= 0, "JobExecution string does not contain id");
+		assertTrue(execution.toString().indexOf("job=") >= 0, "JobExecution string does not contain job: " + execution);
 	}
 
 	@Test

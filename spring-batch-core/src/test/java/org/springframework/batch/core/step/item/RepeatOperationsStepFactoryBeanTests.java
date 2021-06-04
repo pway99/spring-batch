@@ -18,7 +18,8 @@ package org.springframework.batch.core.step.item;
 import java.util.ArrayList;
 import java.util.List;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -34,11 +35,14 @@ import org.springframework.batch.repeat.RepeatOperations;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 /**
  * @author Dave Syer
  *
  */
-public class RepeatOperationsStepFactoryBeanTests extends TestCase {
+public class RepeatOperationsStepFactoryBeanTests {
 
 	private SimpleStepFactoryBean<String,String> factory = new SimpleStepFactoryBean<>();
 
@@ -46,8 +50,8 @@ public class RepeatOperationsStepFactoryBeanTests extends TestCase {
 
 	private JobExecution jobExecution = new JobExecution(new JobInstance(0L, "job"), new JobParameters());
 
-	@Override
-	protected void setUp() throws Exception {
+	@BeforeEach
+	public void setUp() throws Exception {
 		factory.setBeanName("RepeatOperationsStep");
 		factory.setItemReader(new ListItemReader<>(new ArrayList<>()));
 		factory.setItemWriter(new EmptyItemWriter<>());
@@ -55,16 +59,19 @@ public class RepeatOperationsStepFactoryBeanTests extends TestCase {
 		factory.setTransactionManager(new ResourcelessTransactionManager());
 	}
 
-	public void testType() throws Exception {
+	@Test
+ public void testType() throws Exception {
 		assertTrue(Step.class.isAssignableFrom(factory.getObjectType()));
 	}
 
 	@SuppressWarnings("cast")
+ @Test
 	public void testDefaultValue() throws Exception {
 		assertTrue(factory.getObject() instanceof Step);
 	}
 
-	public void testStepOperationsWithoutChunkListener() throws Exception {
+	@Test
+ public void testStepOperationsWithoutChunkListener() throws Exception {
 
 		factory.setItemReader(new ListItemReader<>(new ArrayList<>()));
 		factory.setItemWriter(new EmptyItemWriter<>());

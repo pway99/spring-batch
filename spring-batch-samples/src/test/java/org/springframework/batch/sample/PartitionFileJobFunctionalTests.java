@@ -16,16 +16,14 @@
 
 package org.springframework.batch.sample;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.item.ExecutionContext;
@@ -40,9 +38,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/simple-job-launcher-context.xml", "/jobs/partitionFileJob.xml",
 		"/job-runner-context.xml" })
 public class PartitionFileJobFunctionalTests implements ApplicationContextAware {
@@ -65,8 +65,8 @@ public class PartitionFileJobFunctionalTests implements ApplicationContextAware 
 	 */
 	@Test
 	public void testUpdateCredit() throws Exception {
-		assertTrue("Define a prototype bean called 'outputTestReader' to check the output", applicationContext
-				.containsBeanDefinition("outputTestReader"));
+		assertTrue(applicationContext
+		.containsBeanDefinition("outputTestReader"), "Define a prototype bean called 'outputTestReader' to check the output");
 
 		open(inputReader);
 		List<CustomerCredit> inputs = new ArrayList<>(getCredits(inputReader));

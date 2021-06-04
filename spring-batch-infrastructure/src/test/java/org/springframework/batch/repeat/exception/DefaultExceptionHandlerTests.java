@@ -16,16 +16,20 @@
 
 package org.springframework.batch.repeat.exception;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.repeat.RepeatContext;
 
-public class DefaultExceptionHandlerTests extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class DefaultExceptionHandlerTests {
 
 	private DefaultExceptionHandler handler = new DefaultExceptionHandler();
 	private RepeatContext context = null;
-	
-	public void testRuntimeException() throws Throwable {
+
+	@Test
+ public void testRuntimeException() throws Throwable {
 		try {
 			handler.handleException(context, new RuntimeException("Foo"));
 			fail("Expected RuntimeException");
@@ -34,7 +38,8 @@ public class DefaultExceptionHandlerTests extends TestCase {
 		}
 	}
 
-	public void testError() throws Throwable {
+	@Test
+ public void testError() throws Throwable {
 		try {
 			handler.handleException(context, new Error("Foo"));
 			fail("Expected Error");

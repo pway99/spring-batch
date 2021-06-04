@@ -15,15 +15,17 @@
  */
 package org.springframework.batch.support;
 
-import org.apache.commons.io.FileUtils;
-import org.junit.Test;
-import org.springframework.core.io.FileSystemResource;
-
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.core.io.FileSystemResource;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -36,14 +38,18 @@ public class LastModifiedResourceComparatorTests {
 
 	private LastModifiedResourceComparator comparator = new LastModifiedResourceComparator();
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCompareTwoNonExistent() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		comparator.compare(new FileSystemResource("garbage"), new FileSystemResource("crap"));
+	 });
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testCompareOneNonExistent() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		comparator.compare(new FileSystemResource(FILE_PATH), new FileSystemResource("crap"));
+	 });
 	}
 
 	@Test

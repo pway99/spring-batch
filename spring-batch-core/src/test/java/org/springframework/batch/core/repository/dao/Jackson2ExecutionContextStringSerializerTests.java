@@ -28,13 +28,13 @@ import java.util.Locale;
 import java.util.Map;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import org.springframework.batch.core.repository.ExecutionContextSerializer;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Marten Deinum
@@ -45,7 +45,7 @@ public class Jackson2ExecutionContextStringSerializerTests extends AbstractExecu
 
 	ExecutionContextSerializer serializer;
 
-	@Before
+	@BeforeEach
 	public void onSetUp() throws Exception {
 		Jackson2ExecutionContextStringSerializer serializerDeserializer = new Jackson2ExecutionContextStringSerializer();
 
@@ -96,7 +96,7 @@ public class Jackson2ExecutionContextStringSerializerTests extends AbstractExecu
 
 		// then
 		Locale locale = (Locale) deserializedContext.get("locale");
-		Assert.assertNotNull(locale);
+		Assertions.assertNotNull(locale);
 	}
 
 	@Override
@@ -184,8 +184,8 @@ public class Jackson2ExecutionContextStringSerializerTests extends AbstractExecu
 
 		// then
 		Object deserializedValue = deserializedContext.get(key);
-		Assert.assertTrue(List.class.isAssignableFrom(deserializedValue.getClass()));
-		Assert.assertTrue(((List<String>)deserializedValue).containsAll(list));
+		Assertions.assertTrue(List.class.isAssignableFrom(deserializedValue.getClass()));
+		Assertions.assertTrue(((List<String>)deserializedValue).containsAll(list));
 	}
 
 	@Test
@@ -204,6 +204,6 @@ public class Jackson2ExecutionContextStringSerializerTests extends AbstractExecu
 
 		// then
 		Timestamp deserializedTimestamp = (Timestamp) deserializedContext.get("timestamp");
-		Assert.assertEquals(timestamp, deserializedTimestamp);
+		Assertions.assertEquals(timestamp, deserializedTimestamp);
 	}
 }

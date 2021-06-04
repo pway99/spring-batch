@@ -15,12 +15,9 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import org.junit.Test;
-import org.springframework.batch.core.jsr.AbstractJsrTestCase;
-import org.springframework.batch.item.ItemProcessor;
-import org.springframework.batch.item.ItemReader;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.lang.Nullable;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Properties;
 
 import javax.batch.api.chunk.listener.SkipProcessListener;
 import javax.batch.api.chunk.listener.SkipReadListener;
@@ -30,11 +27,15 @@ import javax.batch.runtime.BatchRuntime;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.Metric;
 import javax.batch.runtime.StepExecution;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Properties;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+
+import org.springframework.batch.core.jsr.AbstractJsrTestCase;
+import org.springframework.batch.item.ItemProcessor;
+import org.springframework.batch.item.ItemReader;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ItemSkipParsingTests extends AbstractJsrTestCase {
 

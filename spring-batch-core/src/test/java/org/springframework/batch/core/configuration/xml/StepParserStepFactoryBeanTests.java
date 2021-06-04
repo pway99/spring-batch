@@ -19,7 +19,7 @@ package org.springframework.batch.core.configuration.xml;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.aop.framework.Advised;
 import org.springframework.aop.framework.ProxyFactory;
@@ -48,9 +48,10 @@ import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.annotation.Isolation;
 import org.springframework.transaction.annotation.Propagation;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dan Garrette
@@ -58,10 +59,12 @@ import static org.junit.Assert.assertTrue;
  */
 public class StepParserStepFactoryBeanTests {
 
-	@Test(expected = StepBuilderException.class)
+	@Test
 	public void testNothingSet() throws Exception {
+	 assertThrows(StepBuilderException.class, () -> {
 		StepParserStepFactoryBean<Object, Object> fb = new StepParserStepFactoryBean<>();
 		fb.getObject();
+	 });
 	}
 
 	@Test
@@ -91,12 +94,14 @@ public class StepParserStepFactoryBeanTests {
 		assertTrue(stepOperations instanceof TaskExecutorRepeatTemplate);
 	}
 
-	@Test(expected = StepBuilderException.class)
+	@Test
 	public void testSkipLimitSet() throws Exception {
+	 assertThrows(StepBuilderException.class, () -> {
 		StepParserStepFactoryBean<Object, Object> fb = new StepParserStepFactoryBean<>();
 		fb.setName("step");
 		fb.setSkipLimit(5);
 		fb.getObject();
+	 });
 	}
 
 	@Test
@@ -132,15 +137,16 @@ public class StepParserStepFactoryBeanTests {
 		assertTrue(tasklet instanceof DummyTasklet);
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testSimpleStepAll() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		StepParserStepFactoryBean<Object, Object> fb = new StepParserStepFactoryBean<>();
 		fb.setBeanName("step1");
 		fb.setAllowStartIfComplete(true);
 		fb.setJobRepository(new JobRepositorySupport());
 		fb.setStartLimit(5);
 		fb.setTransactionManager(new ResourcelessTransactionManager());
-		fb.setListeners(new StepListener[] { new StepExecutionListenerSupport() });
+		fb.setListeners(new StepListener[]{new StepExecutionListenerSupport()});
 		fb.setIsolation(Isolation.DEFAULT);
 		fb.setTransactionTimeout(-1);
 		fb.setPropagation(Propagation.REQUIRED);
@@ -149,24 +155,26 @@ public class StepParserStepFactoryBeanTests {
 		fb.setTaskExecutor(new SyncTaskExecutor());
 		fb.setItemReader(new DummyItemReader());
 		fb.setItemWriter(new DummyItemWriter());
-		fb.setStreams(new ItemStream[] {new FlatFileItemReader<>() });
+		fb.setStreams(new ItemStream[]{new FlatFileItemReader<>()});
 		fb.setHasChunkElement(true);
 
 		Object step = fb.getObject();
 		assertTrue(step instanceof TaskletStep);
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		assertTrue(tasklet instanceof ChunkOrientedTasklet<?>);
+	 });
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testFaultTolerantStepAll() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		StepParserStepFactoryBean<Object, Object> fb = new StepParserStepFactoryBean<>();
 		fb.setBeanName("step1");
 		fb.setAllowStartIfComplete(true);
 		fb.setJobRepository(new JobRepositorySupport());
 		fb.setStartLimit(5);
 		fb.setTransactionManager(new ResourcelessTransactionManager());
-		fb.setListeners(new StepListener[] { new StepExecutionListenerSupport() });
+		fb.setListeners(new StepListener[]{new StepExecutionListenerSupport()});
 		fb.setIsolation(Isolation.DEFAULT);
 		fb.setTransactionTimeout(-1);
 		fb.setPropagation(Propagation.REQUIRED);
@@ -175,7 +183,7 @@ public class StepParserStepFactoryBeanTests {
 		fb.setTaskExecutor(new SyncTaskExecutor());
 		fb.setItemReader(new DummyItemReader());
 		fb.setItemWriter(new DummyItemWriter());
-		fb.setStreams(new ItemStream[] {new FlatFileItemReader<>() });
+		fb.setStreams(new ItemStream[]{new FlatFileItemReader<>()});
 		fb.setCacheCapacity(5);
 		fb.setIsReaderTransactionalQueue(true);
 		fb.setRetryLimit(5);
@@ -189,6 +197,7 @@ public class StepParserStepFactoryBeanTests {
 		assertTrue(step instanceof TaskletStep);
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		assertTrue(tasklet instanceof ChunkOrientedTasklet<?>);
+	 });
 	}
 
 	@Test

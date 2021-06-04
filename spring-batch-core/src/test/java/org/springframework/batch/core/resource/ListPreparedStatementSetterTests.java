@@ -15,8 +15,6 @@
  */
 package org.springframework.batch.core.resource;
 
-import static org.junit.Assert.assertEquals;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -24,9 +22,10 @@ import java.util.List;
 
 import javax.sql.DataSource;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -39,14 +38,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowCallbackHandler;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Lucas Ward
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {
 		"/org/springframework/batch/core/resource/ListPreparedStatementSetterTests-context.xml",
 "/org/springframework/batch/core/repository/dao/data-source-context.xml" })
@@ -72,7 +74,7 @@ public class ListPreparedStatementSetterTests {
 	@Autowired
 	private FooStoringItemWriter fooStoringItemWriter;
 
-	@Before
+	@BeforeEach
 	public void onSetUpInTransaction() throws Exception {
 
 		List<Long> parameters = new ArrayList<>();
@@ -100,10 +102,12 @@ public class ListPreparedStatementSetterTests {
 	}
 
 	@Transactional
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testAfterPropertiesSet() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		pss = new ListPreparedStatementSetter(null);
 		pss.afterPropertiesSet();
+	 });
 	}
 
 	@Test

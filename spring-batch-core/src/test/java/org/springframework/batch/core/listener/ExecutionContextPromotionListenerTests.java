@@ -15,15 +15,16 @@
  */
 package org.springframework.batch.core.listener;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.util.Assert;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link ExecutionContextPromotionListener}.
@@ -223,8 +224,9 @@ public class ExecutionContextPromotionListenerTests {
 	 * 
 	 * EXPECTED: IllegalArgumentException
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void promoteEntriesKeyNotFoundStrict() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		ExecutionContextPromotionListener listener = new ExecutionContextPromotionListener();
 		listener.setStrict(true);
 
@@ -237,13 +239,14 @@ public class ExecutionContextPromotionListenerTests {
 
 		stepExecution.getExecutionContext().putString(key, value);
 
-		listener.setKeys(new String[] { key, key2 });
+		listener.setKeys(new String[]{key, key2});
 		listener.afterPropertiesSet();
 
 		listener.afterStep(stepExecution);
 
 		assertEquals(value, jobExecution.getExecutionContext().getString(key));
 		assertFalse(jobExecution.getExecutionContext().containsKey(key2));
+	 });
 	}
 
 	/**
@@ -251,10 +254,12 @@ public class ExecutionContextPromotionListenerTests {
 	 * 
 	 * EXPECTED: IllegalArgumentException
 	 */
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void keysMustBeSet() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		ExecutionContextPromotionListener listener = new ExecutionContextPromotionListener();
 		// didn't set the keys, same as listener.setKeys(null);
 		listener.afterPropertiesSet();
+	 });
 	}
 }

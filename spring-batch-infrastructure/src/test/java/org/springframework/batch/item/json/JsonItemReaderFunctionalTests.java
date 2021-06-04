@@ -19,10 +19,8 @@ package org.springframework.batch.item.json;
 import java.math.BigDecimal;
 
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
@@ -32,15 +30,14 @@ import org.springframework.batch.item.json.domain.Trade;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.ClassPathResource;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.instanceOf;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Mahmoud Ben Hassine
  */
 public abstract class JsonItemReaderFunctionalTests {
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	protected abstract JsonObjectReader<Trade> getJsonObjectReader();
 
@@ -57,35 +54,35 @@ public abstract class JsonItemReaderFunctionalTests {
 		itemReader.open(new ExecutionContext());
 
 		Trade trade = itemReader.read();
-		Assert.assertNotNull(trade);
-		Assert.assertEquals("123", trade.getIsin());
-		Assert.assertEquals("foo", trade.getCustomer());
-		Assert.assertEquals(new BigDecimal("1.2"), trade.getPrice());
-		Assert.assertEquals(1, trade.getQuantity());
+		Assertions.assertNotNull(trade);
+		Assertions.assertEquals("123", trade.getIsin());
+		Assertions.assertEquals("foo", trade.getCustomer());
+		Assertions.assertEquals(new BigDecimal("1.2"), trade.getPrice());
+		Assertions.assertEquals(1, trade.getQuantity());
 
 		trade = itemReader.read();
-		Assert.assertNotNull(trade);
-		Assert.assertEquals("456", trade.getIsin());
-		Assert.assertEquals("bar", trade.getCustomer());
-		Assert.assertEquals(new BigDecimal("1.4"), trade.getPrice());
-		Assert.assertEquals(2, trade.getQuantity());
+		Assertions.assertNotNull(trade);
+		Assertions.assertEquals("456", trade.getIsin());
+		Assertions.assertEquals("bar", trade.getCustomer());
+		Assertions.assertEquals(new BigDecimal("1.4"), trade.getPrice());
+		Assertions.assertEquals(2, trade.getQuantity());
 
 		trade = itemReader.read();
-		Assert.assertNotNull(trade);
-		Assert.assertEquals("789", trade.getIsin());
-		Assert.assertEquals("foobar", trade.getCustomer());
-		Assert.assertEquals(new BigDecimal("1.6"), trade.getPrice());
-		Assert.assertEquals(3, trade.getQuantity());
+		Assertions.assertNotNull(trade);
+		Assertions.assertEquals("789", trade.getIsin());
+		Assertions.assertEquals("foobar", trade.getCustomer());
+		Assertions.assertEquals(new BigDecimal("1.6"), trade.getPrice());
+		Assertions.assertEquals(3, trade.getQuantity());
 
 		trade = itemReader.read();
-		Assert.assertNotNull(trade);
-		Assert.assertEquals("100", trade.getIsin());
-		Assert.assertEquals("barfoo", trade.getCustomer());
-		Assert.assertEquals(new BigDecimal("1.8"), trade.getPrice());
-		Assert.assertEquals(4, trade.getQuantity());
+		Assertions.assertNotNull(trade);
+		Assertions.assertEquals("100", trade.getIsin());
+		Assertions.assertEquals("barfoo", trade.getCustomer());
+		Assertions.assertEquals(new BigDecimal("1.8"), trade.getPrice());
+		Assertions.assertEquals(4, trade.getQuantity());
 
 		trade = itemReader.read();
-		Assert.assertNull(trade);
+		Assertions.assertNull(trade);
 	}
 
 	@Test
@@ -99,34 +96,35 @@ public abstract class JsonItemReaderFunctionalTests {
 		itemReader.open(new ExecutionContext());
 
 		Trade trade = itemReader.read();
-		Assert.assertNull(trade);
+		Assertions.assertNull(trade);
 	}
 
 	@Test
 	public void testInvalidResourceFormat() {
-		this.expectedException.expect(ItemStreamException.class);
-		this.expectedException.expectMessage("Failed to initialize the reader");
-		this.expectedException.expectCause(instanceOf(IllegalStateException.class));
+	 Exception exception = assertThrows(ItemStreamException.class, () -> {
 		JsonItemReader<Trade> itemReader = new JsonItemReaderBuilder<Trade>()
-				.jsonObjectReader(getJsonObjectReader())
-				.resource(new ByteArrayResource("{}, {}".getBytes()))
-				.name("tradeJsonItemReader")
-				.build();
+		.jsonObjectReader(getJsonObjectReader())
+		.resource(new ByteArrayResource("{}, {}".getBytes()))
+		.name("tradeJsonItemReader")
+		.build();
 
 		itemReader.open(new ExecutionContext());
+	 }, "Failed to initialize the reader");
+	 assertThat(exception.getCause(), instanceOf(IllegalStateException.class));
 	}
 
 	@Test
 	public void testInvalidResourceContent() throws Exception {
-		this.expectedException.expect(ParseException.class);
-		this.expectedException.expectCause(Matchers.instanceOf(getJsonParsingException()));
+	 Exception exception = assertThrows(ParseException.class, () -> {
 		JsonItemReader<Trade> itemReader = new JsonItemReaderBuilder<Trade>()
-				.jsonObjectReader(getJsonObjectReader())
-				.resource(new ByteArrayResource("[{]".getBytes()))
-				.name("tradeJsonItemReader")
-				.build();
+		.jsonObjectReader(getJsonObjectReader())
+		.resource(new ByteArrayResource("[{]".getBytes()))
+		.name("tradeJsonItemReader")
+		.build();
 		itemReader.open(new ExecutionContext());
 
 		itemReader.read();
+	 });
+	 assertThat(exception.getCause(), Matchers.instanceOf(getJsonParsingException()));
 	}
 }

@@ -15,10 +15,9 @@
  */
 package org.springframework.batch.core.step.item;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -54,7 +53,7 @@ public class SkipWrapperTests {
 	@Test
 	public void testToString() {
 		SkipWrapper<String> wrapper = new SkipWrapper<>("foo");
-		assertTrue("foo", wrapper.toString().contains("foo"));
+		assertTrue(wrapper.toString().contains("foo"), "foo");
 	}
 
 }

@@ -15,23 +15,26 @@
  */
 package org.springframework.batch.core;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class DefaultJobKeyGeneratorTests {
 
 	private JobKeyGenerator<JobParameters> jobKeyGenerator;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		jobKeyGenerator = new DefaultJobKeyGenerator();
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNullParameters() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		jobKeyGenerator.generateKey(null);
+	 });
 	}
 
 	@Test

@@ -15,14 +15,13 @@
  */
 package org.springframework.batch.repeat.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.NoSuchElementException;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -30,9 +29,9 @@ import org.junit.Test;
  *
  */
 public class ThrottleLimitResultQueueTests {
-	
+
 	private ThrottleLimitResultQueue<String> queue = new ThrottleLimitResultQueue<>(1);
-	
+
 	@Test
 	public void testPutTake() throws Exception {
 		queue.expect();
@@ -87,7 +86,7 @@ public class ThrottleLimitResultQueueTests {
 		long t1 = System.currentTimeMillis();
 		assertEquals("foo", queue.take());
 		assertTrue(queue.isExpecting());
-		assertTrue("Did not block on expect (throttle limit should have been hit): time taken="+(t1-t0), t1-t0>50);
+		assertTrue(t1 - t0 > 50, "Did not block on expect (throttle limit should have been hit): time taken=" + (t1 - t0));
 	}
 
 }

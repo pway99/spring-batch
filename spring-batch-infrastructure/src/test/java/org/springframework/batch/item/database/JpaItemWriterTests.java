@@ -16,23 +16,24 @@
 
 package org.springframework.batch.item.database;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.orm.jpa.EntityManagerHolder;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Thomas Risberg
@@ -46,7 +47,7 @@ public class JpaItemWriterTests {
 
 	JpaItemWriter<Object> writer;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		if (TransactionSynchronizationManager.isSynchronizationActive()) {
 			TransactionSynchronizationManager.clearSynchronization();
@@ -65,8 +66,8 @@ public class JpaItemWriterTests {
 		}
 		catch (IllegalArgumentException e) {
 			// expected
-			assertTrue("Wrong message for exception: " + e.getMessage(),
-					e.getMessage().indexOf("EntityManagerFactory") >= 0);
+			assertTrue(
+			e.getMessage().indexOf("EntityManagerFactory") >= 0, "Wrong message for exception: " + e.getMessage());
 		}
 	}
 

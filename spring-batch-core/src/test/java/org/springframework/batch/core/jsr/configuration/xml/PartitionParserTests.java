@@ -26,6 +26,7 @@ import java.util.Vector;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import javax.batch.api.BatchProperty;
 import javax.batch.api.Batchlet;
 import javax.batch.api.chunk.AbstractItemReader;
@@ -38,21 +39,20 @@ import javax.batch.runtime.context.JobContext;
 import javax.batch.runtime.context.StepContext;
 import javax.inject.Inject;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.jsr.AbstractJsrTestCase;
 import org.springframework.util.Assert;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PartitionParserTests extends AbstractJsrTestCase {
 	private Pattern caPattern = Pattern.compile("ca");
 	private Pattern asPattern = Pattern.compile("AS");
 	private static final long TIMEOUT = 10000L;
 
-	@Before
+	@BeforeEach
 	public void before() {
 		MyBatchlet.processed = new AtomicInteger(0);
 		MyBatchlet.threadNames = Collections.synchronizedSet(new HashSet<>());
@@ -293,7 +293,7 @@ public class PartitionParserTests extends AbstractJsrTestCase {
 
 	public static class MyBatchlet implements Batchlet {
 
-		protected static AtomicInteger processed = new AtomicInteger(0);;
+		protected static AtomicInteger processed = new AtomicInteger(0);
 		protected static Set<String> threadNames = Collections.synchronizedSet(new HashSet<>());
 		protected static Set<String> artifactNames = Collections.synchronizedSet(new HashSet<>());
 

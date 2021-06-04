@@ -15,19 +15,21 @@
  */
 package org.springframework.batch.sample.domain.multiline;
 
-import static org.junit.Assert.*;
 import java.util.Collection;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.item.ItemReader;
 import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 public class AggregateItemReaderTests {
 	private ItemReader<AggregateItem<String>> input;
 	private AggregateItemReader<String> provider;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		input = new ItemReader<AggregateItem<String>>() {
 			private int count = 0;

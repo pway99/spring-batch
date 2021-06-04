@@ -17,9 +17,8 @@
 package org.springframework.batch.core.configuration.annotation;
 
 import javax.sql.DataSource;
-
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
@@ -39,53 +38,53 @@ public class TransactionManagerConfigurationWithoutBatchConfigurerTests extends 
 	@Test
 	public void testConfigurationWithNoDataSourceAndNoTransactionManager() throws Exception {
 		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BatchConfigurationWithNoDataSourceAndNoTransactionManager.class);
-		Assert.assertTrue(applicationContext.containsBean("transactionManager"));
+		Assertions.assertTrue(applicationContext.containsBean("transactionManager"));
 		PlatformTransactionManager platformTransactionManager = applicationContext.getBean(PlatformTransactionManager.class);
 		Object targetObject = AopTestUtils.getTargetObject(platformTransactionManager);
-		Assert.assertTrue(targetObject instanceof ResourcelessTransactionManager);
-		Assert.assertSame(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)), targetObject);
+		Assertions.assertTrue(targetObject instanceof ResourcelessTransactionManager);
+		Assertions.assertSame(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)), targetObject);
 	}
 
 	@Test
 	public void testConfigurationWithNoDataSourceAndTransactionManager() throws Exception {
 		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BatchConfigurationWithNoDataSourceAndTransactionManager.class);
 		PlatformTransactionManager platformTransactionManager = applicationContext.getBean(PlatformTransactionManager.class);
-		Assert.assertSame(transactionManager, platformTransactionManager);
+		Assertions.assertSame(transactionManager, platformTransactionManager);
 		// In this case, the supplied transaction manager won't be used by batch and a ResourcelessTransactionManager will be used instead.
 		// The user has to provide a custom BatchConfigurer.
-		Assert.assertTrue(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)) instanceof ResourcelessTransactionManager);
+		Assertions.assertTrue(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)) instanceof ResourcelessTransactionManager);
 	}
 
 	@Test
 	public void testConfigurationWithDataSourceAndNoTransactionManager() throws Exception {
 		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BatchConfigurationWithDataSourceAndNoTransactionManager.class);
-		Assert.assertTrue(applicationContext.containsBean("transactionManager"));
+		Assertions.assertTrue(applicationContext.containsBean("transactionManager"));
 		PlatformTransactionManager platformTransactionManager = applicationContext.getBean(PlatformTransactionManager.class);
 		Object targetObject = AopTestUtils.getTargetObject(platformTransactionManager);
-		Assert.assertTrue(targetObject instanceof DataSourceTransactionManager);
+		Assertions.assertTrue(targetObject instanceof DataSourceTransactionManager);
 		DataSourceTransactionManager dataSourceTransactionManager = (DataSourceTransactionManager) targetObject;
-		Assert.assertEquals(applicationContext.getBean(DataSource.class), dataSourceTransactionManager.getDataSource());
-		Assert.assertSame(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)), dataSourceTransactionManager);
+		Assertions.assertEquals(applicationContext.getBean(DataSource.class), dataSourceTransactionManager.getDataSource());
+		Assertions.assertSame(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)), dataSourceTransactionManager);
 	}
 
 	@Test
 	public void testConfigurationWithDataSourceAndOneTransactionManager() throws Exception {
 		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BatchConfigurationWithDataSourceAndOneTransactionManager.class);
 		PlatformTransactionManager platformTransactionManager = applicationContext.getBean(PlatformTransactionManager.class);
-		Assert.assertSame(transactionManager, platformTransactionManager);
+		Assertions.assertSame(transactionManager, platformTransactionManager);
 		// In this case, the supplied transaction manager won't be used by batch and a DataSourceTransactionManager will be used instead.
 		// The user has to provide a custom BatchConfigurer.
-		Assert.assertTrue(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)) instanceof DataSourceTransactionManager);
+		Assertions.assertTrue(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)) instanceof DataSourceTransactionManager);
 	}
 
 	@Test
 	public void testConfigurationWithDataSourceAndMultipleTransactionManagers() throws Exception {
 		ApplicationContext applicationContext = new AnnotationConfigApplicationContext(BatchConfigurationWithDataSourceAndMultipleTransactionManagers.class);
 		PlatformTransactionManager platformTransactionManager = applicationContext.getBean(PlatformTransactionManager.class);
-		Assert.assertSame(transactionManager2, platformTransactionManager);
+		Assertions.assertSame(transactionManager2, platformTransactionManager);
 		// In this case, the supplied primary transaction manager won't be used by batch and a DataSourceTransactionManager will be used instead.
 		// The user has to provide a custom BatchConfigurer.
-		Assert.assertTrue(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)) instanceof DataSourceTransactionManager);
+		Assertions.assertTrue(getTransactionManagerSetOnJobRepository(applicationContext.getBean(JobRepository.class)) instanceof DataSourceTransactionManager);
 
 	}
 

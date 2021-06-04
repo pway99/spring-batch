@@ -15,20 +15,21 @@
  */
 package org.springframework.batch.core.explore.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-
 import javax.sql.DataSource;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Dave Syer
@@ -43,7 +44,7 @@ public class JobExplorerFactoryBeanTests {
 
 	private String tablePrefix = "TEST_BATCH_PREFIX_";
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		factory = new JobExplorerFactoryBean();
@@ -52,24 +53,24 @@ public class JobExplorerFactoryBeanTests {
 		factory.setTablePrefix(tablePrefix);
 
 	}
-	
-	
+
+
 	@Test
 	public void testDefaultJdbcOperations() throws Exception {
-		
+
 		factory.afterPropertiesSet();
 		JdbcOperations jdbcOperations = (JdbcOperations) ReflectionTestUtils.getField(factory, "jdbcOperations");
 		assertTrue(jdbcOperations instanceof JdbcTemplate);
-	}	
+	}
 
 	@Test
 	public void testCustomJdbcOperations() throws Exception {
-		
+
 		JdbcOperations customJdbcOperations = mock(JdbcOperations.class);
 		factory.setJdbcOperations(customJdbcOperations);
 		factory.afterPropertiesSet();
 		assertEquals(customJdbcOperations, ReflectionTestUtils.getField(factory, "jdbcOperations"));
-	}		
+	}
 
 	@Test
 	public void testMissingDataSource() throws Exception {
@@ -82,7 +83,7 @@ public class JobExplorerFactoryBeanTests {
 		catch (IllegalArgumentException ex) {
 			// expected
 			String message = ex.getMessage();
-			assertTrue("Wrong message: " + message, message.indexOf("DataSource") >= 0);
+			assertTrue(message.indexOf("DataSource") >= 0, "Wrong message: " + message);
 		}
 
 	}

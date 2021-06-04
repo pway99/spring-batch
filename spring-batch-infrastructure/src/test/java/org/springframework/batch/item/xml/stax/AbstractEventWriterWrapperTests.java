@@ -15,37 +15,39 @@
  */
 package org.springframework.batch.item.xml.stax;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import javax.xml.namespace.NamespaceContext;
 import javax.xml.stream.XMLEventReader;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.events.XMLEvent;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Lucas Ward
  * @author Will Schipp
  * 
  */
-public class AbstractEventWriterWrapperTests extends TestCase {
+public class AbstractEventWriterWrapperTests {
 
 	AbstractEventWriterWrapper eventWriterWrapper;
 
 	XMLEventWriter xmlEventWriter;
 
-    @Override
-	protected void setUp() throws Exception {
-		super.setUp();
+ @BeforeEach
+	public void setUp() throws Exception {
 
 		xmlEventWriter = mock(XMLEventWriter.class);
 		eventWriterWrapper = new StubEventWriter(xmlEventWriter);
 	}
 
-	public void testAdd() throws XMLStreamException {
+	@Test
+ public void testAdd() throws XMLStreamException {
 
 		XMLEvent event =  mock(XMLEvent.class);
 		xmlEventWriter.add(event);
@@ -53,49 +55,57 @@ public class AbstractEventWriterWrapperTests extends TestCase {
 
 	}
 
-	public void testAddReader() throws XMLStreamException {
+	@Test
+ public void testAddReader() throws XMLStreamException {
 
 		XMLEventReader reader = mock(XMLEventReader.class);
 		xmlEventWriter.add(reader);
 		eventWriterWrapper.add(reader);
 	}
 
-	public void testClose() throws XMLStreamException {
+	@Test
+ public void testClose() throws XMLStreamException {
 		xmlEventWriter.close();
 		eventWriterWrapper.close();
 	}
 
-	public void testFlush() throws XMLStreamException {
+	@Test
+ public void testFlush() throws XMLStreamException {
 		xmlEventWriter.flush();
 		eventWriterWrapper.flush();
 	}
 
-	public void testGetNamespaceContext() {
+	@Test
+ public void testGetNamespaceContext() {
 		NamespaceContext context = mock(NamespaceContext.class);
 		when(xmlEventWriter.getNamespaceContext()).thenReturn(context);
 		assertEquals(eventWriterWrapper.getNamespaceContext(), context);
 	}
 
-	public void testGetPrefix() throws XMLStreamException {
+	@Test
+ public void testGetPrefix() throws XMLStreamException {
 		String uri = "uri";
 		when(xmlEventWriter.getPrefix(uri)).thenReturn(uri);
 		assertEquals(eventWriterWrapper.getPrefix(uri), uri);
 	}
 
-	public void testSetDefaultNamespace() throws XMLStreamException {
+	@Test
+ public void testSetDefaultNamespace() throws XMLStreamException {
 		String uri = "uri";
 		xmlEventWriter.setDefaultNamespace(uri);
 		eventWriterWrapper.setDefaultNamespace(uri);
 	}
 
-	public void testSetNamespaceContext() throws XMLStreamException {
+	@Test
+ public void testSetNamespaceContext() throws XMLStreamException {
 
 		NamespaceContext context = mock(NamespaceContext.class);
 		xmlEventWriter.setNamespaceContext(context);
 		eventWriterWrapper.setNamespaceContext(context);
 	}
 
-	public void testSetPrefix() throws XMLStreamException {
+	@Test
+ public void testSetPrefix() throws XMLStreamException {
 
 		String uri = "uri";
 		String prefix = "prefix";
