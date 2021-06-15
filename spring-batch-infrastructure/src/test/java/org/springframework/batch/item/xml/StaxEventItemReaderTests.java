@@ -32,8 +32,9 @@ import javax.xml.stream.events.EndElement;
 import javax.xml.stream.events.StartElement;
 import javax.xml.stream.events.XMLEvent;
 import javax.xml.transform.Source;
+
+import org.hamcrest.MatcherAssert;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
@@ -637,7 +638,7 @@ public class StaxEventItemReaderTests {
 			reader.read();
 			fail("Should fail when XML contains DTD");
 		} catch (Exception e) {
-			Assert.assertThat(Matchers.containsString("Undeclared general entity \"entityex\""), e.getMessage());
+			MatcherAssert.assertThat(e.getMessage(), Matchers.containsString("Undeclared general entity \"entityex\""));
 		}
 	}
 

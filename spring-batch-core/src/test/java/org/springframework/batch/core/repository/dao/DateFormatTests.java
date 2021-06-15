@@ -39,13 +39,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  */
 public class DateFormatTests {
 
-	private final SimpleDateFormat format;
+	private SimpleDateFormat format;
 
-	private final String input;
+	private String input;
 
-	private final int hour;
+	private int hour;
 
-	private final String output;
+	private String output;
 
 	/**
  	 * 

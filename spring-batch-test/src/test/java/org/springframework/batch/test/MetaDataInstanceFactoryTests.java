@@ -23,6 +23,8 @@ import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.converter.DefaultJobParametersConverter;
 import org.springframework.batch.support.PropertiesConverter;
 
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 /**
  * @author Dave Syer
  *

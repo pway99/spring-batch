@@ -43,6 +43,8 @@ import org.springframework.lang.Nullable;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 @ContextConfiguration
 @ExtendWith(SpringExtension.class)
 public class StepScopeAnnotatedListenerIntegrationTests {

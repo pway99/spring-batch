@@ -15,15 +15,21 @@
  */
 package org.springframework.batch.core.test.repository;
 
-import com.mysql.cj.jdbc.MysqlDataSource;
 import java.util.Date;
 import java.util.List;
+
 import javax.sql.DataSource;
+
+import com.mysql.cj.jdbc.MysqlDataSource;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.ClassRule;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.testcontainers.containers.MySQLContainer;
+import org.testcontainers.junit.jupiter.Container;
+import org.testcontainers.junit.jupiter.Testcontainers;
+import org.testcontainers.utility.DockerImageName;
+
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -45,8 +51,6 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
-import org.testcontainers.containers.MySQLContainer;
-import org.testcontainers.utility.DockerImageName;
 
 /**
  * @author Mahmoud Ben Hassine
@@ -59,7 +63,7 @@ public class MySQLJdbcJobRepositoryIntegrationTests {
 	// when implementing https://github.com/spring-projects/spring-batch/issues/3092
 	private static final DockerImageName MYSQL_IMAGE = DockerImageName.parse("mysql:8.0.24");
 
-	@ClassRule
+	@Container
 	public static MySQLContainer<?> mysql = new MySQLContainer<>(MYSQL_IMAGE);
 
 	@Autowired

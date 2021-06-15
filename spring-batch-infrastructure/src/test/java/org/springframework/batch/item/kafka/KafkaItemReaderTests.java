@@ -30,17 +30,22 @@ import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.ClassRule;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.item.ExecutionContext;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.support.SendResult;
-import org.springframework.kafka.test.rule.EmbeddedKafkaRule;
+import org.springframework.kafka.test.EmbeddedKafkaBroker;
+import org.springframework.kafka.test.context.EmbeddedKafka;
 import org.springframework.kafka.test.utils.KafkaTestUtils;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.concurrent.ListenableFuture;
 
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -51,18 +56,21 @@ import static org.junit.jupiter.api.Assertions.fail;
  * @author Mathieu Ouellet
  * @author Mahmoud Ben Hassine
  */
+@EmbeddedKafka
+@ExtendWith(SpringExtension.class)
+@TestInstance(TestInstance.Lifecycle.PER_CLASS)
 public class KafkaItemReaderTests {
 
-	@ClassRule
-	public static EmbeddedKafkaRule embeddedKafka = new EmbeddedKafkaRule(1);
+	@Autowired
+	private EmbeddedKafkaBroker embeddedKafkaBroker;
 
 	private KafkaItemReader<String, String> reader;
 	private KafkaTemplate<String, String> template;
 	private Properties consumerProperties;
 
 	@BeforeAll
-	public static void setUpTopics() {
-		embeddedKafka.getEmbeddedKafka().addTopics(
+	public void setUpTopics() {
+		embeddedKafkaBroker.addTopics(
 				new NewTopic("topic1", 1, (short) 1),
 				new NewTopic("topic2", 2, (short) 1),
 				new NewTopic("topic3", 1, (short) 1),
@@ -74,13 +82,13 @@ public class KafkaItemReaderTests {
 
 	@BeforeEach
 	public void setUp() {
-		Map<String, Object> producerProperties = KafkaTestUtils.producerProps(embeddedKafka.getEmbeddedKafka());
+		Map<String, Object> producerProperties = KafkaTestUtils.producerProps(embeddedKafkaBroker);
 		ProducerFactory<String, String> producerFactory = new DefaultKafkaProducerFactory<>(producerProperties);
 		this.template = new KafkaTemplate<>(producerFactory);
 
 		this.consumerProperties = new Properties();
 		this.consumerProperties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
-				embeddedKafka.getEmbeddedKafka().getBrokersAsString());
+				embeddedKafkaBroker.getBrokersAsString());
 		this.consumerProperties.setProperty(ConsumerConfig.GROUP_ID_CONFIG, "1");
 		this.consumerProperties.setProperty(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
 				StringDeserializer.class.getName());
@@ -107,7 +115,7 @@ public class KafkaItemReaderTests {
 		}
 
 		Properties consumerProperties = new Properties();
-		consumerProperties.put("bootstrap.servers", embeddedKafka.getEmbeddedKafka());
+		consumerProperties.put("bootstrap.servers", embeddedKafkaBroker);
 		try {
 			new KafkaItemReader<>(consumerProperties, "topic", 0);
 			fail("Expected exception was not thrown");
@@ -279,7 +287,7 @@ public class KafkaItemReaderTests {
 
 		// The offset stored in Kafka should be equal to 2 at this point
 		OffsetAndMetadata currentOffset = KafkaTestUtils.getCurrentOffset(
-				embeddedKafka.getEmbeddedKafka().getBrokersAsString(),
+				embeddedKafkaBroker.getBrokersAsString(),
 				"1", "topic6",
 				0);
 		assertEquals(2, currentOffset.offset());

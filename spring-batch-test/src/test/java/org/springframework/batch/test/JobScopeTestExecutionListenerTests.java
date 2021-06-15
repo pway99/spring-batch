@@ -24,6 +24,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestContext;
 import org.springframework.test.context.TestContextManager;
 
+import static org.junit.jupiter.api.Assertions.*;
+
 /**
  * @author Dave Syer
  * @since 2.1

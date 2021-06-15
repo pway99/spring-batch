@@ -17,7 +17,8 @@ package org.springframework.batch.test;
 
 import java.util.Arrays;
 import javax.sql.DataSource;
-import org.junit.Assert;
+
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -84,16 +85,16 @@ public class SpringBatchTestJUnit4Tests {
 
 	@Test
 	public void testStepScopedItemReader() throws Exception {
-		Assert.assertEquals("foo", this.stepScopedItemReader.read());
-		Assert.assertEquals("bar", this.stepScopedItemReader.read());
-		Assert.assertNull(this.stepScopedItemReader.read());
+		Assertions.assertEquals("foo", this.stepScopedItemReader.read());
+		Assertions.assertEquals("bar", this.stepScopedItemReader.read());
+		Assertions.assertNull(this.stepScopedItemReader.read());
 	}
 
 	@Test
 	public void testJobScopedItemReader() throws Exception {
-		Assert.assertEquals("foo", this.jobScopedItemReader.read());
-		Assert.assertEquals("bar", this.jobScopedItemReader.read());
-		Assert.assertNull(this.jobScopedItemReader.read());
+		Assertions.assertEquals("foo", this.jobScopedItemReader.read());
+		Assertions.assertEquals("bar", this.jobScopedItemReader.read());
+		Assertions.assertNull(this.jobScopedItemReader.read());
 	}
 
 	@Test
@@ -102,7 +103,7 @@ public class SpringBatchTestJUnit4Tests {
 		JobExecution jobExecution = this.jobLauncherTestUtils.launchJob();
 
 		// then
-		Assert.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
+		Assertions.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
 	}
 
 	@Configuration

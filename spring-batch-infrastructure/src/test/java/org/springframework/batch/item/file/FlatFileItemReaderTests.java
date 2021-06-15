@@ -17,6 +17,8 @@ package org.springframework.batch.item.file;
 
 import java.io.IOException;
 import java.io.InputStream;
+
+import org.hamcrest.MatcherAssert;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
@@ -472,8 +474,8 @@ public class FlatFileItemReaderTests {
 			assertEquals(2, expected.getLineNumber());
 			assertEquals("testLine2", expected.getInput());
 			assertEquals("Couldn't map line 2", expected.getCause().getMessage());
-			assertThat(expected.getMessage(), startsWith("Parsing error at line: 2 in resource=["));
-			assertThat(expected.getMessage(), endsWith("], input=[testLine2]"));
+			MatcherAssert.assertThat(expected.getMessage(), startsWith("Parsing error at line: 2 in resource=["));
+			MatcherAssert.assertThat(expected.getMessage(), endsWith("], input=[testLine2]"));
 		}
 	}
 

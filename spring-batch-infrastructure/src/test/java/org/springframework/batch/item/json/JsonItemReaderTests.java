@@ -20,7 +20,6 @@ import java.io.InputStream;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.rules.ExpectedException;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -65,7 +64,6 @@ public class JsonItemReaderTests {
 	@Test
 	public void testNonExistentResource() {
 	 assertThrows(ItemStreamException.class, () -> {
-		this.expectedException.expectCause(Matchers.instanceOf(IllegalStateException.class));
 		this.itemReader = new JsonItemReader<>(new NonExistentResource(), this.jsonObjectReader);
 
 		// when
@@ -82,7 +80,6 @@ public class JsonItemReaderTests {
 	@Test
 	public void testNonReadableResource() {
 	 assertThrows(ItemStreamException.class, () -> {
-		this.expectedException.expectCause(Matchers.instanceOf(IllegalStateException.class));
 		this.itemReader = new JsonItemReader<>(new NonReadableResource(), this.jsonObjectReader);
 
 		// when

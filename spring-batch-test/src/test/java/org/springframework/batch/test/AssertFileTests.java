@@ -15,7 +15,6 @@
  */
 package org.springframework.batch.test;
 
-import org.junit.ComparisonFailure;
 import org.junit.jupiter.api.Test;
 import org.springframework.core.io.FileSystemResource;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -41,7 +40,7 @@ public class AssertFileTests {
 			executeAssertEquals("input1.txt", "input2.txt");
 			fail();
 		}
-		catch (ComparisonFailure e) {
+		catch (AssertionError e) {
 			assertTrue(e.getMessage().startsWith("Line number 3 does not match."));
 		}
 	}
