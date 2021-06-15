@@ -16,20 +16,14 @@
 
 package org.springframework.batch.core.repository.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -41,6 +35,12 @@ import org.springframework.batch.core.step.StepSupport;
 import org.springframework.dao.OptimisticLockingFailureException;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link StepExecutionDao} implementations.
@@ -71,7 +71,7 @@ public abstract class AbstractStepExecutionDaoTests extends AbstractTransactiona
 	 */
 	protected abstract JobRepository getJobRepository();
 
-	@Before
+	@BeforeEach
 	public void onSetUp() throws Exception {
 		repository = getJobRepository();
 		jobExecution = repository.createJobExecution("job", new JobParameters());
@@ -187,9 +187,11 @@ public abstract class AbstractStepExecutionDaoTests extends AbstractTransactiona
 	}
 
 	@Transactional
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSaveNullCollectionThrowsException() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		dao.saveStepExecutions(null);
+	 });
 	}
 
 	@Transactional
@@ -315,7 +317,7 @@ public abstract class AbstractStepExecutionDaoTests extends AbstractTransactiona
 	public void testGetStepExecutionsWhenNoneExist() throws Exception {
 		int count = jobExecution.getStepExecutions().size();
 		dao.addStepExecutions(jobExecution);
-		assertEquals("Incorrect size of collection", count, jobExecution.getStepExecutions().size());
+		assertEquals(count, jobExecution.getStepExecutions().size(), "Incorrect size of collection");
 	}
 
 	private void assertStepExecutionsAreEqual(StepExecution expected, StepExecution actual) {

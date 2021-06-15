@@ -15,22 +15,21 @@
  */
 package org.springframework.batch.core.step.job;
 
-import static org.junit.Assert.*;
-
 import java.util.Date;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
  *
  */
 public class DefaultJobParametersExtractorTests {
-	
+
 	private DefaultJobParametersExtractor extractor = new DefaultJobParametersExtractor();
 	private StepExecution stepExecution = new StepExecution("step", new JobExecution(0L));
 
@@ -103,8 +102,8 @@ public class DefaultJobParametersExtractorTests {
 
 		String jobParams = jobParameters.toString();
 
-		assertTrue("Job parameters must contain parentParam=val", jobParams.contains("parentParam=val"));
-		assertTrue("Job parameters must contain foo=11.1", jobParams.contains("foo=11.1"));
+		assertTrue(jobParams.contains("parentParam=val"), "Job parameters must contain parentParam=val");
+		assertTrue(jobParams.contains("foo=11.1"), "Job parameters must contain foo=11.1");
 	}
 
 	@Test

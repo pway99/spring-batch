@@ -19,12 +19,10 @@ import java.util.Arrays;
 import java.util.List;
 import javax.persistence.EntityManagerFactory;
 import javax.sql.DataSource;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.item.sample.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -39,14 +37,13 @@ import org.springframework.orm.jpa.persistenceunit.PersistenceUnitManager;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import static org.junit.Assert.assertEquals;
-
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = JpaItemWriterIntegrationTests.JpaConfiguration.class)
 @Transactional
 @DirtiesContext
@@ -58,12 +55,12 @@ public class JpaItemWriterIntegrationTests {
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
-	@Before
+	@BeforeEach
 	public void init() {
 		this.jdbcTemplate.update("create table person (id int not null primary key, name varchar(32))");
 	}
 
-	@After
+	@AfterEach
 	public void destroy() {
 		JdbcTestUtils.dropTables(this.jdbcTemplate, "person");
 	}

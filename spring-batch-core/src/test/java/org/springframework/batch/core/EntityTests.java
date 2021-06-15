@@ -15,27 +15,34 @@
  */
 package org.springframework.batch.core;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
  *
  */
-public class EntityTests extends TestCase {
+public class EntityTests {
 
 	Entity entity = new Entity(new Long(11));
-	
+
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#hashCode()}.
-	 */
-	public void testHashCode() {
+ 	 * Test method for {@link org.springframework.batch.core.Entity#hashCode()}.
+ 	 */
+	@Test
+ public void testHashCode() {
 		assertEquals(entity.hashCode(), new Entity(entity.getId()).hashCode());
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#hashCode()}.
-	 */
-	public void testHashCodeNullId() {
+ 	 * Test method for {@link org.springframework.batch.core.Entity#hashCode()}.
+ 	 */
+	@Test
+ public void testHashCodeNullId() {
 		int withoutNull = entity.hashCode();
 		entity.setId(null);
 		int withNull = entity.hashCode();
@@ -43,86 +50,97 @@ public class EntityTests extends TestCase {
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#getVersion()}.
-	 */
-	public void testGetVersion() {
+ 	 * Test method for {@link org.springframework.batch.core.Entity#getVersion()}.
+ 	 */
+	@Test
+ public void testGetVersion() {
 		assertEquals(null, entity.getVersion());
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#getVersion()}.
-	 */
-	public void testIncrementVersion() {
+ 	 * Test method for {@link org.springframework.batch.core.Entity#getVersion()}.
+ 	 */
+	@Test
+ public void testIncrementVersion() {
 		entity.incrementVersion();
 		assertEquals(new Integer(0), entity.getVersion());
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#getVersion()}.
-	 */
-	public void testIncrementVersionTwice() {
+ 	 * Test method for {@link org.springframework.batch.core.Entity#getVersion()}.
+ 	 */
+	@Test
+ public void testIncrementVersionTwice() {
 		entity.incrementVersion();
 		entity.incrementVersion();
 		assertEquals(new Integer(1), entity.getVersion());
 	}
 
 	/**
-	 * @throws Exception
-	 */
-	public void testToString() throws Exception {
+ 	 * @throws Exception
+ 	 */
+	@Test
+ public void testToString() throws Exception {
 		Entity job = new Entity();
 		assertTrue(job.toString().indexOf("id=null") >= 0);
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
-	 */
-	public void testEqualsSelf() {
-		assertEquals(entity, entity);		
+ 	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
+ 	 */
+	@Test
+ public void testEqualsSelf() {
+		assertEquals(entity, entity);
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
-	 */
-	public void testEqualsSelfWithNullId() {
+ 	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
+ 	 */
+	@Test
+ public void testEqualsSelfWithNullId() {
 		entity = new Entity(null);
-		assertEquals(entity, entity);		
+		assertEquals(entity, entity);
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
-	 */
-	public void testEqualsEntityWithNullId() {
+ 	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
+ 	 */
+	@Test
+ public void testEqualsEntityWithNullId() {
 		entity = new Entity(null);
-		assertNotSame(entity, new Entity(null));		
+		assertNotSame(entity, new Entity(null));
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
-	 */
-	public void testEqualsEntity() {
-		assertEquals(entity, new Entity(entity.getId()));		
+ 	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
+ 	 */
+	@Test
+ public void testEqualsEntity() {
+		assertEquals(entity, new Entity(entity.getId()));
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
-	 */
-	public void testEqualsEntityWrongId() {
-		assertFalse(entity.equals(new Entity()));		
+ 	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
+ 	 */
+	@Test
+ public void testEqualsEntityWrongId() {
+		assertFalse(entity.equals(new Entity()));
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
-	 */
-	public void testEqualsObject() {
-		assertFalse(entity.equals(new Object()));		
+ 	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
+ 	 */
+	@Test
+ public void testEqualsObject() {
+		assertFalse(entity.equals(new Object()));
 	}
-	
+
 	/**
-	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
-	 */
-	public void testEqualsNull() {
-		assertFalse(entity.equals(null));		
+ 	 * Test method for {@link org.springframework.batch.core.Entity#equals(java.lang.Object)}.
+ 	 */
+	@Test
+ public void testEqualsNull() {
+		assertFalse(entity.equals(null));
 	}
 
 }

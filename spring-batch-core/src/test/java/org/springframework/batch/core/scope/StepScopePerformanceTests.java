@@ -17,10 +17,10 @@ package org.springframework.batch.core.scope;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.scope.context.StepSynchronizationManager;
@@ -30,11 +30,11 @@ import org.springframework.beans.BeansException;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StopWatch;
 
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class StepScopePerformanceTests implements ApplicationContextAware {
 
 	private Log logger = LogFactory.getLog(getClass());
@@ -48,7 +48,7 @@ public class StepScopePerformanceTests implements ApplicationContextAware {
 
 	}
 
-	@Before
+	@BeforeEach
 	public void start() throws Exception {
 		int count = doTest("vanilla", "warmup");
 		logger.info("Item count: "+count);
@@ -56,7 +56,7 @@ public class StepScopePerformanceTests implements ApplicationContextAware {
 		StepSynchronizationManager.register(new StepExecution("step", new JobExecution(0L),1L));
 	}
 
-	@After
+	@AfterEach
 	public void cleanup() {
 		StepSynchronizationManager.close();
 	}

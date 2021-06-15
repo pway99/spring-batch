@@ -1,17 +1,14 @@
 package org.springframework.batch.integration.retry;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.support.transaction.TransactionAwareProxyFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,11 +17,12 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.context.Lifecycle;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StringUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class RetryTransactionalPollingIntegrationTests implements ApplicationContextAware {
 
 	private Log logger = LogFactory.getLog(getClass());
@@ -45,7 +43,7 @@ public class RetryTransactionalPollingIntegrationTests implements ApplicationCon
 
 	private static AtomicInteger count = new AtomicInteger(0);
 
-	@Before
+	@BeforeEach
 	public void clearLists() {
 		list.clear();
 		count.set(0);

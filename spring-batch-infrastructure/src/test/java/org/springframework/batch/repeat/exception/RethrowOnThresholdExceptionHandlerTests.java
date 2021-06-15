@@ -16,16 +16,14 @@
 
 package org.springframework.batch.repeat.exception;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
-
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicInteger;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.context.RepeatContextSupport;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class RethrowOnThresholdExceptionHandlerTests {
 

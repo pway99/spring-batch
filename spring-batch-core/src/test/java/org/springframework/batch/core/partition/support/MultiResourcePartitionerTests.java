@@ -16,34 +16,35 @@
 package org.springframework.batch.core.partition.support;
 
 import java.util.Map;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.core.io.support.ResourceArrayPropertyEditor;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class MultiResourcePartitionerTests {
 
 	private MultiResourcePartitioner partitioner = new MultiResourcePartitioner();
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		ResourceArrayPropertyEditor editor = new ResourceArrayPropertyEditor();
 		editor.setAsText("classpath:jsrBaseContext.xml");
 		partitioner.setResources((Resource[]) editor.getValue());
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testMissingResource() {
-		partitioner.setResources(new Resource[] { new FileSystemResource("does-not-exist") });
+	 assertThrows(IllegalStateException.class, () -> {
+		partitioner.setResources(new Resource[]{new FileSystemResource("does-not-exist")});
 		partitioner.partition(0);
+	 });
 	}
 
 	@Test

@@ -21,16 +21,12 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ChunkListener;
@@ -71,17 +67,15 @@ import org.springframework.scheduling.concurrent.ConcurrentTaskExecutor;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.util.StringUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link FaultTolerantStepFactoryBean}.
  */
 public class FaultTolerantStepFactoryBeanTests {
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -110,7 +104,7 @@ public class FaultTolerantStepFactoryBeanTests {
 	}
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		factory = new FaultTolerantStepFactoryBean<>();
 
@@ -143,24 +137,22 @@ public class FaultTolerantStepFactoryBeanTests {
 
 	@Test
 	public void testMandatoryReader() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		factory = new FaultTolerantStepFactoryBean<>();
 		factory.setItemWriter(writer);
 
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("ItemReader must be provided");
-
 		factory.getObject();
+	 }, "ItemReader must be provided");
 	}
 
 	@Test
 	public void testMandatoryWriter() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		factory = new FaultTolerantStepFactoryBean<>();
 		factory.setItemReader(reader);
 
-		expectedException.expect(IllegalStateException.class);
-		expectedException.expectMessage("ItemWriter must be provided");
-
 		factory.getObject();
+	 }, "ItemWriter must be provided");
 	}
 
 	/**
@@ -454,7 +446,7 @@ public class FaultTolerantStepFactoryBeanTests {
 
 		step.execute(stepExecution);
 		String message = stepExecution.getFailureExceptions().get(0).getCause().getMessage();
-		assertEquals("Wrong message: ", "Ouch!", message);
+		assertEquals("Ouch!", message, "Wrong message: ");
 		assertStepExecutionsAreEqual(stepExecution, repository.getLastStepExecution(jobExecution.getJobInstance(), step
 				.getName()));
 	}
@@ -716,9 +708,9 @@ public class FaultTolerantStepFactoryBeanTests {
 
 		step.execute(stepExecution);
 		assertEquals(BatchStatus.FAILED, stepExecution.getStatus());
-		assertEquals("bad skip count", 3, stepExecution.getSkipCount());
-		assertEquals("bad read skip count", 2, stepExecution.getReadSkipCount());
-		assertEquals("bad write skip count", 1, stepExecution.getWriteSkipCount());
+		assertEquals(3, stepExecution.getSkipCount(), "bad skip count");
+		assertEquals(2, stepExecution.getReadSkipCount(), "bad read skip count");
+		assertEquals(1, stepExecution.getWriteSkipCount(), "bad write skip count");
 
 		// writer did not skip "6" as it never made it to writer, only "4" did
 		assertFalse(reader.getRead().contains("6"));
@@ -840,7 +832,7 @@ public class FaultTolerantStepFactoryBeanTests {
 
 		assertEquals(BatchStatus.COMPLETED, stepExecution.getStatus());
 		for (int i = 1; i <= 6; i++) {
-			assertTrue("didn't call listener " + i, listenerCalls.contains(i));
+			assertTrue(listenerCalls.contains(i), "didn't call listener " + i);
 		}
 	}
 

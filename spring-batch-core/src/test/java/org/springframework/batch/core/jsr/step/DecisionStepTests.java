@@ -17,19 +17,15 @@ package org.springframework.batch.core.jsr.step;
 
 import java.util.List;
 import java.util.Properties;
-
 import javax.batch.api.Decider;
 import javax.batch.runtime.BatchRuntime;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.JobExecution;
 import javax.batch.runtime.StepExecution;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.jsr.AbstractJsrTestCase;
 import org.springframework.util.Assert;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DecisionStepTests extends AbstractJsrTestCase {
 
@@ -77,7 +73,7 @@ public class DecisionStepTests extends AbstractJsrTestCase {
 	@Test
 	public void testDecisionAfterFlow() throws Exception {
 		JobExecution execution = runJob("DecisionStepTests-decisionAfterFlow-context", new Properties(), 10000L);
-		assertEquals(execution.getExitStatus(), BatchStatus.COMPLETED, execution.getBatchStatus());
+		assertEquals(BatchStatus.COMPLETED, execution.getBatchStatus(), execution.getExitStatus());
 		assertEquals(3, BatchRuntime.getJobOperator().getStepExecutions(execution.getExecutionId()).size());
 	}
 

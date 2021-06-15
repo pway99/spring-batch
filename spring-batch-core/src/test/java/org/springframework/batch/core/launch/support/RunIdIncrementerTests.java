@@ -15,11 +15,12 @@
  */
 package org.springframework.batch.core.launch.support;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Dave Syer
@@ -66,11 +67,13 @@ public class RunIdIncrementerTests {
 		assertEquals(Long.valueOf(6), next.getLong("run.id"));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testGetNextWhenRunIdIsInvalidString() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		this.incrementer.getNext(new JobParametersBuilder()
-				.addString("run.id", "foo")
-				.toJobParameters());
+		.addString("run.id", "foo")
+		.toJobParameters());
+	 });
 	}
 
 }

@@ -19,7 +19,7 @@ package org.springframework.batch.item.database.support;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.item.database.orm.JpaNativeQueryProvider;
 import org.springframework.batch.item.sample.Foo;

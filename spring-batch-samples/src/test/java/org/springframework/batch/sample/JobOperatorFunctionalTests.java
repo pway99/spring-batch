@@ -15,19 +15,14 @@
  */
 package org.springframework.batch.sample;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -36,9 +31,12 @@ import org.springframework.batch.core.configuration.support.ReferenceJobFactory;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/simple-job-launcher-context.xml", "/jobs/infiniteLoopJob.xml" })
 public class JobOperatorFunctionalTests {
 	private static final Log LOG = LogFactory.getLog(JobOperatorFunctionalTests.class);
@@ -52,7 +50,7 @@ public class JobOperatorFunctionalTests {
 	@Autowired
 	private JobRegistry jobRegistry;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		if (!jobRegistry.getJobNames().contains(job.getName())) {
 			jobRegistry.register(new ReferenceJobFactory(job));
@@ -90,8 +88,8 @@ public class JobOperatorFunctionalTests {
 		Thread.sleep(1000);
 
 		Set<Long> runningExecutions = operator.getRunningExecutions(job.getName());
-		assertTrue("Wrong executions: " + runningExecutions + " expected: " + executionId, runningExecutions
-				.contains(executionId));
+		assertTrue(runningExecutions
+		.contains(executionId), "Wrong executions: " + runningExecutions + " expected: " + executionId);
 		assertTrue("Wrong summary: " + operator.getSummary(executionId), operator.getSummary(executionId).contains(
 				BatchStatus.STARTED.toString()));
 
@@ -105,8 +103,8 @@ public class JobOperatorFunctionalTests {
 		}
 
 		runningExecutions = operator.getRunningExecutions(job.getName());
-		assertFalse("Wrong executions: " + runningExecutions + " expected: " + executionId, runningExecutions
-				.contains(executionId));
+		assertFalse(runningExecutions
+		.contains(executionId), "Wrong executions: " + runningExecutions + " expected: " + executionId);
 		assertTrue("Wrong summary: " + operator.getSummary(executionId), operator.getSummary(executionId).contains(
 				BatchStatus.STOPPED.toString()));
 

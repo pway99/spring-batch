@@ -23,17 +23,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
-
 import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.consumer.OffsetAndMetadata;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.junit.Before;
-import org.junit.BeforeClass;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.ClassRule;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.kafka.core.DefaultKafkaProducerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
@@ -45,10 +43,9 @@ import org.springframework.util.concurrent.ListenableFuture;
 
 import static org.hamcrest.Matchers.containsInAnyOrder;
 import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mathieu Ouellet
@@ -63,7 +60,7 @@ public class KafkaItemReaderTests {
 	private KafkaTemplate<String, String> template;
 	private Properties consumerProperties;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setUpTopics() {
 		embeddedKafka.getEmbeddedKafka().addTopics(
 				new NewTopic("topic1", 1, (short) 1),
@@ -75,7 +72,7 @@ public class KafkaItemReaderTests {
 		);
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Map<String, Object> producerProperties = KafkaTestUtils.producerProps(embeddedKafka.getEmbeddedKafka());
 		ProducerFactory<String, String> producerFactory = new DefaultKafkaProducerFactory<>(producerProperties);
@@ -286,7 +283,7 @@ public class KafkaItemReaderTests {
 				"1", "topic6",
 				0);
 		assertEquals(2, currentOffset.offset());
-		
+
 		// second run (with same consumer group ID): new messages arrived since the last run.
 
 		this.template.sendDefault("val2"); // <-- offset 2

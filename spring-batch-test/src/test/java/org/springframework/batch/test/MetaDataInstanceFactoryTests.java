@@ -15,11 +15,9 @@
  */
 package org.springframework.batch.test;
 
-import static org.junit.Assert.assertNotNull;
-
 import java.util.Arrays;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.converter.DefaultJobParametersConverter;

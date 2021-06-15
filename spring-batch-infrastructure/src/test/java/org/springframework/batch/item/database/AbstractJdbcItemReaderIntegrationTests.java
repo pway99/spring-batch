@@ -15,15 +15,10 @@
  */
 package org.springframework.batch.item.database;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 import javax.sql.DataSource;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
@@ -33,6 +28,9 @@ import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Common scenarios for testing {@link ItemReader} implementations which read data from database.
@@ -45,7 +43,7 @@ public abstract class AbstractJdbcItemReaderIntegrationTests {
 	protected ItemReader<Foo> itemReader;
 
 	protected ExecutionContext executionContext;
-	
+
 	protected abstract ItemReader<Foo> createItemReader() throws Exception;
 
 	protected DataSource dataSource;
@@ -58,14 +56,14 @@ public abstract class AbstractJdbcItemReaderIntegrationTests {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Before
+	@BeforeEach
 	public void onSetUp()throws Exception{
 		itemReader = createItemReader();
 		getAsInitializingBean(itemReader).afterPropertiesSet();
 		executionContext = new ExecutionContext();
 	}
 
-	@After
+	@AfterEach
 	public void onTearDown()throws Exception {
 		getAsDisposableBean(itemReader).destroy();
 	}

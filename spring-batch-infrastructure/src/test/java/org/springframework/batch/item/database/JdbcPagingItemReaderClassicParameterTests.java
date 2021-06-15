@@ -20,15 +20,13 @@ import java.sql.SQLException;
 import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.item.database.support.HsqlPagingQueryProvider;
 import org.springframework.batch.item.sample.Foo;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 /**
@@ -37,13 +35,13 @@ import org.springframework.test.util.ReflectionTestUtils;
  * @author Michael Minella
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/org/springframework/batch/item/database/JdbcPagingItemReaderParameterTests-context.xml")
 public class JdbcPagingItemReaderClassicParameterTests extends AbstractJdbcPagingItemReaderParameterTests {
 
 	// force jumpToItemQuery in JdbcPagingItemReader.doJumpToPage(int)
 	private static boolean forceJumpToItemQuery = false;
-	
+
     @Override
 	protected AbstractPagingItemReader<Foo> getItemReader() throws Exception {
 		JdbcPagingItemReader<Foo> reader = new JdbcPagingItemReader<Foo>() {
@@ -84,20 +82,20 @@ public class JdbcPagingItemReaderClassicParameterTests extends AbstractJdbcPagin
 		return reader;
 
 	}
-    
+
 	@Test
-	public void testReadAfterJumpSecondPageWithJumpToItemQuery() throws Exception {		
+	public void testReadAfterJumpSecondPageWithJumpToItemQuery() throws Exception {
 		try {
 			forceJumpToItemQuery = true;
 			super.testReadAfterJumpSecondPage();
 		} finally {
-			forceJumpToItemQuery = false;	
+			forceJumpToItemQuery = false;
 		}
 	}
-    
+
     @Override
     protected String getName() {
     	return "JdbcPagingItemReader";
-    }    
+    }
 
 }

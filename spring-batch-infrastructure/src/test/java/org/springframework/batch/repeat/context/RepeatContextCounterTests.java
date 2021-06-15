@@ -16,26 +16,32 @@
 
 package org.springframework.batch.repeat.context;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.repeat.RepeatContext;
 
-public class RepeatContextCounterTests extends TestCase {
-	
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
+public class RepeatContextCounterTests {
+
 	RepeatContext parent = new RepeatContextSupport(null);
 	RepeatContext context = new RepeatContextSupport(parent);
-	
-	public void testAttributeCreated() {
+
+	@Test
+ public void testAttributeCreated() {
 		new RepeatContextCounter(context, "FOO");
 		assertTrue(context.hasAttribute("FOO"));
 	}
-	
-	public void testAttributeCreatedWithNullParent() {
+
+	@Test
+ public void testAttributeCreatedWithNullParent() {
 		new RepeatContextCounter(parent, "FOO", true);
 		assertTrue(parent.hasAttribute("FOO"));
 	}
-	
-	public void testVanillaIncrement() throws Exception {
+
+	@Test
+ public void testVanillaIncrement() throws Exception {
 		RepeatContextCounter counter = new RepeatContextCounter(context, "FOO");
 		assertEquals(0, counter.getCount());
 		counter.increment(1);
@@ -43,14 +49,16 @@ public class RepeatContextCounterTests extends TestCase {
 		counter.increment(2);
 		assertEquals(3, counter.getCount());
 	}
-	
-	public void testAttributeCreatedInParent() throws Exception {
+
+	@Test
+ public void testAttributeCreatedInParent() throws Exception {
 		new RepeatContextCounter(context, "FOO", true);
-		assertFalse(context.hasAttribute("FOO"));		
-		assertTrue(parent.hasAttribute("FOO"));		
+		assertFalse(context.hasAttribute("FOO"));
+		assertTrue(parent.hasAttribute("FOO"));
 	}
 
-	public void testParentIncrement() throws Exception {
+	@Test
+ public void testParentIncrement() throws Exception {
 		RepeatContextCounter counter = new RepeatContextCounter(context, "FOO", true);
 		assertEquals(0, counter.getCount());
 		counter.increment(1);

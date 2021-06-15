@@ -15,23 +15,22 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dan Garrette
  * @since 2.0
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class SplitDifferentResultsFailFirstJobParserTests extends AbstractJobParserTests {
 
 	@Test
@@ -40,7 +39,7 @@ public class SplitDifferentResultsFailFirstJobParserTests extends AbstractJobPar
 		JobExecution jobExecution = createJobExecution();
 		job.execute(jobExecution);
 		assertEquals(2, stepNamesList.size());
-		assertEquals("Wrong step names: "+stepNamesList, "[fail, s1]", stepNamesList.toString());
+		assertEquals("[fail, s1]", stepNamesList.toString(), "Wrong step names: " + stepNamesList);
 
 		assertEquals(BatchStatus.FAILED, jobExecution.getStatus());
 		assertEquals(ExitStatus.FAILED, jobExecution.getExitStatus());

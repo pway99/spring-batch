@@ -15,17 +15,13 @@
  */
 package org.springframework.batch.core.repository.dao;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import java.util.List;
 
-import static org.junit.Assert.assertTrue;
-
-@RunWith(JUnit4.class)
 public class MapJobInstanceDaoTests extends AbstractJobInstanceDaoTests {
 
 	@Override
@@ -39,7 +35,7 @@ public class MapJobInstanceDaoTests extends AbstractJobInstanceDaoTests {
 		mapJobInstanceDao.createJobInstance("testJob", new JobParameters());
 		mapJobInstanceDao.createJobInstance("Jobtest", new JobParameters());
 		List<JobInstance> jobInstances = mapJobInstanceDao.findJobInstancesByName("*Job", 0, 2);
-		assertTrue("Invalid matching job instances found, expected 1, got: " + jobInstances.size(), jobInstances.size() == 1);
+		assertTrue(jobInstances.size() == 1, "Invalid matching job instances found, expected 1, got: " + jobInstances.size());
 	}
 
 	@Test
@@ -48,7 +44,7 @@ public class MapJobInstanceDaoTests extends AbstractJobInstanceDaoTests {
 		mapJobInstanceDao.createJobInstance("testJob", new JobParameters());
 		mapJobInstanceDao.createJobInstance("Jobtest", new JobParameters());
 		List<JobInstance> jobInstances = mapJobInstanceDao.findJobInstancesByName("Job*", 0, 2);
-		assertTrue("No matching job instances found, expected 1, got: " + jobInstances.size(), jobInstances.size() == 1);
+		assertTrue(jobInstances.size() == 1, "No matching job instances found, expected 1, got: " + jobInstances.size());
 	}
 
 	@Test
@@ -57,6 +53,6 @@ public class MapJobInstanceDaoTests extends AbstractJobInstanceDaoTests {
 		mapJobInstanceDao.createJobInstance("testJob", new JobParameters());
 		mapJobInstanceDao.createJobInstance("Jobtest", new JobParameters());
 		List<JobInstance> jobInstances = mapJobInstanceDao.findJobInstancesByName("*Job*", 0, 2);
-		assertTrue("No matching job instances found, expected 2, got: " + jobInstances.size(), jobInstances.size() == 2);
+		assertTrue(jobInstances.size() == 2, "No matching job instances found, expected 2, got: " + jobInstances.size());
 	}
 }

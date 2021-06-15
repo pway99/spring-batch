@@ -15,16 +15,10 @@
  */
 package org.springframework.batch.core.configuration.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Collection;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.batch.core.Job;
 import org.springframework.beans.factory.BeanCreationException;
@@ -34,6 +28,10 @@ import org.springframework.context.support.GenericApplicationContext;
 import org.springframework.core.Ordered;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * 
@@ -48,7 +46,7 @@ public class AutomaticJobRegistrarTests {
 
 	private MapJobRegistry registry = new MapJobRegistry();
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		DefaultJobLoader jobLoader = new DefaultJobLoader();
 		jobLoader.setJobRegistry(registry);
@@ -58,7 +56,7 @@ public class AutomaticJobRegistrarTests {
 	@SuppressWarnings("cast")
 	@Test
 	public void testOrderedImplemented() throws Exception {
-		
+
 		assertTrue(registrar instanceof Ordered);
 		assertEquals(Ordered.LOWEST_PRECEDENCE, registrar.getOrder());
 		registrar.setOrder(1);

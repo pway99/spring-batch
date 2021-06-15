@@ -15,22 +15,22 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
  * 
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class StopCustomStatusJobParserTests extends AbstractJobParserTests {
 
 	@Test
@@ -42,7 +42,7 @@ public class StopCustomStatusJobParserTests extends AbstractJobParserTests {
 		JobExecution jobExecution = createJobExecution();
 		job.execute(jobExecution);
 		assertEquals(1, stepNamesList.size());
-		assertEquals("Wrong steps executed: "+stepNamesList, "[stop]", stepNamesList.toString());
+		assertEquals("[stop]", stepNamesList.toString(), "Wrong steps executed: " + stepNamesList);
 
 		assertEquals(BatchStatus.STOPPED, jobExecution.getStatus());
 		assertEquals(ExitStatus.STOPPED.getExitCode(), jobExecution.getExitStatus().getExitCode());
@@ -57,8 +57,8 @@ public class StopCustomStatusJobParserTests extends AbstractJobParserTests {
 		stepNamesList.clear();
 		jobExecution = createJobExecution();
 		job.execute(jobExecution);
-		assertEquals(1, stepNamesList.size()); // step1 is not executed
-		assertEquals("Wrong steps executed: "+stepNamesList, "[s2]", stepNamesList.toString());
+		assertEquals(1, stepNamesList.size());// step1 is not executed
+		assertEquals("[s2]", stepNamesList.toString(), "Wrong steps executed: " + stepNamesList);
 
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
 		assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());

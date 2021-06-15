@@ -16,12 +16,13 @@
 
 package org.springframework.batch.item.file.transform;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.NotReadablePropertyException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dan Garrette
@@ -69,9 +70,11 @@ public class BeanWrapperFieldExtractorTests {
 		}
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testNamesPropertyMustBeSet() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		extractor.setNames(null);
 		extractor.afterPropertiesSet();
+	 });
 	}
 }

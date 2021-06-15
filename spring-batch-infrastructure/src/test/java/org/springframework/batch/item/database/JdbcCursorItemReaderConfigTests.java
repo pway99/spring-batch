@@ -19,27 +19,22 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import javax.sql.DataSource;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@RunWith(JUnit4.class)
+
 public class JdbcCursorItemReaderConfigTests {
 
 	/*
@@ -73,13 +68,13 @@ public class JdbcCursorItemReaderConfigTests {
 					}
 				});
 	}
-	
+
 	/*
 	 * Should fail if trying to call getConnection() twice
 	 */
 	@Test
 	public void testUsesItsOwnTransaction() throws Exception {
-		
+
 		DataSource ds = mock(DataSource.class);
 		Connection con = mock(Connection.class);
 		when(con.getAutoCommit()).thenReturn(false);

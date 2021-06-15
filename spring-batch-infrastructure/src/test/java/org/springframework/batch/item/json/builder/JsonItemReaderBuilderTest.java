@@ -16,18 +16,17 @@
 
 package org.springframework.batch.item.json.builder;
 
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.batch.item.json.JsonItemReader;
 import org.springframework.batch.item.json.JsonObjectReader;
 import org.springframework.core.io.Resource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.springframework.test.util.ReflectionTestUtils.getField;
 
 /**
@@ -40,7 +39,7 @@ public class JsonItemReaderBuilderTest {
 	@Mock
 	private JsonObjectReader<String> jsonObjectReader;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 	}
@@ -81,14 +80,14 @@ public class JsonItemReaderBuilderTest {
 				.currentItemCount(50)
 				.build();
 
-		Assert.assertEquals(this.jsonObjectReader, getField(itemReader, "jsonObjectReader"));
-		Assert.assertEquals(this.resource, getField(itemReader, "resource"));
-		Assert.assertEquals(100, getField(itemReader, "maxItemCount"));
-		Assert.assertEquals(50, getField(itemReader, "currentItemCount"));
-		Assert.assertTrue((Boolean) getField(itemReader, "saveState"));
-		Assert.assertTrue((Boolean) getField(itemReader, "strict"));
+		Assertions.assertEquals(this.jsonObjectReader, getField(itemReader, "jsonObjectReader"));
+		Assertions.assertEquals(this.resource, getField(itemReader, "resource"));
+		Assertions.assertEquals(100, getField(itemReader, "maxItemCount"));
+		Assertions.assertEquals(50, getField(itemReader, "currentItemCount"));
+		Assertions.assertTrue((Boolean) getField(itemReader, "saveState"));
+		Assertions.assertTrue((Boolean) getField(itemReader, "strict"));
 		Object executionContext = getField(itemReader, "executionContextUserSupport");
-		Assert.assertEquals("jsonItemReader", getField(executionContext, "name"));
+		Assertions.assertEquals("jsonItemReader", getField(executionContext, "name"));
 	}
 
 	@Test
@@ -102,12 +101,12 @@ public class JsonItemReaderBuilderTest {
 				.currentItemCount(50)
 				.build();
 
-		Assert.assertEquals(this.jsonObjectReader, getField(itemReader, "jsonObjectReader"));
-		Assert.assertEquals(100, getField(itemReader, "maxItemCount"));
-		Assert.assertEquals(50, getField(itemReader, "currentItemCount"));
-		Assert.assertTrue((Boolean) getField(itemReader, "saveState"));
-		Assert.assertTrue((Boolean) getField(itemReader, "strict"));
+		Assertions.assertEquals(this.jsonObjectReader, getField(itemReader, "jsonObjectReader"));
+		Assertions.assertEquals(100, getField(itemReader, "maxItemCount"));
+		Assertions.assertEquals(50, getField(itemReader, "currentItemCount"));
+		Assertions.assertTrue((Boolean) getField(itemReader, "saveState"));
+		Assertions.assertTrue((Boolean) getField(itemReader, "strict"));
 		Object executionContext = getField(itemReader, "executionContextUserSupport");
-		Assert.assertEquals("jsonItemReader", getField(executionContext, "name"));
+		Assertions.assertEquals("jsonItemReader", getField(executionContext, "name"));
 	}
 }

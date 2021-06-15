@@ -15,10 +15,6 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -26,13 +22,11 @@ import java.util.Properties;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-
 import javax.batch.runtime.context.StepContext;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.batch.core.JobExecution;
@@ -42,6 +36,11 @@ import org.springframework.batch.core.scope.context.StepSynchronizationManager;
 import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.Mockito.when;
 
 public class JsrStepContextFactoryBeanTests {
 
@@ -53,26 +52,28 @@ public class JsrStepContextFactoryBeanTests {
 	 * Added to clean up left overs from other tests.
 	 * @throws Exception
 	 */
-	@BeforeClass
+	@BeforeAll
 	public static void setUpClass() throws Exception {
 		StepSynchronizationManager.close();
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		factory = new JsrStepContextFactoryBean();
 		factory.setBatchPropertyContext(propertyContext);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		StepSynchronizationManager.close();
 	}
 
-	@Test(expected=FactoryBeanNotInitializedException.class)
+	@Test
 	public void testNoStepExecutionRegistered() throws Exception {
+	 assertThrows(FactoryBeanNotInitializedException.class, () -> {
 		factory.getObject();
+	 });
 	}
 
 	@Test

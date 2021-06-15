@@ -17,7 +17,7 @@ package org.springframework.batch.item.database;
 
 import java.util.Collections;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * @author Jimmy Praet

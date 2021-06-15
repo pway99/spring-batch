@@ -16,9 +16,8 @@
 
 package org.springframework.batch.repeat.support;
 
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.fail;
 
 
 /**
@@ -30,7 +29,7 @@ public class TaskExecutorRepeatTemplateTests extends SimpleRepeatTemplateTests {
 	public RepeatTemplate getRepeatTemplate() {
 		return new TaskExecutorRepeatTemplate();
 	}
-	
+
 	@Test
 	public void testSetThrottleLimit() throws Exception {
 		try {

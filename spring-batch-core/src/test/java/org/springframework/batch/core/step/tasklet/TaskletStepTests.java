@@ -16,18 +16,12 @@
 
 package org.springframework.batch.core.step.tasklet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -67,6 +61,10 @@ import org.springframework.lang.Nullable;
 import org.springframework.transaction.TransactionException;
 import org.springframework.transaction.interceptor.DefaultTransactionAttribute;
 import org.springframework.transaction.support.DefaultTransactionStatus;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TaskletStepTests {
 
@@ -117,7 +115,7 @@ public class TaskletStepTests {
 		return step;
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		transactionManager = new ResourcelessTransactionManager();
@@ -327,7 +325,7 @@ public class TaskletStepTests {
 			ExitStatus status = stepExecution.getExitStatus();
 			assertEquals(ExitStatus.FAILED.getExitCode(), status.getExitCode());
 			String description = status.getExitDescription();
-			assertTrue("Description does not include 'FOO': " + description, description.indexOf("FOO") >= 0);
+			assertTrue(description.indexOf("FOO") >= 0, "Description does not include 'FOO': " + description);
 		}
 	}
 
@@ -635,8 +633,8 @@ public class TaskletStepTests {
 		step.execute(stepExecution);
 		assertEquals(BatchStatus.STOPPED, stepExecution.getStatus());
 		String msg = stepExecution.getExitStatus().getExitDescription();
-		assertTrue("Message does not contain 'JobInterruptedException': " + msg, msg
-				.contains("JobInterruptedException"));
+		assertTrue(msg
+		.contains("JobInterruptedException"), "Message does not contain 'JobInterruptedException': " + msg);
 	}
 
 	@Test
@@ -719,7 +717,7 @@ public class TaskletStepTests {
 		step.execute(stepExecution);
 		assertEquals(BatchStatus.UNKNOWN, stepExecution.getStatus());
 		String msg = stepExecution.getExitStatus().getExitDescription();
-		assertTrue("Message does not contain ResetFailedException: " + msg, msg.contains("ResetFailedException"));
+		assertTrue(msg.contains("ResetFailedException"), "Message does not contain ResetFailedException: " + msg);
 		// The original rollback was caused by this one:
 		assertEquals("Bar", stepExecution.getFailureExceptions().get(0).getMessage());
 	}

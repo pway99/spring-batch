@@ -15,11 +15,8 @@
  */
 package org.springframework.batch.core.step.item;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStreamException;
@@ -27,6 +24,10 @@ import org.springframework.batch.item.ItemStreamSupport;
 import org.springframework.batch.item.ParseException;
 import org.springframework.batch.item.UnexpectedInputException;
 import org.springframework.lang.Nullable;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -42,7 +43,7 @@ public class ChunkMonitorTests {
 
 	private boolean closed = false;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		monitor.setItemReader(new ItemReader<String>() {
 			@Nullable
@@ -108,18 +109,20 @@ public class ChunkMonitorTests {
 		assertEquals(0, monitor.getOffset());
 	}
 
-	@Test(expected = ItemStreamException.class)
+	@Test
 	public void testOpenWithErrorInReader() {
+	 assertThrows(ItemStreamException.class, () -> {
 		monitor.setItemReader(new ItemReader<String>() {
-			@Nullable
-			@Override
-			public String read() throws Exception, UnexpectedInputException, ParseException {
-				throw new IllegalStateException("Expected");
-			}
+		@Nullable
+		@Override
+		public String read() throws Exception, UnexpectedInputException, ParseException {
+		throw new IllegalStateException("Expected");
+		}
 		});
 		ExecutionContext executionContext = new ExecutionContext();
 		executionContext.putInt(ChunkMonitor.class.getName() + ".OFFSET", 2);
 		monitor.open(executionContext);
+	 });
 	}
 
 	@Test

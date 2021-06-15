@@ -16,10 +16,8 @@
 
 package org.springframework.batch.core.job;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -29,6 +27,9 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.batch.core.step.StepSupport;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Dave Syer
@@ -42,7 +43,7 @@ public class SimpleStepHandlerTests {
 
 	private SimpleStepHandler stepHandler;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MapJobRepositoryFactoryBean jobRepositoryFactoryBean = new MapJobRepositoryFactoryBean();
 		jobRepository = jobRepositoryFactoryBean.getObject();
@@ -54,10 +55,12 @@ public class SimpleStepHandlerTests {
 	/**
 	 * Test method for {@link SimpleStepHandler#afterPropertiesSet()}.
 	 */
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testAfterPropertiesSet() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		SimpleStepHandler stepHandler = new SimpleStepHandler();
 		stepHandler.afterPropertiesSet();
+	 });
 	}
 
 	/**

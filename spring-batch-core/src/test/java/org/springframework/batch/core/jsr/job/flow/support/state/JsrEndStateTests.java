@@ -15,15 +15,12 @@
  */
 package org.springframework.batch.core.jsr.job.flow.support.state;
 
-import static org.junit.Assert.assertEquals;
-
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.runtime.BatchStatus;
 import javax.batch.runtime.JobExecution;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.jsr.AbstractJsrTestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for the JSR-352 version of {@link JsrEndState}

@@ -1,13 +1,10 @@
 package org.springframework.batch.integration.launch;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -16,6 +13,7 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.integration.JobSupport;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.AbstractJUnit4SpringContextTests;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ContextConfiguration(locations = { "/job-execution-context.xml" })
 public class JobLaunchingMessageHandlerTests extends AbstractJUnit4SpringContextTests {
@@ -24,7 +22,7 @@ public class JobLaunchingMessageHandlerTests extends AbstractJUnit4SpringContext
 
 	StubJobLauncher jobLauncher;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		jobLauncher = new StubJobLauncher();
 		messageHandler = new JobLaunchingMessageHandler(jobLauncher);
@@ -34,7 +32,7 @@ public class JobLaunchingMessageHandlerTests extends AbstractJUnit4SpringContext
 	public void testSimpleDelivery() throws Exception{
 		messageHandler.launch(new JobLaunchRequest(new JobSupport("testjob"), null));
 
-		assertEquals("Wrong job count", 1, jobLauncher.jobs.size());
+		assertEquals(1, jobLauncher.jobs.size(), "Wrong job count");
 		assertEquals("Wrong job name", jobLauncher.jobs.get(0).getName(), "testjob");
 
 	}

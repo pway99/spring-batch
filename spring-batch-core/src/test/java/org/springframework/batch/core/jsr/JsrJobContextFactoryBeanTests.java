@@ -15,22 +15,16 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-
 import javax.batch.runtime.context.JobContext;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.jsr.configuration.support.BatchPropertyContext;
@@ -39,19 +33,24 @@ import org.springframework.beans.factory.FactoryBeanNotInitializedException;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 public class JsrJobContextFactoryBeanTests {
 
 	private JsrJobContextFactoryBean factoryBean;
 	private BatchPropertyContext propertyContext;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		StepSynchronizationManager.close();
 		propertyContext = new BatchPropertyContext();
 		factoryBean = new JsrJobContextFactoryBean();
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		factoryBean.close();
 		StepSynchronizationManager.close();
@@ -85,9 +84,11 @@ public class JsrJobContextFactoryBeanTests {
 		StepSynchronizationManager.close();
 	}
 
-	@Test(expected=FactoryBeanNotInitializedException.class)
+	@Test
 	public void testNoJobExecutionProvided() throws Exception {
+	 assertThrows(FactoryBeanNotInitializedException.class, () -> {
 		factoryBean.getObject();
+	 });
 	}
 
 	@Test

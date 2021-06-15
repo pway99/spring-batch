@@ -18,21 +18,11 @@ package org.springframework.batch.item.data;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.bson.Document;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doAnswer;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.never;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.mongodb.core.BulkOperations;
@@ -45,12 +35,19 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.doAnswer;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Michael Minella
@@ -70,7 +67,7 @@ public class MongoItemWriterTests {
 
 	private PlatformTransactionManager transactionManager = new ResourcelessTransactionManager();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		when(this.template.bulkOps(any(), anyString())).thenReturn(this.bulkOperations);

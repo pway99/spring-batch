@@ -19,11 +19,9 @@ package org.springframework.batch.item.database.support;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.query.NativeQuery;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.database.orm.HibernateNativeQueryProvider;
-
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 

@@ -15,15 +15,13 @@
  */
 package org.springframework.batch.core.listener;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
 import java.util.Arrays;
 import java.util.Iterator;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author Dave Syer

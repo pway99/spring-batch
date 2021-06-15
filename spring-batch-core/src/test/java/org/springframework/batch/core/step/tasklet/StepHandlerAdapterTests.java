@@ -15,16 +15,15 @@
  */
 package org.springframework.batch.core.step.tasklet;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
@@ -46,7 +45,7 @@ public class StepHandlerAdapterTests {
 		return result ;
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		tasklet.setTargetObject(this);
 	}

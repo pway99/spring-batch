@@ -15,19 +15,19 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import javax.batch.api.chunk.listener.ChunkListener;
 import javax.batch.operations.BatchRuntimeException;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.UncheckedTransactionException;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class ChunkListenerAdapterTests {
 
@@ -37,15 +37,17 @@ public class ChunkListenerAdapterTests {
 	@Mock
 	private ChunkContext context;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		adapter = new ChunkListenerAdapter(delegate);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNullDelegate() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		adapter = new ChunkListenerAdapter(null);
+	 });
 	}
 
 	@Test
@@ -55,10 +57,12 @@ public class ChunkListenerAdapterTests {
 		verify(delegate).beforeChunk();
 	}
 
-	@Test(expected=UncheckedTransactionException.class)
+	@Test
 	public void testBeforeChunkException() throws Exception {
+	 assertThrows(UncheckedTransactionException.class, () -> {
 		doThrow(new Exception("This is expected")).when(delegate).beforeChunk();
 		adapter.beforeChunk(null);
+	 });
 	}
 
 	@Test
@@ -68,21 +72,27 @@ public class ChunkListenerAdapterTests {
 		verify(delegate).afterChunk();
 	}
 
-	@Test(expected=UncheckedTransactionException.class)
+	@Test
 	public void testAfterChunkException() throws Exception {
+	 assertThrows(UncheckedTransactionException.class, () -> {
 		doThrow(new Exception("This is expected")).when(delegate).afterChunk();
 		adapter.afterChunk(null);
+	 });
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testAfterChunkErrorNullContext() throws Exception {
+	 assertThrows(BatchRuntimeException.class, () -> {
 		adapter.afterChunkError(null);
+	 });
 	}
 
-	@Test(expected=UncheckedTransactionException.class)
+	@Test
 	public void testAfterChunkErrorException() throws Exception {
+	 assertThrows(UncheckedTransactionException.class, () -> {
 		doThrow(new Exception("This is expected")).when(delegate).afterChunk();
 		adapter.afterChunk(null);
+	 });
 	}
 
 	@Test

@@ -15,22 +15,20 @@
  */
 package org.springframework.batch.item.file;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.file.transform.PassThroughLineAggregator;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link MultiResourceItemWriter} delegating to
@@ -64,7 +62,7 @@ public class MultiResourceItemWriterFlatFileTests extends AbstractMultiResourceI
 
 	private FlatFileItemWriter<String> delegate;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		super.createFile();
 		delegate = new FlatFileItemWriter<>();

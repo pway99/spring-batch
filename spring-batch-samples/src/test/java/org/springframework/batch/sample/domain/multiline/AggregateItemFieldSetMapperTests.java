@@ -15,15 +15,11 @@
  */
 package org.springframework.batch.sample.domain.multiline;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
 import org.springframework.batch.item.file.transform.FieldSet;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class AggregateItemFieldSetMapperTests {
 	private AggregateItemFieldSetMapper<String> mapper = new AggregateItemFieldSetMapper<>();

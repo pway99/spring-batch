@@ -15,28 +15,25 @@
  */
 package org.springframework.batch.core.repository.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.List;
-
 import javax.sql.DataSource;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "sql-dao-test.xml")
 public class JdbcJobInstanceDaoTests extends AbstractJobInstanceDaoTests {
 
@@ -83,12 +80,12 @@ public class JdbcJobInstanceDaoTests extends AbstractJobInstanceDaoTests {
 		for (byte bite : bytes) {
 			output.append(String.format("%02x", bite));
 		}
-		assertEquals("Wrong hash: " + output, 32, output.length());
+		assertEquals(32, output.length(), "Wrong hash: " + output);
 		String value = String.format("%032x", new BigInteger(1, bytes));
-		assertEquals("Wrong hash: " + value, 32, value.length());
+		assertEquals(32, value.length(), "Wrong hash: " + value);
 		assertEquals(value, output.toString());
 	}
-	
+
 	@Test
 	public void testJobInstanceWildcard() {
 		dao.createJobInstance("anotherJob", new JobParameters());
@@ -103,5 +100,5 @@ public class JdbcJobInstanceDaoTests extends AbstractJobInstanceDaoTests {
 
 		jobInstances = dao.getJobInstances("Job*", 0, 2);
 		assertTrue(jobInstances.isEmpty());
-	}	
+	}
 }

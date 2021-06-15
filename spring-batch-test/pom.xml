@@ -35,11 +35,6 @@
 			<artifactId>spring-test</artifactId>
 			<version>${spring-framework.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>junit</groupId>
-			<artifactId>junit</artifactId>
-			<version>${junit.version}</version>
-		</dependency>
 
 		<!-- optional production dependencies -->
 		<dependency>
@@ -60,6 +55,11 @@
 			<version>${junit-jupiter.version}</version>
 			<optional>true</optional>
 		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-junit-jupiter</artifactId>
+			<version>3.11.1</version>
+		</dependency>
 
 		<!-- test dependencies -->
 		<dependency>
@@ -78,6 +78,18 @@
 			<groupId>org.hsqldb</groupId>
 			<artifactId>hsqldb</artifactId>
 			<version>${hsqldb.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-engine</artifactId>
+			<version>5.7.2</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-params</artifactId>
+			<version>5.7.2</version>
 			<scope>test</scope>
 		</dependency>
 		<dependency>

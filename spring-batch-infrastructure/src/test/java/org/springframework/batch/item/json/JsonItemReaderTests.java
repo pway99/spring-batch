@@ -17,33 +17,28 @@
 package org.springframework.batch.item.json;
 
 import java.io.InputStream;
-
 import org.hamcrest.Matchers;
-import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.rules.ExpectedException;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.core.io.AbstractResource;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.core.io.Resource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mahmoud Ben Hassine
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JsonItemReaderTests {
-
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
 
 	@Mock
 	private JsonObjectReader<String> jsonObjectReader;
@@ -69,9 +64,7 @@ public class JsonItemReaderTests {
 
 	@Test
 	public void testNonExistentResource() {
-		// given
-		this.expectedException.expect(ItemStreamException.class);
-		this.expectedException.expectMessage("Failed to initialize the reader");
+	 assertThrows(ItemStreamException.class, () -> {
 		this.expectedException.expectCause(Matchers.instanceOf(IllegalStateException.class));
 		this.itemReader = new JsonItemReader<>(new NonExistentResource(), this.jsonObjectReader);
 
@@ -80,18 +73,24 @@ public class JsonItemReaderTests {
 
 		// then
 		// expected exception
+	 }, "Failed to initialize the reader");
+
+		// then
+		// expected exception
 	}
 
 	@Test
 	public void testNonReadableResource() {
-		// given
-		this.expectedException.expect(ItemStreamException.class);
-		this.expectedException.expectMessage("Failed to initialize the reader");
+	 assertThrows(ItemStreamException.class, () -> {
 		this.expectedException.expectCause(Matchers.instanceOf(IllegalStateException.class));
 		this.itemReader = new JsonItemReader<>(new NonReadableResource(), this.jsonObjectReader);
 
 		// when
 		this.itemReader.open(new ExecutionContext());
+
+		// then
+		// expected exception
+	 }, "Failed to initialize the reader");
 
 		// then
 		// expected exception

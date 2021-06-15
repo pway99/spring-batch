@@ -15,18 +15,17 @@
  */
 package org.springframework.batch.core.step.item;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.util.List;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.Assert;
-
-import java.util.List;
 
 /**
  * <p>
@@ -37,7 +36,7 @@ import java.util.List;
  * @since 3.1
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class ScriptItemProcessorTest {
 	@Autowired
 	private Job job;

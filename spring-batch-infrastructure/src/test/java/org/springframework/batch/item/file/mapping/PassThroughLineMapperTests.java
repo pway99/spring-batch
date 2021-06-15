@@ -15,9 +15,8 @@
  */
 package org.springframework.batch.item.file.mapping;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertSame;
 
 /**
  * Tests for {@link PassThroughLineMapper}.
@@ -25,7 +24,7 @@ import org.junit.Test;
 public class PassThroughLineMapperTests {
 
 	private PassThroughLineMapper tested = new PassThroughLineMapper();
-	
+
 	@Test
 	public void testMapLine() throws Exception {
 		assertSame("line", tested.mapLine("line", 1));

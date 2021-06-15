@@ -15,10 +15,12 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.BeanDefinitionStoreException;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.util.ClassUtils;
+
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Dan Garrette
@@ -27,18 +29,22 @@ import org.springframework.util.ClassUtils;
  */
 public class DuplicateTransitionJobParserTests {
 
-	@Test(expected = BeanDefinitionStoreException.class)
+	@Test
 	@SuppressWarnings("resource")
 	public void testNextAttributeWithNestedElement() throws Exception {
+	 assertThrows(BeanDefinitionStoreException.class, () -> {
 		new ClassPathXmlApplicationContext(ClassUtils.addResourcePathToPackagePath(getClass(),
-				"NextAttributeMultipleFinalJobParserTests-context.xml"));
+		"NextAttributeMultipleFinalJobParserTests-context.xml"));
+	 });
 	}
 
-	@Test(expected = BeanDefinitionStoreException.class)
+	@Test
 	@SuppressWarnings("resource")
 	public void testDuplicateTransition() throws Exception {
+	 assertThrows(BeanDefinitionStoreException.class, () -> {
 		new ClassPathXmlApplicationContext(ClassUtils.addResourcePathToPackagePath(getClass(),
-				"DuplicateTransitionJobParserTests-context.xml"));
+		"DuplicateTransitionJobParserTests-context.xml"));
+	 });
 	}
 
 }

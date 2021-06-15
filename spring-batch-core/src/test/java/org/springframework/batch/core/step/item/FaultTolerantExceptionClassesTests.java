@@ -15,11 +15,14 @@
  */
 package org.springframework.batch.core.step.item;
 
-import org.junit.Before;
-import org.junit.FixMethodOrder;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.MethodOrderer.MethodName;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -34,15 +37,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.UnexpectedRollbackException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
  * @author Dan Garrette
@@ -50,8 +48,8 @@ import static org.junit.Assert.assertNotNull;
  * @since 2.0.2
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@FixMethodOrder(MethodSorters.JVM)
+@ExtendWith(SpringExtension.class)
+@TestMethodOrder(MethodName.class)
 public class FaultTolerantExceptionClassesTests implements ApplicationContextAware {
 
 	@Autowired
@@ -76,7 +74,7 @@ public class FaultTolerantExceptionClassesTests implements ApplicationContextAwa
 		this.applicationContext = applicationContext;
 	}
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		reader.clear();
 		writer.clear();

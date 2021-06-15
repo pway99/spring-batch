@@ -16,18 +16,11 @@
 
 package org.springframework.batch.core.launch;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -46,6 +39,13 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.task.TaskRejectedException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Lucas Ward
@@ -68,7 +68,7 @@ public class SimpleJobLauncherTests {
 
 	private JobRepository jobRepository;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		jobLauncher = new SimpleJobLauncher();
@@ -82,16 +82,19 @@ public class SimpleJobLauncherTests {
 		run(ExitStatus.COMPLETED);
 	}
 
-	@Test(expected = JobParametersInvalidException.class)
+	@Test
 	public void testRunWithValidator() throws Exception {
+	 assertThrows(JobParametersInvalidException.class, () -> {
 
-		job.setJobParametersValidator(new DefaultJobParametersValidator(new String[] { "missing-and-required" },
-				new String[0]));
+		job.setJobParametersValidator(new DefaultJobParametersValidator(new String[]{"missing-and-required"},
+		new String[0]));
 
 		when(jobRepository.getLastJobExecution(job.getName(), jobParameters)).thenReturn(null);
 
 		jobLauncher.afterPropertiesSet();
 		jobLauncher.run(job, jobParameters);
+
+	 });
 
 	}
 
@@ -238,8 +241,8 @@ public class SimpleJobLauncherTests {
 		}
 		catch (IllegalStateException e) {
 			// expected
-			assertTrue("Message did not contain repository: " + e.getMessage(), contains(e.getMessage().toLowerCase(),
-					"repository"));
+			assertTrue(contains(e.getMessage().toLowerCase(),
+			"repository"), "Message did not contain repository: " + e.getMessage());
 		}
 	}
 
@@ -273,24 +276,32 @@ public class SimpleJobLauncherTests {
 	 * Test to support BATCH-1770 -> throw in parent thread JobRestartException when
 	 * a stepExecution is UNKNOWN
 	 */
-	@Test(expected=JobRestartException.class)
+	@Test
 	public void testRunStepStatusUnknown() throws Exception {
+	 assertThrows(JobRestartException.class, () -> {
 		testRestartStepExecutionInvalidStatus(BatchStatus.UNKNOWN);
+	 });
 	}
 
-	@Test(expected = JobExecutionAlreadyRunningException.class)
+	@Test
 	public void testRunStepStatusStarting() throws Exception {
+	 assertThrows(JobExecutionAlreadyRunningException.class, () -> {
 		testRestartStepExecutionInvalidStatus(BatchStatus.STARTING);
+	 });
 	}
 
-	@Test(expected = JobExecutionAlreadyRunningException.class)
+	@Test
 	public void testRunStepStatusStarted() throws Exception {
+	 assertThrows(JobExecutionAlreadyRunningException.class, () -> {
 		testRestartStepExecutionInvalidStatus(BatchStatus.STARTED);
+	 });
 	}
 
-	@Test(expected = JobExecutionAlreadyRunningException.class)
+	@Test
 	public void testRunStepStatusStopping() throws Exception {
+	 assertThrows(JobExecutionAlreadyRunningException.class, () -> {
 		testRestartStepExecutionInvalidStatus(BatchStatus.STOPPING);
+	 });
 	}
 
 	private void testRestartStepExecutionInvalidStatus(BatchStatus status) throws Exception {

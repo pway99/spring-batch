@@ -15,22 +15,20 @@
  */
 package org.springframework.batch.core;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.util.SerializationUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -46,7 +44,7 @@ public class StepExecutionTests {
 
 
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		foobarEc.put("foo", "bar");
 	}
@@ -171,12 +169,12 @@ public class StepExecutionTests {
 
 	@Test
 	public void testToString() throws Exception {
-		assertTrue("Should contain read count: " + execution.toString(), execution.toString().indexOf("read") >= 0);
-		assertTrue("Should contain write count: " + execution.toString(), execution.toString().indexOf("write") >= 0);
-		assertTrue("Should contain filter count: " + execution.toString(), execution.toString().indexOf("filter") >= 0);
-		assertTrue("Should contain commit count: " + execution.toString(), execution.toString().indexOf("commit") >= 0);
-		assertTrue("Should contain rollback count: " + execution.toString(),
-				execution.toString().indexOf("rollback") >= 0);
+		assertTrue(execution.toString().indexOf("read") >= 0, "Should contain read count: " + execution.toString());
+		assertTrue(execution.toString().indexOf("write") >= 0, "Should contain write count: " + execution.toString());
+		assertTrue(execution.toString().indexOf("filter") >= 0, "Should contain filter count: " + execution.toString());
+		assertTrue(execution.toString().indexOf("commit") >= 0, "Should contain commit count: " + execution.toString());
+		assertTrue(
+		execution.toString().indexOf("rollback") >= 0, "Should contain rollback count: " + execution.toString());
 	}
 
 	@Test
@@ -245,13 +243,13 @@ public class StepExecutionTests {
 
 	@Test
 	public void testHashCode() throws Exception {
-		assertTrue("Hash code same as parent", new Entity(execution.getId()).hashCode() != execution.hashCode());
+		assertTrue(new Entity(execution.getId()).hashCode() != execution.hashCode(), "Hash code same as parent");
 	}
 
 	@Test
 	public void testHashCodeWithNullIds() throws Exception {
-		assertTrue("Hash code not same as parent", new Entity(execution.getId()).hashCode() != blankExecution
-				.hashCode());
+		assertTrue(new Entity(execution.getId()).hashCode() != blankExecution
+		.hashCode(), "Hash code not same as parent");
 	}
 
 	@Test

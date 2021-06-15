@@ -17,8 +17,10 @@ package org.springframework.batch.item.file.transform;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link AbstractLineTokenizer}.
@@ -26,29 +28,30 @@ import junit.framework.TestCase;
  * @author Robert Kasanicky
  * @author Dave Syer
  */
-public class CommonLineTokenizerTests extends TestCase {
-	
+public class CommonLineTokenizerTests {
+
 	/**
-	 * Columns names are considered to be specified if they are not <code>null</code> or empty.
-	 */
-	public void testHasNames() {
+ 	 * Columns names are considered to be specified if they are not <code>null</code> or empty.
+ 	 */
+	@Test
+ public void testHasNames() {
 		AbstractLineTokenizer tokenizer = new AbstractLineTokenizer() {
 		    @Override
 			protected List<String> doTokenize(String line) {
 				return null;
 			}
 		};
-		
+
 		assertFalse(tokenizer.hasNames());
-		
+
 		tokenizer.setNames((String) null);
 		assertFalse(tokenizer.hasNames());
-		
+
 		tokenizer.setNames(new ArrayList<String>().toArray(new String[0]));
 		assertFalse(tokenizer.hasNames());
-		
+
 		tokenizer.setNames("name1", "name2");
 		assertTrue(tokenizer.hasNames());
 	}
-	
+
 }

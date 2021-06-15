@@ -15,19 +15,16 @@
  */
 package org.springframework.batch.core.scope;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.FutureTask;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.scope.context.JobContext;
 import org.springframework.batch.core.scope.context.JobSynchronizationManager;
@@ -41,10 +38,11 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class AsyncJobScopeIntegrationTests implements BeanFactoryAware {
 
 	private Log logger = LogFactory.getLog(getClass());
@@ -64,13 +62,13 @@ public class AsyncJobScopeIntegrationTests implements BeanFactoryAware {
 		this.beanFactory = (ListableBeanFactory) beanFactory;
 	}
 
-	@Before
+	@BeforeEach
 	public void countBeans() {
 		JobSynchronizationManager.release();
 		beanCount = beanFactory.getBeanDefinitionCount();
 	}
 
-	@After
+	@AfterEach
 	public void cleanUp() {
 		JobSynchronizationManager.close();
 		// Check that all temporary bean definitions are cleaned up

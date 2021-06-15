@@ -15,15 +15,13 @@
  */
 package org.springframework.batch.sample.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.util.Arrays;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.sample.domain.trade.Trade;
 import org.springframework.batch.sample.domain.trade.internal.ItemTrackingTradeItemWriter;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer

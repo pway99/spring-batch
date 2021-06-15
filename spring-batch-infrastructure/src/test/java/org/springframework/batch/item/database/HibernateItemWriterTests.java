@@ -18,15 +18,13 @@ package org.springframework.batch.item.database;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
-import org.junit.Before;
-import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -43,7 +41,7 @@ public class HibernateItemWriterTests {
 	SessionFactory factory;
 	Session currentSession;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		writer = new HibernateItemWriter<>();
 		factory = mock(SessionFactory.class);
@@ -67,7 +65,7 @@ public class HibernateItemWriterTests {
 		}
 		catch (IllegalStateException e) {
 			// expected
-			assertTrue("Wrong message for exception: " + e.getMessage(), e.getMessage().indexOf("SessionFactory") >= 0);
+			assertTrue(e.getMessage().indexOf("SessionFactory") >= 0, "Wrong message for exception: " + e.getMessage());
 		}
 	}
 

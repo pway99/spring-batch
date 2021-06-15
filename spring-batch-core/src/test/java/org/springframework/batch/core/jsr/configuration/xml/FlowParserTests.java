@@ -15,10 +15,8 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import org.junit.Test;
-import org.springframework.batch.core.ExitStatus;
-import org.springframework.batch.core.jsr.AbstractJsrTestCase;
-
+import java.util.List;
+import java.util.Properties;
 import javax.batch.api.AbstractBatchlet;
 import javax.batch.operations.JobOperator;
 import javax.batch.runtime.BatchRuntime;
@@ -26,11 +24,11 @@ import javax.batch.runtime.JobExecution;
 import javax.batch.runtime.StepExecution;
 import javax.batch.runtime.context.StepContext;
 import javax.inject.Inject;
-import java.util.List;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import org.junit.jupiter.api.Test;
+import org.springframework.batch.core.ExitStatus;
+import org.springframework.batch.core.jsr.AbstractJsrTestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>

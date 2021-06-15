@@ -15,14 +15,12 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.Map;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.scope.JobScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
@@ -38,7 +36,7 @@ public class AutoRegisteringJobScopeTests {
 				new ClassPathXmlApplicationContext(
 						"org/springframework/batch/core/configuration/xml/AutoRegisteringJobScopeForJobElementTests-context.xml");
 		Map<String, JobScope> beans = ctx.getBeansOfType(JobScope.class);
-		assertTrue("JobScope not defined properly", beans.size() == 1);
+		assertTrue(beans.size() == 1, "JobScope not defined properly");
 	}
 
 	@Test
@@ -48,7 +46,7 @@ public class AutoRegisteringJobScopeTests {
 				new ClassPathXmlApplicationContext(
 						"org/springframework/batch/core/configuration/xml/AutoRegisteringJobScopeForStepElementTests-context.xml");
 		Map<String, JobScope> beans = ctx.getBeansOfType(JobScope.class);
-		assertTrue("JobScope not defined properly", beans.size() == 1);
+		assertTrue(beans.size() == 1, "JobScope not defined properly");
 	}
 
 }

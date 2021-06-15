@@ -18,18 +18,11 @@ package org.springframework.batch.item.data.builder;
 
 import java.util.Arrays;
 import java.util.List;
-
 import org.bson.Document;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import static org.mockito.Mockito.spy;
-import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.times;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.batch.item.data.MongoItemWriter;
 import org.springframework.data.mapping.context.MappingContext;
 import org.springframework.data.mongodb.core.BulkOperations;
@@ -39,12 +32,16 @@ import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.convert.MongoConverter;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
 import org.springframework.data.mongodb.core.query.Query;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Glenn Renfro
@@ -63,7 +60,7 @@ public class MongoItemWriterBuilderTests {
 	private List<Item> saveItems;
 	private List<Item> removeItems;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		when(this.template.bulkOps(any(), anyString())).thenReturn(this.bulkOperations);
@@ -123,8 +120,8 @@ public class MongoItemWriterBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.", "template is required.",
-					iae.getMessage());
+			assertEquals("template is required.",
+			iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 

@@ -20,8 +20,8 @@ import static org.mockito.Mockito.mock;
 import java.math.BigDecimal;
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.sample.domain.trade.CustomerCredit;
 import org.springframework.batch.sample.domain.trade.CustomerCreditDao;
 
@@ -30,7 +30,7 @@ public class CustomerCreditUpdateProcessorTests {
 	private CustomerCreditUpdateWriter writer;
 	private static final double CREDIT_FILTER = 355.0;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		dao = mock(CustomerCreditDao.class);
 

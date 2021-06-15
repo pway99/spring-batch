@@ -15,22 +15,20 @@
  */
 package org.springframework.batch.core.repository.dao;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Date;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public abstract class AbstractJobInstanceDaoTests {
 
@@ -46,7 +44,7 @@ public abstract class AbstractJobInstanceDaoTests {
 
 	protected abstract JobInstanceDao getJobInstanceDao();
 
-	@Before
+	@BeforeEach
 	public void onSetUp() throws Exception {
 		dao = getJobInstanceDao();
 	}
@@ -149,8 +147,8 @@ public abstract class AbstractJobInstanceDaoTests {
 		assertEquals(Integer.valueOf(0), jobInstances.get(0).getVersion());
 		assertEquals(Integer.valueOf(0), jobInstances.get(1).getVersion());
 
-		assertTrue("Last instance should be first on the list", jobInstances.get(0).getId() > jobInstances.get(1)
-				.getId());
+		assertTrue(jobInstances.get(0).getId() > jobInstances.get(1)
+		.getId(), "Last instance should be first on the list");
 
 	}
 
@@ -170,8 +168,8 @@ public abstract class AbstractJobInstanceDaoTests {
 		JobInstance lastJobInstance = dao.getLastJobInstance(fooJob);
 		assertNotNull(lastJobInstance);
 		assertEquals(fooJob, lastJobInstance.getJobName());
-		assertEquals("Last instance should be first on the list",
-				jobInstances.get(0), lastJobInstance);
+		assertEquals(
+		jobInstances.get(0), lastJobInstance, "Last instance should be first on the list");
 	}
 
 	@Transactional

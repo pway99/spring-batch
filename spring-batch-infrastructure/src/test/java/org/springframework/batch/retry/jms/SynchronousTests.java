@@ -16,10 +16,13 @@
 
 package org.springframework.batch.retry.jms;
 
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.util.ArrayList;
+import java.util.List;
+import javax.sql.DataSource;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.item.jms.JmsItemReader;
 import org.springframework.batch.jms.ExternalRetryInBatchTests;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +32,7 @@ import org.springframework.retry.RetryCallback;
 import org.springframework.retry.RetryContext;
 import org.springframework.retry.support.RetryTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.transaction.AfterTransaction;
 import org.springframework.test.context.transaction.BeforeTransaction;
 import org.springframework.transaction.PlatformTransactionManager;
@@ -38,19 +41,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ClassUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
-import javax.sql.DataSource;
-import java.util.ArrayList;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/org/springframework/batch/jms/jms-context.xml")
-@Ignore //FIXME https://github.com/spring-projects/spring-batch/issues/3852
+@Disabled //FIXME https://github.com/spring-projects/spring-batch/issues/3852
 public class SynchronousTests {
 
 	@Autowired
@@ -82,7 +80,7 @@ public class SynchronousTests {
 		assertNotNull(text);
 	}
 
-	@Before
+	@BeforeEach
 	public void onSetUpInTransaction() throws Exception {
 		retryTemplate = new RetryTemplate();
 	}

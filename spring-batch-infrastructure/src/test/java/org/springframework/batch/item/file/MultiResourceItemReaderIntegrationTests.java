@@ -15,19 +15,11 @@
  */
 package org.springframework.batch.item.file;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.*;
-import static org.junit.Assert.assertSame;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Comparator;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.NonTransientResourceException;
@@ -40,6 +32,14 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.lang.Nullable;
 import org.springframework.test.util.ReflectionTestUtils;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link MultiResourceItemReader}.
@@ -66,7 +66,7 @@ public class MultiResourceItemReaderIntegrationTests {
 	/**
 	 * Setup the tested reader to read from the test resources.
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		itemReader.setLineMapper(new PassThroughLineMapper());
@@ -436,19 +436,21 @@ public class MultiResourceItemReaderIntegrationTests {
 	@Test
 	public void testGetCurrentResourceBeforeRead() throws Exception {
 		tested.open(ctx);
-		assertNull("There is no 'current' resource before read is called", tested.getCurrentResource());
+		assertNull(tested.getCurrentResource(), "There is no 'current' resource before read is called");
 
 	}
 
 	/**
 	 * No resources to read should result in error in strict mode.
 	 */
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testStrictModeEnabled() throws Exception {
-		tested.setResources(new Resource[] {});
+	 assertThrows(IllegalStateException.class, () -> {
+		tested.setResources(new Resource[]{});
 		tested.setStrict(true);
 
 		tested.open(ctx);
+	 });
 	}
 
 	/**
@@ -460,7 +462,7 @@ public class MultiResourceItemReaderIntegrationTests {
 		tested.setStrict(false);
 
 		tested.open(ctx);
-		assertTrue("empty input doesn't cause an error", true);
+		assertTrue(true, "empty input doesn't cause an error");
 	}
 
 	/**

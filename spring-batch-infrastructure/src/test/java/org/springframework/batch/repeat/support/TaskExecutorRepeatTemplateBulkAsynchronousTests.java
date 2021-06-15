@@ -16,21 +16,16 @@
 
 package org.springframework.batch.repeat.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.repeat.RepeatCallback;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.RepeatStatus;
@@ -38,6 +33,9 @@ import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Simple tests for concurrent behaviour in repeat template, in particular the
@@ -69,7 +67,7 @@ public class TaskExecutorRepeatTemplateBulkAsynchronousTests {
 
 	private ThreadPoolTaskExecutor threadPool = new ThreadPoolTaskExecutor();
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 
 		template = new TaskExecutorRepeatTemplate();
@@ -119,7 +117,7 @@ public class TaskExecutorRepeatTemplateBulkAsynchronousTests {
 
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		threadPool.destroy();
 	}
@@ -233,7 +231,7 @@ public class TaskExecutorRepeatTemplateBulkAsynchronousTests {
 		assertEquals(0, frequency);
 
 	}
-	
+
 	@Test
 	public void testErrorThrownByCallback() throws Exception {
 
@@ -245,7 +243,7 @@ public class TaskExecutorRepeatTemplateBulkAsynchronousTests {
 			public RepeatStatus doInIteration(RepeatContext context)
 					throws Exception {
 				int position = count.incrementAndGet();
-				
+
 				if(position == 4) {
 					throw new OutOfMemoryError("Planned");
 				}
@@ -254,7 +252,7 @@ public class TaskExecutorRepeatTemplateBulkAsynchronousTests {
 				}
 			}
 		};
-		
+
 		template.setCompletionPolicy(new SimpleCompletionPolicy(10));
 
 		try {

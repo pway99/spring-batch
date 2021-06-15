@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.test;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -38,9 +38,6 @@ import org.springframework.lang.Nullable;
 
 import java.util.HashSet;
 import java.util.Set;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 
 /**
  * @author mminella

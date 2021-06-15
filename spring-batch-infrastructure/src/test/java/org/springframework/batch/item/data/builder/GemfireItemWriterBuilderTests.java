@@ -18,18 +18,15 @@ package org.springframework.batch.item.data.builder;
 
 import java.util.Arrays;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.batch.item.SpELItemKeyMapper;
 import org.springframework.batch.item.data.GemfireItemWriter;
 import org.springframework.data.gemfire.GemfireTemplate;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
 
@@ -44,7 +41,7 @@ public class GemfireItemWriterBuilderTests {
 
 	private List<GemfireItemWriterBuilderTests.Foo> items;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		MockitoAnnotations.initMocks(this);
 		this.items = Arrays.asList(new GemfireItemWriterBuilderTests.Foo(new GemfireItemWriterBuilderTests.Bar("val1")),
@@ -86,8 +83,8 @@ public class GemfireItemWriterBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.", "template is required.",
-					iae.getMessage());
+			assertEquals("template is required.",
+			iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 
@@ -98,8 +95,8 @@ public class GemfireItemWriterBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.",
-					"itemKeyMapper is required.", iae.getMessage());
+			assertEquals(
+			"itemKeyMapper is required.", iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 

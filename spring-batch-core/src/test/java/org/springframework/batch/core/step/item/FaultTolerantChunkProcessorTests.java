@@ -15,17 +15,12 @@
  */
 package org.springframework.batch.core.step.item;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
@@ -43,6 +38,9 @@ import org.springframework.lang.Nullable;
 import org.springframework.retry.RetryException;
 import org.springframework.retry.policy.NeverRetryPolicy;
 import org.springframework.retry.policy.SimpleRetryPolicy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class FaultTolerantChunkProcessorTests {
 
@@ -59,7 +57,7 @@ public class FaultTolerantChunkProcessorTests {
 	private StepContribution contribution = new StepExecution("foo",
 			new JobExecution(new JobInstance(0L, "job"), new JobParameters())).createStepContribution();
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		batchRetryTemplate = new BatchRetryTemplate();
 		processor = new FaultTolerantChunkProcessor<>(
@@ -127,7 +125,7 @@ public class FaultTolerantChunkProcessorTests {
 		assertEquals(1, contribution.getSkipCount());
 		assertEquals(1, contribution.getFilterCount());
 	}
-	
+
 	@Test
 	// BATCH-2663
 	public void testFilterCountOnSkipInWriteWithoutRetry() throws Exception {
@@ -153,7 +151,7 @@ public class FaultTolerantChunkProcessorTests {
 		assertEquals(1, contribution.getWriteSkipCount());
 		assertEquals(1, contribution.getFilterCount());
 	}
-	
+
 	@Test
 	// BATCH-2663
 	public void testFilterCountOnSkipInWriteWithRetry() throws Exception {
@@ -197,7 +195,7 @@ public class FaultTolerantChunkProcessorTests {
 			@Override
 			public void write(List<? extends String> items) throws Exception {
 				if (items.contains("fail")) {
-					assertFalse("Expected Error!", true);
+					assertFalse(true, "Expected Error!");
 				}
 			}
 		});
@@ -563,7 +561,7 @@ public class FaultTolerantChunkProcessorTests {
 		assertEquals(1, contribution.getWriteCount());
 		assertEquals(0, contribution.getFilterCount());
 	}
-	
+
 	@Test
 	// BATCH-2036
 	public void testProcessFilterAndSkippableException() throws Exception {
@@ -587,18 +585,18 @@ public class FaultTolerantChunkProcessorTests {
 		processor.afterPropertiesSet();
 		Chunk<String> inputs = new Chunk<>(Arrays.asList("1", "2", "skip", "skip", "3", "fail", "fail", "4", "5"));
 		try {
-			processor.process(contribution, inputs);	
+			processor.process(contribution, inputs);
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException e) {			
+		} catch (IllegalArgumentException e) {
 			assertEquals("Expected Skippable Exception!", e.getMessage());
 		}
 		try {
-			processor.process(contribution, inputs);	
+			processor.process(contribution, inputs);
 			fail("Expected IllegalArgumentException");
-		} catch (IllegalArgumentException e) {			
+		} catch (IllegalArgumentException e) {
 			assertEquals("Expected Skippable Exception!", e.getMessage());
 		}
-		processor.process(contribution, inputs);			
+		processor.process(contribution, inputs);
 		assertEquals(5, list.size());
 		assertEquals("[1, 2, 3, 4, 5]", list.toString());
 		assertEquals(2, contribution.getFilterCount());

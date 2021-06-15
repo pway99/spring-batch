@@ -15,9 +15,8 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import org.junit.Test;
-import org.springframework.batch.core.jsr.AbstractJsrTestCase;
-
+import java.util.List;
+import java.util.Properties;
 import javax.batch.api.BatchProperty;
 import javax.batch.api.chunk.ItemProcessor;
 import javax.batch.operations.JobOperator;
@@ -27,10 +26,9 @@ import javax.batch.runtime.JobExecution;
 import javax.batch.runtime.Metric;
 import javax.batch.runtime.StepExecution;
 import javax.inject.Inject;
-import java.util.List;
-import java.util.Properties;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.springframework.batch.core.jsr.AbstractJsrTestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class ExceptionHandlingParsingTests extends AbstractJsrTestCase {
 

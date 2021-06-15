@@ -17,12 +17,9 @@ package org.springframework.batch.core.explore.support;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.apache.commons.dbcp2.BasicDataSource;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import test.jdbc.datasource.DataSourceInitializer;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -51,9 +48,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import static org.junit.Assert.assertEquals;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import test.jdbc.datasource.DataSourceInitializer;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Integration test for the BATCH-2034 issue.
@@ -65,13 +62,13 @@ import static org.junit.Assert.assertEquals;
  * @author Sergey Shcherbakov
  */
 @ContextConfiguration(classes={SimpleJobExplorerIntegrationTests.Config.class})
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class SimpleJobExplorerIntegrationTests {
-	
+
 	@Configuration
 	@EnableBatchProcessing
 	static class Config {
-		
+
 		@Autowired
 		private StepBuilderFactory steps;
 
@@ -79,14 +76,14 @@ public class SimpleJobExplorerIntegrationTests {
 		public JobExplorer jobExplorer() throws Exception {
 			return jobExplorerFactoryBean().getObject();
 		}
-		
+
 		@Bean
 		public JobExplorerFactoryBean jobExplorerFactoryBean() {
 			JobExplorerFactoryBean jobExplorerFactoryBean = new JobExplorerFactoryBean();
 			jobExplorerFactoryBean.setDataSource(dataSource());
 			return jobExplorerFactoryBean;
 		}
-		
+
 		@Bean
 		public Step flowStep() throws Exception {
 			return steps.get("flowStep").flow(simpleFlow()).build();
@@ -106,7 +103,7 @@ public class SimpleJobExplorerIntegrationTests {
 			simpleFlow.setStateTransitions(transitions);
 			return simpleFlow;
 		}
-		
+
 		@Bean
 		public BasicDataSource dataSource() {
 			BasicDataSource dataSource = new BasicDataSource();
@@ -116,12 +113,12 @@ public class SimpleJobExplorerIntegrationTests {
 			dataSource.setPassword("");
 			return dataSource;
 		}
-		
+
 		@Bean
 		public DataSourceInitializer dataSourceInitializer() {
 			DataSourceInitializer dataSourceInitializer = new DataSourceInitializer();
 			dataSourceInitializer.setDataSource(dataSource());
-			dataSourceInitializer.setInitScripts(new Resource[] { 
+			dataSourceInitializer.setInitScripts(new Resource[] {
 				new ClassPathResource("org/springframework/batch/core/schema-drop-hsqldb.sql"),
 				new ClassPathResource("org/springframework/batch/core/schema-hsqldb.sql")
 			});
@@ -137,7 +134,7 @@ public class SimpleJobExplorerIntegrationTests {
 
 	@Autowired
 	private FlowStep flowStep;
-	
+
 	@Test
 	public void testGetStepExecution() throws JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException, JobInterruptedException, UnexpectedJobExecutionException {
 
@@ -145,11 +142,11 @@ public class SimpleJobExplorerIntegrationTests {
 		JobExecution jobExecution = jobRepository.createJobExecution("myJob", new JobParameters());
 		StepExecution stepExecution = jobExecution.createStepExecution("flowStep");
 		jobRepository.add(stepExecution);
-		
+
 		// Executed on the remote end in remote partitioning use case
 		StepExecution jobExplorerStepExecution = jobExplorer.getStepExecution(jobExecution.getId(), stepExecution.getId());
 		flowStep.execute(jobExplorerStepExecution);
-		
+
 		assertEquals(BatchStatus.COMPLETED, jobExplorerStepExecution.getStatus());
 	}
 

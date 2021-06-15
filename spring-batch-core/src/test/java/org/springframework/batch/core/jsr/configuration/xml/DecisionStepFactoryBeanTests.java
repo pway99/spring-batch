@@ -15,22 +15,22 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import javax.batch.api.Decider;
 import javax.batch.runtime.StepExecution;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.jsr.step.DecisionStep;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class DecisionStepFactoryBeanTests {
 
 	private DecisionStepFactoryBean factoryBean;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		factoryBean = new DecisionStepFactoryBean();
 	}
@@ -45,21 +45,27 @@ public class DecisionStepFactoryBeanTests {
 		assertTrue(factoryBean.isSingleton());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNullDeciderAndName() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		factoryBean.afterPropertiesSet();
+	 });
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNullDecider() throws Exception{
+	 assertThrows(IllegalArgumentException.class, () -> {
 		factoryBean.setName("state1");
 		factoryBean.afterPropertiesSet();
+	 });
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNullName() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		factoryBean.setDecider(new DeciderSupport());
 		factoryBean.afterPropertiesSet();
+	 });
 	}
 
 	@Test

@@ -15,12 +15,8 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -32,14 +28,17 @@ import org.springframework.batch.core.step.tasklet.TaskletStep;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.util.ReflectionTestUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Thomas Risberg
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class StepWithSimpleTaskJobParserTests {
 
 	@Autowired
@@ -78,7 +77,7 @@ public class StepWithSimpleTaskJobParserTests {
 	private TestTasklet assertTasklet(Job job, String stepName, String taskletName) {
 		System.err.println(((FlowJob) job).getStepNames());
 		Step step = ((FlowJob) job).getStep(stepName);
-		assertTrue("Wrong type for step name="+stepName+": "+step, step instanceof TaskletStep);
+		assertTrue(step instanceof TaskletStep, "Wrong type for step name=" + stepName + ": " + step);
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		assertTrue(tasklet instanceof TestTasklet);
 		TestTasklet testTasklet = (TestTasklet) tasklet;

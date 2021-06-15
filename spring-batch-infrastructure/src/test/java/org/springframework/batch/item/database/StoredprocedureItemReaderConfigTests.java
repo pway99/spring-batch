@@ -28,9 +28,7 @@ import java.sql.SQLException;
 import javax.sql.DataSource;
 
 import org.hsqldb.types.Types;
-import org.junit.Test;
-import org.junit.runners.JUnit4;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.jdbc.core.SqlParameter;
@@ -40,7 +38,7 @@ import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 
-@RunWith(JUnit4.class)
+
 public class StoredprocedureItemReaderConfigTests {
 
 	/*
@@ -78,13 +76,13 @@ public class StoredprocedureItemReaderConfigTests {
 					}
 				});
 	}
-	
+
 	/*
 	 * Should fail if trying to call getConnection() twice
 	 */
 	@Test
 	public void testUsesItsOwnTransaction() throws Exception {
-		
+
 		DataSource ds = mock(DataSource.class);
 		DatabaseMetaData dmd = mock(DatabaseMetaData.class);
 		when(dmd.getDatabaseProductName()).thenReturn("Oracle");
@@ -119,7 +117,7 @@ public class StoredprocedureItemReaderConfigTests {
 	 */
 	@Test
 	public void testHandlesRefCursorPosition() throws Exception {
-		
+
 		DataSource ds = mock(DataSource.class);
 		DatabaseMetaData dmd = mock(DatabaseMetaData.class);
 		when(dmd.getDatabaseProductName()).thenReturn("Oracle");

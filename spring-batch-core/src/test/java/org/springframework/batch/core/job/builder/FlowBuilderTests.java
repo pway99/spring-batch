@@ -16,9 +16,7 @@
 package org.springframework.batch.core.job.builder;
 
 import java.util.Iterator;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInterruptedException;
@@ -32,8 +30,7 @@ import org.springframework.batch.core.job.flow.JobFlowExecutor;
 import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.batch.core.step.StepSupport;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer

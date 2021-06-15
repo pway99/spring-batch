@@ -16,13 +16,11 @@
 
 package org.springframework.batch.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-
 import org.springframework.core.io.Resource;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * This class can be used to assert that two files are the same.
@@ -39,12 +37,12 @@ public abstract class AssertFile {
 			int lineNum = 1;
 			for (String expectedLine = null; (expectedLine = expectedReader.readLine()) != null; lineNum++) {
 				String actualLine = actualReader.readLine();
-				assertEquals("Line number " + lineNum + " does not match.", expectedLine, actualLine);
+				assertEquals(expectedLine, actualLine, "Line number " + lineNum + " does not match.");
 			}
 
 			String actualLine = actualReader.readLine();
-			assertEquals("More lines than expected.  There should not be a line number " + lineNum + ".", null,
-					actualLine);
+			assertEquals(null,
+			actualLine, "More lines than expected.  There should not be a line number " + lineNum + ".");
 		}
 		finally {
 			expectedReader.close();

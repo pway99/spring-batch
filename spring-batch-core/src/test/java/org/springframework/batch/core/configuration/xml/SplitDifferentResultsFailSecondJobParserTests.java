@@ -15,24 +15,23 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dan Garrette
  * @since 2.0
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class SplitDifferentResultsFailSecondJobParserTests extends AbstractJobParserTests {
 
 	@Test
@@ -40,9 +39,9 @@ public class SplitDifferentResultsFailSecondJobParserTests extends AbstractJobPa
 
 		JobExecution jobExecution = createJobExecution();
 		job.execute(jobExecution);
-		assertEquals("Wrong step names: "+stepNamesList, 3, stepNamesList.size());
-		assertTrue("Wrong step names: "+stepNamesList, stepNamesList.contains("s1"));
-		assertTrue("Wrong step names: "+stepNamesList, stepNamesList.contains("fail"));
+		assertEquals(3, stepNamesList.size(), "Wrong step names: " + stepNamesList);
+		assertTrue(stepNamesList.contains("s1"), "Wrong step names: " + stepNamesList);
+		assertTrue(stepNamesList.contains("fail"), "Wrong step names: " + stepNamesList);
 		assertTrue(stepNamesList.contains("s3"));
 
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());

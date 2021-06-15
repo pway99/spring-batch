@@ -15,14 +15,10 @@
  */
 package org.springframework.batch.core.jsr.step.item;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ItemProcessListener;
 import org.springframework.batch.core.ItemReadListener;
@@ -46,6 +42,8 @@ import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.support.ListItemReader;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JsrFaultTolerantChunkProcessorTests {
 
@@ -57,7 +55,7 @@ public class JsrFaultTolerantChunkProcessorTests {
 	private JobRepository repository;
 	private StepExecution stepExecution;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		List<String> items = new ArrayList<>();
@@ -452,7 +450,7 @@ public class JsrFaultTolerantChunkProcessorTests {
 		assertEquals(0, listener.onSkipInProcess);
 		assertEquals(1, listener.onSkipInWrite);
 	}
-	
+
 	@Test
 	public void testMultipleChunks() throws Exception{
 
@@ -617,7 +615,7 @@ public class JsrFaultTolerantChunkProcessorTests {
 
 		@Override
 		public void onSkipInWrite(List<Object> items, Throwable t) {
-			onSkipInWrite++;			
+			onSkipInWrite++;
 		}
 
 		@Override

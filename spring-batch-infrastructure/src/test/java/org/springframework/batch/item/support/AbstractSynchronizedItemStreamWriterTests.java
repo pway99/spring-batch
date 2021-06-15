@@ -15,10 +15,8 @@
  */
 package org.springframework.batch.item.support;
 
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamWriter;
@@ -39,9 +37,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
  */
 public abstract class AbstractSynchronizedItemStreamWriterTests {
 
-	@Rule
-	public ExpectedException expectedException = ExpectedException.none();
-
 	@Mock
 	protected ItemStreamWriter<Object> delegate;
 
@@ -51,7 +46,7 @@ public abstract class AbstractSynchronizedItemStreamWriterTests {
 
 	abstract protected SynchronizedItemStreamWriter<Object> createNewSynchronizedItemStreamWriter();
 
-	@Before
+	@BeforeEach
 	public void init() {
 		initMocks(this);
 		synchronizedItemStreamWriter = createNewSynchronizedItemStreamWriter();

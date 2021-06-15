@@ -20,8 +20,8 @@ import static org.mockito.Mockito.mock;
 import java.math.BigDecimal;
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemWriter;
@@ -31,7 +31,7 @@ public class FlatFileCustomerCreditDaoTests {
 	private ResourceLifecycleItemWriter output;
 	private FlatFileCustomerCreditDao writer;
 	
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		output = mock(ResourceLifecycleItemWriter.class);
 

@@ -17,7 +17,7 @@ package org.springframework.batch.core.test;
 
 import javax.sql.DataSource;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
@@ -29,7 +29,7 @@ public class AbstractIntegrationTests {
 
 	protected DataSource dataSource;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		ResourceDatabasePopulator databasePopulator = new ResourceDatabasePopulator();
 		databasePopulator.addScript(new ClassPathResource("/org/springframework/batch/core/schema-drop-hsqldb.sql"));

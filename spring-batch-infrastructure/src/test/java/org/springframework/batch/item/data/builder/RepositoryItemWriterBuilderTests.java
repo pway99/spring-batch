@@ -19,17 +19,14 @@ package org.springframework.batch.item.data.builder;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.batch.item.data.RepositoryItemWriter;
 import org.springframework.data.repository.CrudRepository;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.verify;
 
 /**
@@ -40,7 +37,7 @@ public class RepositoryItemWriterBuilderTests {
 	@Mock
 	private TestRepository repository;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 	}
@@ -53,8 +50,8 @@ public class RepositoryItemWriterBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.",
-					"repository is required.", iae.getMessage());
+			assertEquals(
+			"repository is required.", iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 
@@ -69,8 +66,8 @@ public class RepositoryItemWriterBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("IllegalArgumentException message did not match the expected result.",
-					"methodName must not be empty.", iae.getMessage());
+			assertEquals(
+			"methodName must not be empty.", iae.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 

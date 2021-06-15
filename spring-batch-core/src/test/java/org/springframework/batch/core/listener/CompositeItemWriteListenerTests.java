@@ -21,8 +21,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ItemWriteListener;
 
 /**
@@ -37,7 +37,7 @@ public class CompositeItemWriteListenerTests {
 	CompositeItemWriteListener<Object> compositeListener;
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		listener = mock(ItemWriteListener.class);
 		compositeListener = new CompositeItemWriteListener<>();

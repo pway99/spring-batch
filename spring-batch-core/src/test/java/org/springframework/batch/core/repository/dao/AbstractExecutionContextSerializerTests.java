@@ -16,19 +16,19 @@
 package org.springframework.batch.core.repository.dao;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import org.junit.Test;
-import org.springframework.batch.core.JobParameter;
-import org.springframework.batch.core.JobParameters;
-import org.springframework.batch.core.repository.ExecutionContextSerializer;
-
 import java.io.*;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Test;
+import org.springframework.batch.core.JobParameter;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.repository.ExecutionContextSerializer;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.hasEntry;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Abstract test class for {@code ExecutionContextSerializer} implementations. Provides a minimum on test methods
@@ -150,10 +150,12 @@ public abstract class AbstractExecutionContextSerializerTests {
         compareContexts(m1, m2);
     }
 
-    @Test (expected=IllegalArgumentException.class)
+    @Test
     public void testNullSerialization() throws Exception {
-        getSerializer().serialize(null, null);
-    }
+	 assertThrows(IllegalArgumentException.class, () -> {
+	  getSerializer().serialize(null, null);
+	 });
+	}
 
     protected void compareContexts(Map<String, Object> m1, Map<String, Object> m2) {
 

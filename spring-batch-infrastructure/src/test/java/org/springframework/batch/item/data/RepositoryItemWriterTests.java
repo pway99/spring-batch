@@ -15,22 +15,20 @@
  */
 package org.springframework.batch.item.data;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.data.repository.CrudRepository;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 public class RepositoryItemWriterTests {
 
@@ -39,7 +37,7 @@ public class RepositoryItemWriterTests {
 
 	private RepositoryItemWriter<String> writer;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		writer = new RepositoryItemWriter<>();
@@ -67,7 +65,7 @@ public class RepositoryItemWriterTests {
 			fail("Expected IllegalArgumentException");
 		} catch (IllegalArgumentException e) {
 			// expected
-			assertEquals("Wrong message for exception: " + e.getMessage(), "methodName must not be empty.", e.getMessage());
+			assertEquals("methodName must not be empty.", e.getMessage(), "Wrong message for exception: " + e.getMessage());
 		}
 	}
 

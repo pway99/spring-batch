@@ -15,12 +15,11 @@
  */
 package org.springframework.batch.core.job.flow.support;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.job.flow.State;
 import org.springframework.batch.core.job.flow.StateSupport;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -78,10 +77,10 @@ public class StateTransitionTests {
 	public void testToString() {
 		StateTransition transition = StateTransition.createStateTransition(state, "CONTIN???LE", "start");
 		String string = transition.toString();
-		assertTrue("Wrong string: " + string, string.contains("Transition"));
-		assertTrue("Wrong string: " + string, string.contains("start"));
-		assertTrue("Wrong string: " + string, string.contains("CONTIN???LE"));
-		assertTrue("Wrong string: " + string, string.contains("next="));
+		assertTrue(string.contains("Transition"), "Wrong string: " + string);
+		assertTrue(string.contains("start"), "Wrong string: " + string);
+		assertTrue(string.contains("CONTIN???LE"), "Wrong string: " + string);
+		assertTrue(string.contains("next="), "Wrong string: " + string);
 	}
 
 }

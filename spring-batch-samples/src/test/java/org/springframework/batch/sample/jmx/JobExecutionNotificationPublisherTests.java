@@ -15,17 +15,14 @@
  */
 package org.springframework.batch.sample.jmx;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.management.Notification;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.jmx.export.notification.NotificationPublisher;
 import org.springframework.jmx.export.notification.UnableToSendNotificationException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -49,6 +46,6 @@ public class JobExecutionNotificationPublisherTests {
 		publisher.onApplicationEvent(new SimpleMessageApplicationEvent(this, "foo"));
 		assertEquals(1, list.size());
 		String message = list.get(0).getMessage();
-		assertTrue("Message does not contain 'foo': ", message.indexOf("foo") > 0);
+		assertTrue(message.indexOf("foo") > 0, "Message does not contain 'foo': ");
 	}
 }

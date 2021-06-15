@@ -15,17 +15,14 @@
  */
 package org.springframework.batch.core.jsr.partition;
 
-import static org.junit.Assert.assertEquals;
-
 import java.io.Serializable;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantLock;
-
 import javax.batch.api.partition.PartitionCollector;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.scope.context.ChunkContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class PartitionCollectorAdapterTests {
 

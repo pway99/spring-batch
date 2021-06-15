@@ -15,21 +15,19 @@
  */
 package org.springframework.batch.core.job.flow.support;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Comparator;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.job.flow.State;
 import org.springframework.batch.core.job.flow.StateSupport;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class DefaultStateTransitionComparatorTests {
 
 	private State state = new StateSupport("state1");
 	private Comparator<StateTransition> comparator;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		comparator = new DefaultStateTransitionComparator();
 	}

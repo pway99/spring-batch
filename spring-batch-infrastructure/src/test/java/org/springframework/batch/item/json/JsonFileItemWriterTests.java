@@ -19,42 +19,46 @@ package org.springframework.batch.item.json;
 import java.io.File;
 import java.nio.file.Files;
 import java.util.Arrays;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.Mockito;
-import org.mockito.junit.MockitoJUnitRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 /**
  * @author Mahmoud Ben Hassine
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public class JsonFileItemWriterTests {
 
 	private Resource resource;
 	@Mock
 	private JsonObjectMarshaller<String> jsonObjectMarshaller;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		File file = Files.createTempFile("test", "json").toFile();
 		this.resource = new FileSystemResource(file);
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void resourceMustNotBeNull() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new JsonFileItemWriter<>(null, this.jsonObjectMarshaller);
+	 });
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void jsonObjectMarshallerMustNotBeNull() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		new JsonFileItemWriter<>(this.resource, null);
+	 });
 	}
 
 	@Test

@@ -15,9 +15,8 @@
  */
 package org.springframework.batch.item.database.support;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Thomas Risberg
@@ -34,31 +33,31 @@ public class SybasePagingQueryProviderTests extends AbstractSqlPagingQueryProvid
 	public void testGenerateFirstPageQuery() {
 		String sql = "SELECT TOP 100 id, name, age FROM foo WHERE bar = 1 ORDER BY id ASC";
 		String s = pagingQueryProvider.generateFirstPageQuery(pageSize);
-		assertEquals("", sql, s);
+		assertEquals(sql, s, "");
 	}
 
-	@Test 
+	@Test
 	@Override
 	public void testGenerateRemainingPagesQuery() {
 		String sql = "SELECT TOP 100 id, name, age FROM foo WHERE (bar = 1) AND ((id > ?)) ORDER BY id ASC";
 		String s = pagingQueryProvider.generateRemainingPagesQuery(pageSize);
-		assertEquals("", sql, s);
+		assertEquals(sql, s, "");
 	}
 
-	@Test 
+	@Test
 	@Override
 	public void testGenerateJumpToItemQuery() {
 		String sql = "SELECT id FROM ( SELECT id, ROW_NUMBER() OVER ( ORDER BY id ASC) AS ROW_NUMBER FROM foo WHERE bar = 1) WHERE ROW_NUMBER = 100 ORDER BY id ASC";
 		String s = pagingQueryProvider.generateJumpToItemQuery(145, pageSize);
-		assertEquals("", sql, s);
+		assertEquals(sql, s, "");
 	}
 
-	@Test 
+	@Test
 	@Override
 	public void testGenerateJumpToItemQueryForFirstPage() {
 		String sql = "SELECT id FROM ( SELECT id, ROW_NUMBER() OVER ( ORDER BY id ASC) AS ROW_NUMBER FROM foo WHERE bar = 1) WHERE ROW_NUMBER = 1 ORDER BY id ASC";
 		String s = pagingQueryProvider.generateJumpToItemQuery(45, pageSize);
-		assertEquals("", sql, s);
+		assertEquals(sql, s, "");
 	}
 
 	@Test

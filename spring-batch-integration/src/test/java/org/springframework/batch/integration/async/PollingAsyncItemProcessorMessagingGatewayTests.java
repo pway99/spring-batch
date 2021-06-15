@@ -19,14 +19,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
-
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.rules.MethodRule;
-import org.junit.runner.RunWith;
 import org.junit.runners.model.FrameworkMethod;
 import org.junit.runners.model.Statement;
-
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.item.ItemProcessor;
@@ -38,18 +36,17 @@ import org.springframework.integration.annotation.MessageEndpoint;
 import org.springframework.integration.annotation.ServiceActivator;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration
 public class PollingAsyncItemProcessorMessagingGatewayTests {
 
 	private AsyncItemProcessor<String, String> processor = new AsyncItemProcessor<>();
 
-	private StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(new JobParametersBuilder().addLong("factor", 2L).toJobParameters());;
+	private StepExecution stepExecution = MetaDataInstanceFactory.createStepExecution(new JobParametersBuilder().addLong("factor", 2L).toJobParameters());
 
 	@Rule
 	public MethodRule rule = new MethodRule() {
@@ -71,7 +68,7 @@ public class PollingAsyncItemProcessorMessagingGatewayTests {
 							return null;
 						}
 					});
-				};
+				}
 			};
 		}
 	};

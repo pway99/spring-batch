@@ -15,8 +15,11 @@
  */
 package org.springframework.batch.core.job;
 
-import org.junit.Before;
-import org.junit.Test;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Date;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionException;
@@ -29,16 +32,11 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.lang.Nullable;
-
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -50,7 +48,7 @@ public class ExtendedAbstractJobTests {
 	private AbstractJob job;
 	private JobRepository jobRepository;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MapJobRepositoryFactoryBean factory = new MapJobRepositoryFactoryBean();
 		jobRepository = factory.getObject();
@@ -106,7 +104,7 @@ public class ExtendedAbstractJobTests {
 	@Test
 	public void testToString() throws Exception {
 		String value = job.toString();
-		assertTrue("Should contain name: " + value, value.indexOf("name=") >= 0);
+		assertTrue(value.indexOf("name=") >= 0, "Should contain name: " + value);
 	}
 
 	@Test
@@ -141,7 +139,7 @@ public class ExtendedAbstractJobTests {
 		assertEquals(BatchStatus.FAILED, execution.getStatus());
 		assertEquals("FOO", execution.getFailureExceptions().get(0).getMessage());
 		String description = execution.getExitStatus().getExitDescription();
-		assertTrue("Wrong description: "+description, description.contains("FOO"));
+		assertTrue(description.contains("FOO"), "Wrong description: " + description);
 	}
 
 	/**

@@ -16,14 +16,12 @@
 package org.springframework.batch.core.step.tasklet;
 
 import java.io.File;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -39,9 +37,10 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.util.Assert;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.when;
 
 /**
@@ -59,7 +58,7 @@ public class SystemCommandTaskletIntegrationTests {
 	@Mock
 	private JobExplorer jobExplorer;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
@@ -122,13 +121,15 @@ public class SystemCommandTaskletIntegrationTests {
 	/*
 	 * The attempt to execute the system command results in exception
 	 */
-	@Test(expected = java.util.concurrent.ExecutionException.class)
+	@Test
 	public void testExecuteException() throws Exception {
+	 assertThrows(java.util.concurrent.ExecutionException.class, () -> {
 		String command = "non-sense-that-should-cause-exception-when-attempted-to-execute";
 		tasklet.setCommand(command);
 		tasklet.afterPropertiesSet();
 
 		tasklet.execute(null, null);
+	 });
 	}
 
 	/*

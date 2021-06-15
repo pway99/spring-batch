@@ -15,20 +15,19 @@
  */
 package org.springframework.batch.core.configuration.support;
 
-import static org.junit.Assert.fail;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
-
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.DuplicateJobException;
 import org.springframework.batch.core.configuration.StepRegistry;
 import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.step.NoSuchStepException;
 import org.springframework.batch.core.step.tasklet.TaskletStep;
+
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Sebastien Gerard
@@ -50,7 +49,7 @@ public class MapStepRegistryTests {
 
         try {
             stepRegistry.register(null, new HashSet<>());
-            Assert.fail(EXCEPTION_NOT_THROWN_MSG);
+            Assertions.fail(EXCEPTION_NOT_THROWN_MSG);
         } catch (IllegalArgumentException e) {
         }
     }
@@ -61,7 +60,7 @@ public class MapStepRegistryTests {
 
         try {
             stepRegistry.register("fdsfsd", null);
-            Assert.fail(EXCEPTION_NOT_THROWN_MSG);
+            Assertions.fail(EXCEPTION_NOT_THROWN_MSG);
         } catch (IllegalArgumentException e) {
         }
     }
@@ -147,7 +146,7 @@ public class MapStepRegistryTests {
 
         try {
             stepRegistry.getStep(null, "a step");
-            Assert.fail(EXCEPTION_NOT_THROWN_MSG);
+            Assertions.fail(EXCEPTION_NOT_THROWN_MSG);
         } catch (IllegalArgumentException e) {
         }
     }
@@ -161,7 +160,7 @@ public class MapStepRegistryTests {
 
         try {
             stepRegistry.getStep(null, stepName);
-            Assert.fail(EXCEPTION_NOT_THROWN_MSG);
+            Assertions.fail(EXCEPTION_NOT_THROWN_MSG);
         } catch (IllegalArgumentException e) {
         }
     }
@@ -189,7 +188,7 @@ public class MapStepRegistryTests {
 
         try {
             stepRegistry.unregisterStepsFromJob(null);
-            Assert.fail(EXCEPTION_NOT_THROWN_MSG);
+            Assertions.fail(EXCEPTION_NOT_THROWN_MSG);
         } catch (IllegalArgumentException e) {
         }
     }
@@ -222,7 +221,7 @@ public class MapStepRegistryTests {
     protected void assertJobNotRegistered(StepRegistry stepRegistry, String jobName) {
         try {
             stepRegistry.getStep(jobName, "a step");
-            Assert.fail(EXCEPTION_NOT_THROWN_MSG);
+            Assertions.fail(EXCEPTION_NOT_THROWN_MSG);
         } catch (NoSuchJobException e) {
         }
     }
@@ -232,7 +231,7 @@ public class MapStepRegistryTests {
             try {
                 stepRegistry.getStep(jobName, step.getName());
             } catch (NoSuchJobException e) {
-                Assert.fail("Unexpected exception " + e);
+                Assertions.fail("Unexpected exception " + e);
             }
         }
     }
@@ -246,9 +245,9 @@ public class MapStepRegistryTests {
     protected void assertStepNameNotRegistered(StepRegistry stepRegistry, String jobName, String stepName) {
         try {
             stepRegistry.getStep(jobName, stepName);
-            Assert.fail(EXCEPTION_NOT_THROWN_MSG);
+            Assertions.fail(EXCEPTION_NOT_THROWN_MSG);
         } catch (NoSuchJobException e) {
-            Assert.fail("Unexpected exception");
+            Assertions.fail("Unexpected exception");
         } catch (NoSuchStepException e) {
         }
     }

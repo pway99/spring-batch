@@ -18,23 +18,20 @@ package org.springframework.batch.core.step.item;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.Parameterized;
-import org.junit.runners.Parameterized.Parameters;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * @author Dave Syer
  * 
  */
-@RunWith(Parameterized.class)
 public class AlmostStatefulRetryChunkTests {
 
 	private Log logger = LogFactory.getLog(getClass());
@@ -49,35 +46,37 @@ public class AlmostStatefulRetryChunkTests {
 
 	private int count = 0;
 
-	public AlmostStatefulRetryChunkTests(String[] args, int limit) {
-		chunk = new Chunk<>();
-		for (String string : args) {
-			chunk.add(string);
-		}
-		this.retryLimit = limit;
+	public void initAlmostStatefulRetryChunkTests(String[] args, int limit) {
+	chunk = new Chunk<>();
+	for (String string : args) {
+	chunk.add(string);
+	}
+	this.retryLimit = limit;
 	}
 
-	@Test
-	public void testRetry() throws Exception {
-		logger.debug("Starting simple scenario");
-		List<String> items = new ArrayList<>(chunk.getItems());
-		int before = items.size();
-		items.removeAll(Collections.singleton("fail"));
-		boolean error = true;
-		while (error && count++ < BACKSTOP_LIMIT) {
-			try {
-				statefulRetry(chunk);
-				error = false;
-			}
-			catch (Exception e) {
-				error = true;
-			}
-		}
-		logger.debug("Chunk: " + chunk);
-		assertTrue("Backstop reached.  Probably an infinite loop...", count < BACKSTOP_LIMIT);
-		assertFalse(chunk.getItems().contains("fail"));
-		assertEquals(items, chunk.getItems());
-		assertEquals(before-chunk.getItems().size(), chunk.getSkips().size());
+	@MethodSource("data")
+ @ParameterizedTest
+	public void testRetry(String[] args, int limit) throws Exception {
+	initAlmostStatefulRetryChunkTests(args, limit);
+	logger.debug("Starting simple scenario");
+	List<String> items = new ArrayList<>(chunk.getItems());
+	int before = items.size();
+	items.removeAll(Collections.singleton("fail"));
+	boolean error = true;
+	while (error && count++ < BACKSTOP_LIMIT) {
+	try {
+	statefulRetry(chunk);
+	error = false;
+	}
+	catch (Exception e) {
+	error = true;
+	}
+	}
+	logger.debug("Chunk: " + chunk);
+	assertTrue(count < BACKSTOP_LIMIT, "Backstop reached.  Probably an infinite loop...");
+	assertFalse(chunk.getItems().contains("fail"));
+	assertEquals(items, chunk.getItems());
+	assertEquals(before - chunk.getItems().size(), chunk.getSkips().size());
 	}
 
 	/**
@@ -135,7 +134,7 @@ public class AlmostStatefulRetryChunkTests {
 		}
 	}
 
-	@Parameters
+
 	public static List<Object[]> data() {
 		List<Object[]> params = new ArrayList<>();
 		params.add(new Object[] { new String[] { "foo" }, 0 });

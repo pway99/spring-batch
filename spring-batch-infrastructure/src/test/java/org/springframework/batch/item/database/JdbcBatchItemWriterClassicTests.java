@@ -15,24 +15,24 @@
  */
 package org.springframework.batch.item.database;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.UncategorizedSQLException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementCallback;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcTemplate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Dave Syer
@@ -49,7 +49,7 @@ public class JdbcBatchItemWriterClassicTests {
 
 	private PreparedStatement ps;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		ps = mock(PreparedStatement.class);
 		jdbcTemplate = new JdbcTemplate() {
@@ -91,7 +91,7 @@ public class JdbcBatchItemWriterClassicTests {
 		catch (IllegalArgumentException e) {
 			// expected
 			String message = e.getMessage();
-			assertTrue("Message does not contain ' NamedParameterJdbcTemplate'.", message.indexOf("NamedParameterJdbcTemplate") >= 0);
+			assertTrue(message.indexOf("NamedParameterJdbcTemplate") >= 0, "Message does not contain ' NamedParameterJdbcTemplate'.");
 		}
 		writer.setJdbcTemplate(new NamedParameterJdbcTemplate(jdbcTemplate));
 		try {
@@ -101,7 +101,7 @@ public class JdbcBatchItemWriterClassicTests {
 		catch (IllegalArgumentException e) {
 			// expected
 			String message = e.getMessage().toLowerCase();
-			assertTrue("Message does not contain 'sql'.", message.indexOf("sql") >= 0);
+			assertTrue(message.indexOf("sql") >= 0, "Message does not contain 'sql'.");
 		}
 		writer.setSql("select * from foo where id = ?");
 		try {
@@ -111,7 +111,7 @@ public class JdbcBatchItemWriterClassicTests {
 		catch (IllegalArgumentException e) {
 			// expected
 			String message = e.getMessage();
-			assertTrue("Message does not contain 'ItemPreparedStatementSetter'.", message.indexOf("ItemPreparedStatementSetter") >= 0);
+			assertTrue(message.indexOf("ItemPreparedStatementSetter") >= 0, "Message does not contain 'ItemPreparedStatementSetter'.");
 		}
 		writer.setItemPreparedStatementSetter(
 				new ItemPreparedStatementSetter<String>() {
@@ -119,7 +119,7 @@ public class JdbcBatchItemWriterClassicTests {
 					public void setValues(String item, PreparedStatement ps)
 							throws SQLException {
 					}
-					
+
 				});
 		writer.afterPropertiesSet();
 	}
@@ -144,7 +144,7 @@ public class JdbcBatchItemWriterClassicTests {
 		catch (EmptyResultDataAccessException e) {
 			// expected
 			String message = e.getMessage();
-			assertTrue("Wrong message: " + message, message.indexOf("did not update") >= 0);
+			assertTrue(message.indexOf("did not update") >= 0, "Wrong message: " + message);
 		}
 		assertEquals(2, list.size());
 		assertTrue(list.contains("SQL"));

@@ -16,15 +16,10 @@
 
 package org.springframework.batch.core.step.tasklet;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.List;
 import java.util.concurrent.Semaphore;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInterruptedException;
@@ -46,6 +41,9 @@ import org.springframework.batch.repeat.policy.SimpleCompletionPolicy;
 import org.springframework.batch.repeat.support.RepeatTemplate;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
 import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class StepExecutorInterruptionTests {
 
@@ -59,7 +57,7 @@ public class StepExecutorInterruptionTests {
 
 	private JobRepository jobRepository;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		jobRepository = new SimpleJobRepository(new MapJobInstanceDao(), new MapJobExecutionDao(),
 				new MapStepExecutionDao(), new MapExecutionContextDao());
@@ -122,7 +120,7 @@ public class StepExecutorInterruptionTests {
 			count++;
 		}
 
-		assertTrue("Timed out waiting for step to be interrupted.", count < 1000);
+		assertTrue(count < 1000, "Timed out waiting for step to be interrupted.");
 		assertFalse(processingThread.isAlive());
 		assertEquals(BatchStatus.STOPPED, stepExecution.getStatus());
 
@@ -173,7 +171,7 @@ public class StepExecutorInterruptionTests {
 			count++;
 		}
 
-		assertTrue("Timed out waiting for step to be interrupted.", count < 1000);
+		assertTrue(count < 1000, "Timed out waiting for step to be interrupted.");
 		assertFalse(processingThread.isAlive());
 		assertEquals(BatchStatus.STOPPED, stepExecution.getStatus());
 
@@ -196,7 +194,7 @@ public class StepExecutorInterruptionTests {
 
 					@Override
 					public void release() {
-						assertTrue("Lock released before it is acquired", locked);
+						assertTrue(locked, "Lock released before it is acquired");
 					}
 				};
 			}

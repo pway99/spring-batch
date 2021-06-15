@@ -23,10 +23,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -55,10 +53,11 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.batch.support.PropertiesConverter;
 import org.springframework.lang.Nullable;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
@@ -83,7 +82,7 @@ public class SimpleJobOperatorTests {
 
 	private JobParameters jobParameters;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		job = new JobSupport("foo") {
@@ -123,7 +122,7 @@ public class SimpleJobOperatorTests {
 		jobOperator.setJobParametersConverter(new DefaultJobParametersConverter() {
 			@Override
 			public JobParameters getJobParameters(@Nullable Properties props) {
-				assertTrue("Wrong properties", props.containsKey("a"));
+				assertTrue(props.containsKey("a"), "Wrong properties");
 				return jobParameters;
 			}
 
@@ -310,7 +309,7 @@ public class SimpleJobOperatorTests {
 	public void testGetJobNames() throws Exception {
 		Set<String> names = jobOperator.getJobNames();
 		assertEquals(2, names.size());
-		assertTrue("Wrong names: " + names, names.contains("foo"));
+		assertTrue(names.contains("foo"), "Wrong names: " + names);
 	}
 
 	@Test
@@ -371,7 +370,7 @@ public class SimpleJobOperatorTests {
 		jobOperator.stop(111L);
 		assertEquals(BatchStatus.STOPPING, jobExecution.getStatus());
 	}
-	
+
 	@Test
 	public void testStopTaskletWhenJobNotRegistered() throws Exception {
 		JobInstance jobInstance = new JobInstance(123L, job.getName());
@@ -379,11 +378,11 @@ public class SimpleJobOperatorTests {
 		StoppableTasklet tasklet = mock(StoppableTasklet.class);
 		JobRegistry jobRegistry = mock(JobRegistry.class);
 		TaskletStep step = mock(TaskletStep.class);
-		
+
 		when(step.getTasklet()).thenReturn(tasklet);
 		when(jobRegistry.getJob(job.getName())).thenThrow(new NoSuchJobException("Unable to find job"));
 		when(jobExplorer.getJobExecution(111L)).thenReturn(jobExecution);
-		
+
 		jobOperator.setJobRegistry(jobRegistry);
 		jobOperator.stop(111L);
 		assertEquals(BatchStatus.STOPPING, jobExecution.getStatus());
@@ -439,14 +438,16 @@ public class SimpleJobOperatorTests {
 		assertNotNull(jobExecution.getEndTime());
 	}
 
-	@Test(expected = JobExecutionAlreadyRunningException.class)
+	@Test
 	public void testAbortNonStopping() throws Exception {
+	 assertThrows(JobExecutionAlreadyRunningException.class, () -> {
 		JobInstance jobInstance = new JobInstance(123L, job.getName());
 		JobExecution jobExecution = new JobExecution(jobInstance, 111L, jobParameters, null);
 		jobExecution.setStatus(BatchStatus.STARTED);
 		when(jobExplorer.getJobExecution(123L)).thenReturn(jobExecution);
 		jobRepository.update(jobExecution);
 		jobOperator.abandon(123L);
+	 });
 	}
 
 	class MockJob extends AbstractJob {

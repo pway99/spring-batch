@@ -16,22 +16,17 @@
 
 package org.springframework.batch.sample;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.launch.JobOperator;
 import org.springframework.batch.test.JobLauncherTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * Functional test for graceful shutdown.  A batch container is started in a new thread,
@@ -40,24 +35,24 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Lucas Ward
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/simple-job-launcher-context.xml", "/jobs/infiniteLoopJob.xml", "/job-runner-context.xml" })
 public class DatabaseShutdownFunctionalTests {
-	
+
 	/** Logger */
 	protected final Log logger = LogFactory.getLog(getClass());
 
 	@Autowired
 	private JobOperator jobOperator;
-	
+
 	@Autowired
 	private JobLauncherTestUtils jobLauncherTestUtils;
-		
+
 	@Test
 	public void testLaunchJob() throws Exception {
 
 		JobExecution jobExecution = jobLauncherTestUtils.launchJob();
-		
+
 		Thread.sleep(1000);
 
 		assertEquals(BatchStatus.STARTED, jobExecution.getStatus());
@@ -65,17 +60,17 @@ public class DatabaseShutdownFunctionalTests {
 		assertNotNull(jobExecution.getVersion());
 
 		jobOperator.stop(jobExecution.getId());
-		
+
 		int count = 0;
 		while(jobExecution.isRunning() && count <= 10){
 			logger.info("Checking for end time in JobExecution: count="+count);
 			Thread.sleep(100);
 			count++;
 		}
-		
+
 		assertFalse("Timed out waiting for job to end.", jobExecution.isRunning());
 		assertEquals(BatchStatus.STOPPED, jobExecution.getStatus());
 
 	}
-	
+
 }

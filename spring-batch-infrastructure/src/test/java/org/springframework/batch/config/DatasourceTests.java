@@ -16,21 +16,19 @@
 
 package org.springframework.batch.config;
 
-import static org.junit.Assert.*;
-
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.transaction.annotation.Transactional;
-import org.junit.runner.RunWith;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
 import javax.sql.DataSource;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/org/springframework/batch/jms/jms-context.xml")
 public class DatasourceTests {
 
@@ -40,13 +38,13 @@ public class DatasourceTests {
 	public void setDataSource(DataSource dataSource) {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
-	
-	@BeforeClass
+
+	@BeforeAll
 	public static void init() {
 		System.setProperty("batch.business.schema.script", "classpath:/org/springframework/batch/jms/init.sql");
 	}
 
-	@AfterClass
+	@AfterAll
 	public static void cleanup() {
 		System.clearProperty("batch.business.schema.script");
 	}

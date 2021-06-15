@@ -15,14 +15,14 @@
  */
 package org.springframework.batch.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashMap;
 import java.util.Map;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dan Garrette
@@ -116,9 +116,11 @@ public class PatternMatcherTests {
 		assertEquals(4, new PatternMatcher<>(map).match("biggest").intValue());
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testMatchPrefixNoMatch() {
+	 assertThrows(IllegalStateException.class, () -> {
 		new PatternMatcher<>(map).match("bat");
+	 });
 	}
 
 	@Test

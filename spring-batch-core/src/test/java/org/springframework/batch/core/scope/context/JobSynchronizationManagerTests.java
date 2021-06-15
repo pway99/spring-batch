@@ -15,10 +15,6 @@
  */
 package org.springframework.batch.core.scope.context;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -26,11 +22,13 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.TimeUnit;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * JobSynchronizationManagerTests.
@@ -41,8 +39,8 @@ public class JobSynchronizationManagerTests {
 
 	private JobExecution jobExecution = new JobExecution(0L);
 
-	@Before
-	@After
+	@BeforeEach
+	@AfterEach
 	public void start() {
 		while (JobSynchronizationManager.getContext() != null) {
 			JobSynchronizationManager.close();

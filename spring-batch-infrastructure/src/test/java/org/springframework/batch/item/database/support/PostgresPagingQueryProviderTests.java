@@ -15,9 +15,8 @@
  */
 package org.springframework.batch.item.database.support;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Thomas Risberg
@@ -48,14 +47,14 @@ public class PostgresPagingQueryProviderTests extends AbstractSqlPagingQueryProv
 	public void testGenerateJumpToItemQuery() {
 		String sql = "SELECT id FROM foo WHERE bar = 1 ORDER BY id ASC LIMIT 1 OFFSET 99";
 		String s = pagingQueryProvider.generateJumpToItemQuery(145, pageSize);
-		assertEquals("Wrong SQL for jump to", sql, s);
+		assertEquals(sql, s, "Wrong SQL for jump to");
 	}
 
 	@Test @Override
 	public void testGenerateJumpToItemQueryForFirstPage() {
 		String sql = "SELECT id FROM foo WHERE bar = 1 ORDER BY id ASC LIMIT 1 OFFSET 0";
 		String s = pagingQueryProvider.generateJumpToItemQuery(45, pageSize);
-		assertEquals("Wrong SQL for first page", sql, s);
+		assertEquals(sql, s, "Wrong SQL for first page");
 	}
 
 	@Override

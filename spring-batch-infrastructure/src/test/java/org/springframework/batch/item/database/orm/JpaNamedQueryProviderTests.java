@@ -18,17 +18,14 @@ package org.springframework.batch.item.database.orm;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
-
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
+import org.springframework.batch.item.sample.Foo;
+import org.springframework.util.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-
-import org.junit.Test;
-import org.mockito.Mockito;
-
-import org.springframework.batch.item.sample.Foo;
-import org.springframework.util.Assert;
 
 /**
  * Test for {@link JpaNamedQueryProvider}s.

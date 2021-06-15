@@ -15,21 +15,20 @@
  */
 package org.springframework.batch.item.database.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
-
 import javax.sql.DataSource;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.database.Order;
 import org.springframework.batch.item.database.PagingQueryProvider;
 import org.springframework.batch.support.DatabaseType;
 import org.springframework.batch.support.DatabaseTypeTestUtils;
 import org.springframework.jdbc.support.MetaDataAccessException;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -66,18 +65,22 @@ public class SqlPagingQueryProviderFactoryBeanTests {
 		assertEquals(true, factory.isSingleton());
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNoDataSource() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		factory.setDataSource(null);
 		PagingQueryProvider provider = factory.getObject();
 		assertNotNull(provider);
+	 });
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testNoSortKey() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		factory.setSortKeys(null);
 		PagingQueryProvider provider = factory.getObject();
 		assertNotNull(provider);
+	 });
 	}
 
 	@Test
@@ -85,28 +88,32 @@ public class SqlPagingQueryProviderFactoryBeanTests {
 		factory.setWhereClause("x=y");
 		PagingQueryProvider provider = factory.getObject();
 		String query = provider.generateFirstPageQuery(100);
-		assertTrue("Wrong query: "+query, query.contains("x=y"));
+		assertTrue(query.contains("x=y"), "Wrong query: " + query);
 	}
 
 	@Test
 	public void testAscending() throws Exception {
 		PagingQueryProvider provider = factory.getObject();
 		String query = provider.generateFirstPageQuery(100);
-		assertTrue("Wrong query: "+query, query.contains("ASC"));
+		assertTrue(query.contains("ASC"), "Wrong query: " + query);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testWrongDatabaseType() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		factory.setDatabaseType("NoSuchDb");
 		PagingQueryProvider provider = factory.getObject();
 		assertNotNull(provider);
+	 });
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testMissingMetaData() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		factory.setDataSource(DatabaseTypeTestUtils.getMockDataSource(new MetaDataAccessException("foo")));
 		PagingQueryProvider provider = factory.getObject();
 		assertNotNull(provider);
+	 });
 	}
 
 	@Test
@@ -114,7 +121,7 @@ public class SqlPagingQueryProviderFactoryBeanTests {
 		for (DatabaseType type : DatabaseType.values()) {
 			factory.setDatabaseType(type.name());
 			PagingQueryProvider provider = factory.getObject();
-			assertNotNull(provider);			
+			assertNotNull(provider);
 		}
 	}
 

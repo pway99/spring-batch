@@ -17,7 +17,7 @@ package org.springframework.batch.item.jms;
 
 import static org.mockito.Mockito.mock;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.jms.core.JmsOperations;
 
 /**

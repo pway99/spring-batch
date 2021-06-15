@@ -15,16 +15,14 @@
  */
 package org.springframework.batch.sample.common;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
-
-import static org.junit.Assert.assertEquals;
 
 public class OutputFileListenerTests {
 	private OutputFileListener listener = new OutputFileListener();
 	private StepExecution stepExecution = new StepExecution("foo", new JobExecution(0L), 1L);
-	
+
 	@Test
 	public void testCreateOutputNameFromInput() {
 		listener.createOutputNameFromInput(stepExecution);

@@ -15,9 +15,11 @@
  */
 package org.springframework.batch.integration.launch;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import java.util.HashMap;
+import java.util.Map;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -37,16 +39,9 @@ import org.springframework.messaging.PollableChannel;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import java.util.HashMap;
-import java.util.Map;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  *
@@ -55,7 +50,7 @@ import static org.junit.Assert.fail;
  *
  */
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class JobLaunchingGatewayIntegrationTests {
 
 	@Autowired
@@ -74,7 +69,7 @@ public class JobLaunchingGatewayIntegrationTests {
 
 	private final JobSupport job = new JobSupport("testJob");
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		Object message = "";
 		while (message!=null) {
@@ -94,7 +89,7 @@ public class JobLaunchingGatewayIntegrationTests {
 		}
 		catch (MessagingException e) {
 			String message = e.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("replyChannel"));
+			assertTrue(message.contains("replyChannel"), "Wrong message: " + message);
 		}
 		Message<JobExecution> executionMessage = (Message<JobExecution>) responseChannel.receive(1000);
 
@@ -133,7 +128,7 @@ public class JobLaunchingGatewayIntegrationTests {
 		}
 		catch (MessageHandlingException e) {
 			String message = e.getCause().getMessage();
-			assertTrue("Wrong message: " + message, message.contains("The payload must be of type JobLaunchRequest."));
+			assertTrue(message.contains("The payload must be of type JobLaunchRequest."), "Wrong message: " + message);
 		}
 		Message<JobExecution> executionMessage = (Message<JobExecution>) responseChannel.receive(1000);
 

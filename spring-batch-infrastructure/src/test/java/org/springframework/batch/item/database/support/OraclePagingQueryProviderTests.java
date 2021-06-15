@@ -15,9 +15,8 @@
  */
 package org.springframework.batch.item.database.support;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Thomas Risberg
@@ -54,7 +53,7 @@ public class OraclePagingQueryProviderTests extends AbstractSqlPagingQueryProvid
 		String s = pagingQueryProvider.generateJumpToItemQuery(145, pageSize);
 		assertEquals(sql, s);
 	}
-	
+
 	@Test @Override
 	public void testGenerateJumpToItemQueryForFirstPage() {
 		String sql = "SELECT id FROM (SELECT id, ROWNUM as TMP_ROW_NUM FROM (SELECT id FROM foo WHERE bar = 1 ORDER BY id ASC)) WHERE TMP_ROW_NUM = 1";

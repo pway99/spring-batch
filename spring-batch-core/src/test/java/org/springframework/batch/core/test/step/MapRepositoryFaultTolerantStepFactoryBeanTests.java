@@ -15,19 +15,16 @@
  */
 package org.springframework.batch.core.test.step;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -46,6 +43,7 @@ import org.springframework.lang.Nullable;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.util.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Tests for {@link FaultTolerantStepFactoryBean}.
@@ -72,9 +70,9 @@ public class MapRepositoryFaultTolerantStepFactoryBeanTests {
 
 	private PlatformTransactionManager transactionManager = new ResourcelessTransactionManager();
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
-		
+
 		reader = new SkipReaderStub();
 		writer = new SkipWriterStub();
 		processor = new SkipProcessorStub();
@@ -92,7 +90,7 @@ public class MapRepositoryFaultTolerantStepFactoryBeanTests {
 		factory.setTaskExecutor(taskExecutor);
 
 	}
-	
+
 	@Test
 	public void testUpdatesNoRollback() throws Exception {
 
@@ -111,7 +109,7 @@ public class MapRepositoryFaultTolerantStepFactoryBeanTests {
 	public void testMultithreadedSunnyDay() throws Throwable {
 
 		for (int i = 0; i < MAX_COUNT; i++) {
-			
+
 			if (i%100==0) {
 				logger.info("Starting step: "+i);
 				repository = new MapJobRepositoryFactoryBean(transactionManager).getObject();
@@ -219,7 +217,7 @@ public class MapRepositoryFaultTolerantStepFactoryBeanTests {
 		private final Log logger = LogFactory.getLog(getClass());
 
 		private List<String> processed = new CopyOnWriteArrayList<>();
-		
+
 		public List<String> getProcessed() {
 			return processed;
 		}

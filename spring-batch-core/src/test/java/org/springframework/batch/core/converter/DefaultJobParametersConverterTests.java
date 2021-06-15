@@ -15,11 +15,6 @@
  */
 package org.springframework.batch.core.converter;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -28,11 +23,14 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Properties;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.util.StringUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -144,8 +142,8 @@ public class DefaultJobParametersConverterTests {
 		}
 		catch (IllegalArgumentException e) {
 			String message = e.getMessage();
-			assertTrue("Message should contain wrong date: " + message, contains(message, "20080123"));
-			assertTrue("Message should contain format: " + message, contains(message, "yyyy/MM/dd"));
+			assertTrue(contains(message, "20080123"), "Message should contain wrong date: " + message);
+			assertTrue(contains(message, "yyyy/MM/dd"), "Message should contain format: " + message);
 		}
 	}
 
@@ -170,8 +168,8 @@ public class DefaultJobParametersConverterTests {
 		}
 		catch (IllegalArgumentException e) {
 			String message = e.getMessage();
-			assertTrue("Message should contain wrong number: " + message, contains(message, "foo"));
-			assertTrue("Message should contain format: " + message, contains(message, "#"));
+			assertTrue(contains(message, "foo"), "Message should contain wrong number: " + message);
+			assertTrue(contains(message, "#"), "Message should contain format: " + message);
 		}
 	}
 
@@ -186,8 +184,8 @@ public class DefaultJobParametersConverterTests {
 		}
 		catch (IllegalArgumentException e) {
 			String message = e.getMessage();
-			assertTrue("Message should contain wrong number: " + message, contains(message, "1.03"));
-			assertTrue("Message should contain 'decimal': " + message, contains(message, "decimal"));
+			assertTrue(contains(message, "1.03"), "Message should contain wrong number: " + message);
+			assertTrue(contains(message, "decimal"), "Message should contain 'decimal': " + message);
 		}
 	}
 
@@ -201,8 +199,8 @@ public class DefaultJobParametersConverterTests {
 		}
 		catch (IllegalArgumentException e) {
 			String message = e.getMessage();
-			assertTrue("Message should contain wrong number: " + message, contains(message, "foo"));
-			assertTrue("Message should contain format: " + message, contains(message, "#"));
+			assertTrue(contains(message, "foo"), "Message should contain wrong number: " + message);
+			assertTrue(contains(message, "#"), "Message should contain format: " + message);
 		}
 	}
 
