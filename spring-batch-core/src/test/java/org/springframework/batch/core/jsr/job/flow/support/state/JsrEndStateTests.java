@@ -17,9 +17,9 @@ package org.springframework.batch.core.jsr.job.flow.support.state;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.batch.api.AbstractBatchlet;
-import javax.batch.runtime.BatchStatus;
-import javax.batch.runtime.JobExecution;
+import jakarta.batch.api.AbstractBatchlet;
+import jakarta.batch.runtime.BatchStatus;
+import jakarta.batch.runtime.JobExecution;
 
 import org.junit.Test;
 

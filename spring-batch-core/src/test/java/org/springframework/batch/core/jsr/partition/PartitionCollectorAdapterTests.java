@@ -22,7 +22,7 @@ import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.batch.api.partition.PartitionCollector;
+import jakarta.batch.api.partition.PartitionCollector;
 
 import org.junit.Test;
 import org.springframework.batch.core.scope.context.ChunkContext;

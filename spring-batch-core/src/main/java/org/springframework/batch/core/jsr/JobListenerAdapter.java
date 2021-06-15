@@ -15,8 +15,8 @@
  */
 package org.springframework.batch.core.jsr;
 
-import javax.batch.api.listener.JobListener;
-import javax.batch.operations.BatchRuntimeException;
+import jakarta.batch.api.listener.JobListener;
+import jakarta.batch.operations.BatchRuntimeException;
 
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionListener;

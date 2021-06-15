@@ -20,8 +20,8 @@ import static org.junit.Assert.assertEquals;
 import java.io.Serializable;
 import java.util.List;
 
-import javax.batch.api.chunk.CheckpointAlgorithm;
-import javax.batch.api.chunk.ItemWriter;
+import jakarta.batch.api.chunk.CheckpointAlgorithm;
+import jakarta.batch.api.chunk.ItemWriter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

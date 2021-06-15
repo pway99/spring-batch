@@ -17,8 +17,8 @@ package org.springframework.batch.core.jsr.step;
 
 import java.util.Collection;
 
-import javax.batch.api.partition.PartitionReducer;
-import javax.batch.api.partition.PartitionReducer.PartitionStatus;
+import jakarta.batch.api.partition.PartitionReducer;
+import jakarta.batch.api.partition.PartitionReducer.PartitionStatus;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecutionException;

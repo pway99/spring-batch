@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.jsr.step.batchlet;
 
-import javax.batch.api.Batchlet;
+import jakarta.batch.api.Batchlet;
 
 /**
  * <p>

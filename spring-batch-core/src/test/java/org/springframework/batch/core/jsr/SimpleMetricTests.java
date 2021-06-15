@@ -17,8 +17,8 @@ package org.springframework.batch.core.jsr;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.batch.runtime.Metric;
-import javax.batch.runtime.Metric.MetricType;
+import jakarta.batch.runtime.Metric;
+import jakarta.batch.runtime.Metric.MetricType;
 
 import org.junit.Test;
 

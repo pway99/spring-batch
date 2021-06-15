@@ -30,10 +30,10 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.batch.api.partition.PartitionAnalyzer;
-import javax.batch.api.partition.PartitionCollector;
-import javax.batch.api.partition.PartitionMapper;
-import javax.batch.api.partition.PartitionPlan;
+import jakarta.batch.api.partition.PartitionAnalyzer;
+import jakarta.batch.api.partition.PartitionCollector;
+import jakarta.batch.api.partition.PartitionMapper;
+import jakarta.batch.api.partition.PartitionPlan;
 
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;

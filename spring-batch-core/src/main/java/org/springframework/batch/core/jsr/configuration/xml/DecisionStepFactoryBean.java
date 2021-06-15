@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import javax.batch.api.Decider;
+import jakarta.batch.api.Decider;
 
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.jsr.step.DecisionStep;

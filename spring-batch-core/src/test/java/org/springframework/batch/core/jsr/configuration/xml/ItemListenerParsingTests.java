@@ -127,7 +127,7 @@ public class ItemListenerParsingTests {
 		}
 	}
 
-	public static class JsrItemListener implements javax.batch.api.chunk.listener.ItemReadListener, javax.batch.api.chunk.listener.ItemProcessListener, javax.batch.api.chunk.listener.ItemWriteListener {
+	public static class JsrItemListener implements jakarta.batch.api.chunk.listener.ItemReadListener, jakarta.batch.api.chunk.listener.ItemProcessListener, jakarta.batch.api.chunk.listener.ItemWriteListener {
 
 		protected int beforeReadCount = 0;
 		protected int afterReadCount = 0;

@@ -40,7 +40,7 @@ import org.springframework.util.Assert;
  *
  */
 @SuppressWarnings("serial")
-public class JobInstance extends Entity implements javax.batch.runtime.JobInstance{
+public class JobInstance extends Entity implements jakarta.batch.runtime.JobInstance{
 
 	private final String jobName;
 

@@ -32,14 +32,14 @@ import org.springframework.batch.core.step.JobRepositorySupport;
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.util.StopWatch;
 
-import javax.batch.api.BatchProperty;
-import javax.batch.api.partition.PartitionAnalyzer;
-import javax.batch.api.partition.PartitionCollector;
-import javax.batch.api.partition.PartitionMapper;
-import javax.batch.api.partition.PartitionPlan;
-import javax.batch.api.partition.PartitionPlanImpl;
-import javax.batch.api.partition.PartitionReducer;
-import javax.batch.runtime.BatchStatus;
+import jakarta.batch.api.BatchProperty;
+import jakarta.batch.api.partition.PartitionAnalyzer;
+import jakarta.batch.api.partition.PartitionCollector;
+import jakarta.batch.api.partition.PartitionMapper;
+import jakarta.batch.api.partition.PartitionPlan;
+import jakarta.batch.api.partition.PartitionPlanImpl;
+import jakarta.batch.api.partition.PartitionReducer;
+import jakarta.batch.runtime.BatchStatus;
 import javax.inject.Inject;
 import java.io.Serializable;
 import java.util.Collection;
@@ -251,7 +251,7 @@ public class JsrPartitionHandlerTests extends AbstractJsrTestCase {
 
 	@Test
 	public void testRestartNoOverride() throws Exception {
-		javax.batch.runtime.JobExecution execution1 = runJob("jsrPartitionHandlerRestartWithOverrideJob", null, 1000000L);
+		jakarta.batch.runtime.JobExecution execution1 = runJob("jsrPartitionHandlerRestartWithOverrideJob", null, 1000000L);
 		assertEquals(BatchStatus.FAILED, execution1.getBatchStatus());
 		assertEquals(1, MyPartitionReducer.beginCount);
 		assertEquals(0, MyPartitionReducer.beforeCount);
@@ -262,7 +262,7 @@ public class JsrPartitionHandlerTests extends AbstractJsrTestCase {
 		MyPartitionReducer.reset();
 		CountingPartitionCollector.reset();
 
-		javax.batch.runtime.JobExecution execution2 = restartJob(execution1.getExecutionId(), null, 1000000L);
+		jakarta.batch.runtime.JobExecution execution2 = restartJob(execution1.getExecutionId(), null, 1000000L);
 		assertEquals(BatchStatus.COMPLETED, execution2.getBatchStatus());
 		assertEquals(1, MyPartitionReducer.beginCount);
 		assertEquals(1, MyPartitionReducer.beforeCount);
@@ -277,7 +277,7 @@ public class JsrPartitionHandlerTests extends AbstractJsrTestCase {
 		Properties jobParameters = new Properties();
 		jobParameters.put("mapper.override", "true");
 
-		javax.batch.runtime.JobExecution execution1 = runJob("jsrPartitionHandlerRestartWithOverrideJob", jobParameters, 1000000L);
+		jakarta.batch.runtime.JobExecution execution1 = runJob("jsrPartitionHandlerRestartWithOverrideJob", jobParameters, 1000000L);
 		assertEquals(BatchStatus.FAILED, execution1.getBatchStatus());
 		assertEquals(1, MyPartitionReducer.beginCount);
 		assertEquals(0, MyPartitionReducer.beforeCount);
@@ -288,7 +288,7 @@ public class JsrPartitionHandlerTests extends AbstractJsrTestCase {
 		MyPartitionReducer.reset();
 		CountingPartitionCollector.reset();
 
-		javax.batch.runtime.JobExecution execution2 = restartJob(execution1.getExecutionId(), jobParameters, 1000000L);
+		jakarta.batch.runtime.JobExecution execution2 = restartJob(execution1.getExecutionId(), jobParameters, 1000000L);
 		assertEquals(BatchStatus.COMPLETED, execution2.getBatchStatus());
 		assertEquals(1, MyPartitionReducer.beginCount);
 		assertEquals(1, MyPartitionReducer.beforeCount);

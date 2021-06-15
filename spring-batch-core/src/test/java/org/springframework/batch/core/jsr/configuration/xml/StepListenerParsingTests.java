@@ -17,7 +17,7 @@ package org.springframework.batch.core.jsr.configuration.xml;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.batch.api.listener.StepListener;
+import jakarta.batch.api.listener.StepListener;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

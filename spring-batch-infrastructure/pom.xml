@@ -96,6 +96,12 @@
 			<optional>true</optional>
 		</dependency>
 		<dependency>
+			<groupId>jakarta.batch</groupId>
+			<artifactId>jakarta.batch-api</artifactId>
+			<version>2.0.0</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
 			<version>${hibernate-core.version}</version>
@@ -111,12 +117,6 @@
 			<groupId>javax.jms</groupId>
 			<artifactId>javax.jms-api</artifactId>
 			<version>${javax.jms-api.version}</version>
-			<optional>true</optional>
-		</dependency>
-		<dependency>
-			<groupId>javax.batch</groupId>
-			<artifactId>javax.batch-api</artifactId>
-			<version>${javax.batch-api.version}</version>
 			<optional>true</optional>
 		</dependency>
 		<dependency>

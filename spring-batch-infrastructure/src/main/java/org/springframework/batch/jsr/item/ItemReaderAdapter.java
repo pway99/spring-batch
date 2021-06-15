@@ -17,7 +17,7 @@ package org.springframework.batch.jsr.item;
 
 import java.io.Serializable;
 
-import javax.batch.api.chunk.ItemReader;
+import jakarta.batch.api.chunk.ItemReader;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;

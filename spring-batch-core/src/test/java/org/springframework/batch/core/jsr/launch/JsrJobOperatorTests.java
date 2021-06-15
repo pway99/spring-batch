@@ -21,17 +21,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Properties;
 import java.util.Set;
-import javax.batch.api.AbstractBatchlet;
-import javax.batch.api.Batchlet;
-import javax.batch.operations.JobExecutionIsRunningException;
-import javax.batch.operations.JobOperator;
-import javax.batch.operations.JobRestartException;
-import javax.batch.operations.JobStartException;
-import javax.batch.operations.NoSuchJobException;
-import javax.batch.operations.NoSuchJobExecutionException;
-import javax.batch.operations.NoSuchJobInstanceException;
-import javax.batch.runtime.BatchRuntime;
-import javax.batch.runtime.BatchStatus;
+import jakarta.batch.api.AbstractBatchlet;
+import jakarta.batch.api.Batchlet;
+import jakarta.batch.operations.JobExecutionIsRunningException;
+import jakarta.batch.operations.JobOperator;
+import jakarta.batch.operations.JobRestartException;
+import jakarta.batch.operations.JobStartException;
+import jakarta.batch.operations.NoSuchJobException;
+import jakarta.batch.operations.NoSuchJobExecutionException;
+import jakarta.batch.operations.NoSuchJobInstanceException;
+import jakarta.batch.runtime.BatchRuntime;
+import jakarta.batch.runtime.BatchStatus;
 import javax.sql.DataSource;
 
 import org.junit.Before;
@@ -240,7 +240,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 
 		when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(executions);
 
-		List<javax.batch.runtime.JobExecution> jobExecutions = jsrJobOperator.getJobExecutions(jobInstance);
+		List<jakarta.batch.runtime.JobExecution> jobExecutions = jsrJobOperator.getJobExecutions(jobInstance);
 		assertEquals(1, jobExecutions.size());
 		assertEquals(2L, executions.get(0).getId().longValue());
 	}
@@ -276,7 +276,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		when(jobExplorer.getJobExecution(5L)).thenReturn(execution);
 		when(jobExplorer.getJobInstance(1L)).thenReturn(instance);
 
-		javax.batch.runtime.JobInstance jobInstance = jsrJobOperator.getJobInstance(5L);
+		jakarta.batch.runtime.JobInstance jobInstance = jsrJobOperator.getJobInstance(5L);
 
 		assertEquals(1L, jobInstance.getInstanceId());
 		assertEquals("my job", jobInstance.getJobName());
@@ -321,7 +321,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 
 		when(jobExplorer.getJobInstances("myJob", 0, 3)).thenReturn(instances);
 
-		List<javax.batch.runtime.JobInstance> jobInstances = jsrJobOperator.getJobInstances("myJob", 0, 3);
+		List<jakarta.batch.runtime.JobInstance> jobInstances = jsrJobOperator.getJobInstances("myJob", 0, 3);
 
 		assertEquals(3, jobInstances.size());
 		assertEquals(1L, jobInstances.get(0).getInstanceId());
@@ -406,7 +406,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		when(jobExplorer.getStepExecution(5L, 1L)).thenReturn(new StepExecution("step1", jobExecution, 1L));
 		when(jobExplorer.getStepExecution(5L, 2L)).thenReturn(new StepExecution("step2", jobExecution, 2L));
 
-		List<javax.batch.runtime.StepExecution> results = jsrJobOperator.getStepExecutions(5L);
+		List<jakarta.batch.runtime.StepExecution> results = jsrJobOperator.getStepExecutions(5L);
 
 		assertEquals("step1", results.get(0).getStepName());
 		assertEquals("step2", results.get(1).getStepName());
@@ -432,7 +432,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		when(jobExplorer.getStepExecution(5L, 1L)).thenReturn(new StepExecution("step1", jobExecution, 1L));
 		when(jobExplorer.getStepExecution(5L, 2L)).thenReturn(new StepExecution("step2", jobExecution, 2L));
 
-		List<javax.batch.runtime.StepExecution> results = jsrJobOperator.getStepExecutions(5L);
+		List<jakarta.batch.runtime.StepExecution> results = jsrJobOperator.getStepExecutions(5L);
 
 		assertEquals("step1", results.get(0).getStepName());
 		assertEquals("step2", results.get(1).getStepName());
@@ -444,14 +444,14 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 
 		when(jobExplorer.getJobExecution(5L)).thenReturn(jobExecution);
 
-		List<javax.batch.runtime.StepExecution> results = jsrJobOperator.getStepExecutions(5L);
+		List<jakarta.batch.runtime.StepExecution> results = jsrJobOperator.getStepExecutions(5L);
 
 		assertEquals(0, results.size());
 	}
 
 	@Test
 	public void testStartRoseyScenario() throws Exception {
-		javax.batch.runtime.JobExecution execution = runJob("jsrJobOperatorTestJob", new Properties(), TIMEOUT);
+		jakarta.batch.runtime.JobExecution execution = runJob("jsrJobOperatorTestJob", new Properties(), TIMEOUT);
 
 		assertEquals(BatchStatus.COMPLETED, execution.getBatchStatus());
 	}
@@ -467,9 +467,9 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		} catch (NoSuchJobException ignore) {
 		}
 
-		javax.batch.runtime.JobExecution execution1 = runJob("jsrJobOperatorTestJob", new Properties(), TIMEOUT);
-		javax.batch.runtime.JobExecution execution2 = runJob("jsrJobOperatorTestJob", new Properties(), TIMEOUT);
-		javax.batch.runtime.JobExecution execution3 = runJob("jsrJobOperatorTestJob", new Properties(), TIMEOUT);
+		jakarta.batch.runtime.JobExecution execution1 = runJob("jsrJobOperatorTestJob", new Properties(), TIMEOUT);
+		jakarta.batch.runtime.JobExecution execution2 = runJob("jsrJobOperatorTestJob", new Properties(), TIMEOUT);
+		jakarta.batch.runtime.JobExecution execution3 = runJob("jsrJobOperatorTestJob", new Properties(), TIMEOUT);
 
 		assertEquals(BatchStatus.COMPLETED, execution1.getBatchStatus());
 		assertEquals(BatchStatus.COMPLETED, execution2.getBatchStatus());
@@ -482,7 +482,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 
 	@Test
 	public void testRestartRoseyScenario() throws Exception {
-		javax.batch.runtime.JobExecution execution = runJob("jsrJobOperatorTestRestartJob", new Properties(), TIMEOUT);
+		jakarta.batch.runtime.JobExecution execution = runJob("jsrJobOperatorTestRestartJob", new Properties(), TIMEOUT);
 
 		assertEquals(BatchStatus.FAILED, execution.getBatchStatus());
 
@@ -493,7 +493,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 
 	@Test(expected = JobRestartException.class)
 	public void testNonRestartableJob() throws Exception {
-		javax.batch.runtime.JobExecution jobExecutionStart = runJob("jsrJobOperatorTestNonRestartableJob", new Properties(), TIMEOUT);
+		jakarta.batch.runtime.JobExecution jobExecutionStart = runJob("jsrJobOperatorTestNonRestartableJob", new Properties(), TIMEOUT);
 		assertEquals(BatchStatus.FAILED, jobExecutionStart.getBatchStatus());
 
 		restartJob(jobExecutionStart.getExecutionId(), null, TIMEOUT);
@@ -502,7 +502,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 	@Test(expected = JobRestartException.class)
 	public void testRestartAbandoned() throws Exception {
 		jsrJobOperator = BatchRuntime.getJobOperator();
-		javax.batch.runtime.JobExecution execution = runJob("jsrJobOperatorTestRestartAbandonJob", null, TIMEOUT);
+		jakarta.batch.runtime.JobExecution execution = runJob("jsrJobOperatorTestRestartAbandonJob", null, TIMEOUT);
 
 		assertEquals(BatchStatus.FAILED, execution.getBatchStatus());
 
@@ -613,7 +613,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 	@Test
 	public void testApplicationContextClosingAfterJobSuccessful() throws Exception {
 		for(int i = 0; i < 3; i++) {
-			javax.batch.runtime.JobExecution execution = runJob("contextClosingTests", new Properties(), TIMEOUT);
+			jakarta.batch.runtime.JobExecution execution = runJob("contextClosingTests", new Properties(), TIMEOUT);
 
 			assertEquals(BatchStatus.COMPLETED, execution.getBatchStatus());
 

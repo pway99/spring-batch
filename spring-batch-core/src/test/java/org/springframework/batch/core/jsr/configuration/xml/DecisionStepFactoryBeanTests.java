@@ -18,8 +18,8 @@ package org.springframework.batch.core.jsr.configuration.xml;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
-import javax.batch.api.Decider;
-import javax.batch.runtime.StepExecution;
+import jakarta.batch.api.Decider;
+import jakarta.batch.runtime.StepExecution;
 
 import org.junit.Before;
 import org.junit.Test;

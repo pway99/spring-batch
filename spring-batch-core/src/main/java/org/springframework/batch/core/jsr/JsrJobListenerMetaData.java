@@ -19,7 +19,7 @@ import java.lang.annotation.Annotation;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.batch.api.listener.JobListener;
+import jakarta.batch.api.listener.JobListener;
 
 import org.springframework.batch.core.listener.ListenerMetaData;
 

@@ -18,17 +18,17 @@ package org.springframework.batch.core.jsr.configuration.xml;
 import java.io.Serializable;
 import java.util.List;
 import java.util.Properties;
-import javax.batch.api.BatchProperty;
-import javax.batch.api.Batchlet;
-import javax.batch.api.Decider;
-import javax.batch.api.chunk.CheckpointAlgorithm;
-import javax.batch.api.chunk.ItemProcessor;
-import javax.batch.api.chunk.ItemReader;
-import javax.batch.api.chunk.ItemWriter;
-import javax.batch.api.listener.StepListener;
-import javax.batch.runtime.BatchStatus;
-import javax.batch.runtime.JobExecution;
-import javax.batch.runtime.context.JobContext;
+import jakarta.batch.api.BatchProperty;
+import jakarta.batch.api.Batchlet;
+import jakarta.batch.api.Decider;
+import jakarta.batch.api.chunk.CheckpointAlgorithm;
+import jakarta.batch.api.chunk.ItemProcessor;
+import jakarta.batch.api.chunk.ItemReader;
+import jakarta.batch.api.chunk.ItemWriter;
+import jakarta.batch.api.listener.StepListener;
+import jakarta.batch.runtime.BatchStatus;
+import jakarta.batch.runtime.JobExecution;
+import jakarta.batch.runtime.context.JobContext;
 import javax.inject.Inject;
 
 import org.junit.Test;
@@ -75,7 +75,7 @@ public class JobPropertyTests extends AbstractJsrTestCase {
 		@Inject @BatchProperty String jobPropertyName2;
 		@Inject JobContext injectAnnotatedOnlyField;
 		@BatchProperty String batchAnnotatedOnlyField;
-		@Inject javax.batch.runtime.context.StepContext stepContext;
+		@Inject jakarta.batch.runtime.context.StepContext stepContext;
 
 		@Override
 		public void open(Serializable serializable) throws Exception {
@@ -214,7 +214,7 @@ public class JobPropertyTests extends AbstractJsrTestCase {
 		@Inject @BatchProperty(name = "notDefinedAnnotationNamedProperty") String notDefinedAnnotationNamedProperty;
 
 		@Override
-		public String decide(javax.batch.runtime.StepExecution[] executions) throws Exception {
+		public String decide(jakarta.batch.runtime.StepExecution[] executions) throws Exception {
 			org.springframework.util.Assert.isTrue("deciderPropertyValue1".equals(deciderPropertyName1), "The value of deciderPropertyValue1 does not equal deciderPropertyValue1");
 			org.springframework.util.Assert.isTrue("deciderPropertyValue2".equals(deciderPropertyName2), "The value of deciderPropertyValue2 does not equal deciderPropertyValue2");
 			org.springframework.util.Assert.isTrue("annotationNamedDeciderPropertyValue".equals(annotationNamedProperty), "The value of annotationNamedDeciderPropertyValue does not equal annotationNamedDeciderPropertyValue");
@@ -252,7 +252,7 @@ public class JobPropertyTests extends AbstractJsrTestCase {
 		@Inject @BatchProperty(name = "annotationNamedBatchletPropertyName") String annotationNamedProperty;
 		@Inject @BatchProperty String notDefinedProperty;
 		@Inject @BatchProperty(name = "notDefinedAnnotationNamedProperty") String notDefinedAnnotationNamedProperty;
-		@Inject javax.batch.runtime.context.StepContext stepContext;
+		@Inject jakarta.batch.runtime.context.StepContext stepContext;
 		@Inject @BatchProperty(name = "infile.name") String infile;
 		@Inject @BatchProperty(name = "y") String y;
 		@Inject @BatchProperty(name = "x") String x;

@@ -15,10 +15,10 @@
  */
 package org.springframework.batch.core.jsr;
 
-import javax.batch.api.chunk.listener.SkipProcessListener;
-import javax.batch.api.chunk.listener.SkipReadListener;
-import javax.batch.api.chunk.listener.SkipWriteListener;
-import javax.batch.operations.BatchRuntimeException;
+import jakarta.batch.api.chunk.listener.SkipProcessListener;
+import jakarta.batch.api.chunk.listener.SkipReadListener;
+import jakarta.batch.api.chunk.listener.SkipWriteListener;
+import jakarta.batch.operations.BatchRuntimeException;
 
 import org.springframework.batch.core.SkipListener;
 

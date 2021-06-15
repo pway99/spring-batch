@@ -20,8 +20,8 @@ import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.batch.runtime.BatchStatus;
-import javax.batch.runtime.Metric;
+import jakarta.batch.runtime.BatchStatus;
+import jakarta.batch.runtime.Metric;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;
@@ -38,7 +38,7 @@ import org.springframework.util.ClassUtils;
  * @author Chris Schaefer
  * @since 3.0
  */
-public class JsrStepContext implements javax.batch.runtime.context.StepContext {
+public class JsrStepContext implements jakarta.batch.runtime.context.StepContext {
 	private final static String PERSISTENT_USER_DATA_KEY = "batch_jsr_persistentUserData";
 	private StepExecution stepExecution;
 	private Object transientUserData;
@@ -167,14 +167,14 @@ public class JsrStepContext implements javax.batch.runtime.context.StepContext {
 	public Metric[] getMetrics() {
 		Metric[] metrics = new Metric[8];
 
-		metrics[0] = new SimpleMetric(javax.batch.runtime.Metric.MetricType.COMMIT_COUNT, stepExecution.getCommitCount());
-		metrics[1] = new SimpleMetric(javax.batch.runtime.Metric.MetricType.FILTER_COUNT, stepExecution.getFilterCount());
-		metrics[2] = new SimpleMetric(javax.batch.runtime.Metric.MetricType.PROCESS_SKIP_COUNT, stepExecution.getProcessSkipCount());
-		metrics[3] = new SimpleMetric(javax.batch.runtime.Metric.MetricType.READ_COUNT, stepExecution.getReadCount());
-		metrics[4] = new SimpleMetric(javax.batch.runtime.Metric.MetricType.READ_SKIP_COUNT, stepExecution.getReadSkipCount());
-		metrics[5] = new SimpleMetric(javax.batch.runtime.Metric.MetricType.ROLLBACK_COUNT, stepExecution.getRollbackCount());
-		metrics[6] = new SimpleMetric(javax.batch.runtime.Metric.MetricType.WRITE_COUNT, stepExecution.getWriteCount());
-		metrics[7] = new SimpleMetric(javax.batch.runtime.Metric.MetricType.WRITE_SKIP_COUNT, stepExecution.getWriteSkipCount());
+		metrics[0] = new SimpleMetric(jakarta.batch.runtime.Metric.MetricType.COMMIT_COUNT, stepExecution.getCommitCount());
+		metrics[1] = new SimpleMetric(jakarta.batch.runtime.Metric.MetricType.FILTER_COUNT, stepExecution.getFilterCount());
+		metrics[2] = new SimpleMetric(jakarta.batch.runtime.Metric.MetricType.PROCESS_SKIP_COUNT, stepExecution.getProcessSkipCount());
+		metrics[3] = new SimpleMetric(jakarta.batch.runtime.Metric.MetricType.READ_COUNT, stepExecution.getReadCount());
+		metrics[4] = new SimpleMetric(jakarta.batch.runtime.Metric.MetricType.READ_SKIP_COUNT, stepExecution.getReadSkipCount());
+		metrics[5] = new SimpleMetric(jakarta.batch.runtime.Metric.MetricType.ROLLBACK_COUNT, stepExecution.getRollbackCount());
+		metrics[6] = new SimpleMetric(jakarta.batch.runtime.Metric.MetricType.WRITE_COUNT, stepExecution.getWriteCount());
+		metrics[7] = new SimpleMetric(jakarta.batch.runtime.Metric.MetricType.WRITE_SKIP_COUNT, stepExecution.getWriteSkipCount());
 
 		return metrics;
 	}

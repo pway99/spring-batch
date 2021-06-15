@@ -61,7 +61,7 @@ public class JsrJobExecutionTests {
 
 	@Test
 	public void testGetBasicValues() {
-		assertEquals(javax.batch.runtime.BatchStatus.FAILED, adapter.getBatchStatus());
+		assertEquals(jakarta.batch.runtime.BatchStatus.FAILED, adapter.getBatchStatus());
 		assertEquals(new Date(0), adapter.getCreateTime());
 		assertEquals(new Date(999999999L), adapter.getEndTime());
 		assertEquals(5L, adapter.getExecutionId());

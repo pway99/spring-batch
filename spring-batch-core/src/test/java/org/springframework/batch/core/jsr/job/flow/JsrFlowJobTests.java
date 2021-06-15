@@ -48,7 +48,7 @@ import org.springframework.batch.core.repository.support.MapJobRepositoryFactory
 import org.springframework.batch.core.step.StepSupport;
 import org.springframework.lang.Nullable;
 
-import javax.batch.api.Decider;
+import jakarta.batch.api.Decider;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -473,7 +473,7 @@ public class JsrFlowJobTests {
 		Decider decider = new Decider() {
 
 			@Override
-			public String decide(javax.batch.runtime.StepExecution[] executions)
+			public String decide(jakarta.batch.runtime.StepExecution[] executions)
 					throws Exception {
 				assertNotNull(executions);
 				return "SWITCH";
@@ -726,7 +726,7 @@ public class JsrFlowJobTests {
 		public void execute(StepExecution stepExecution) throws JobInterruptedException {
 			stepExecution.setStatus(BatchStatus.COMPLETED);
 			try {
-				stepExecution.setExitStatus(new ExitStatus(decider.decide(new javax.batch.runtime.StepExecution [] {new JsrStepExecution(stepExecution)})));
+				stepExecution.setExitStatus(new ExitStatus(decider.decide(new jakarta.batch.runtime.StepExecution [] {new JsrStepExecution(stepExecution)})));
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}

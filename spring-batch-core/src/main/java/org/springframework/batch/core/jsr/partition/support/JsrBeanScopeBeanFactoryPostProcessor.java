@@ -24,9 +24,9 @@ import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.RuntimeBeanReference;
 
-import javax.batch.api.partition.PartitionAnalyzer;
-import javax.batch.api.partition.PartitionMapper;
-import javax.batch.api.partition.PartitionReducer;
+import jakarta.batch.api.partition.PartitionAnalyzer;
+import jakarta.batch.api.partition.PartitionMapper;
+import jakarta.batch.api.partition.PartitionReducer;
 
 /**
  * In order for property resolution to occur correctly within the scope of a JSR-352

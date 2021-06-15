@@ -18,7 +18,7 @@ package org.springframework.batch.sample.jsr352;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import javax.batch.api.chunk.ItemProcessor;
+import jakarta.batch.api.chunk.ItemProcessor;
 
 /**
  * <p>

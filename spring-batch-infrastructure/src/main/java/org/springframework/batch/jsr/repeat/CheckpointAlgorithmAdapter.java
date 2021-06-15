@@ -15,8 +15,8 @@
  */
 package org.springframework.batch.jsr.repeat;
 
-import javax.batch.api.chunk.CheckpointAlgorithm;
-import javax.batch.operations.BatchRuntimeException;
+import jakarta.batch.api.chunk.CheckpointAlgorithm;
+import jakarta.batch.operations.BatchRuntimeException;
 
 import org.springframework.batch.repeat.CompletionPolicy;
 import org.springframework.batch.repeat.RepeatContext;

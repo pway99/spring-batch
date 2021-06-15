@@ -18,8 +18,8 @@ package org.springframework.batch.core.jsr.configuration.xml;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
-import javax.batch.api.Batchlet;
-import javax.batch.runtime.JobExecution;
+import jakarta.batch.api.Batchlet;
+import jakarta.batch.runtime.JobExecution;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

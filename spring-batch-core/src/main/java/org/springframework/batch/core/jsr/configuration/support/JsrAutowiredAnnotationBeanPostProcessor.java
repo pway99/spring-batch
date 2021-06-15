@@ -18,7 +18,7 @@ package org.springframework.batch.core.jsr.configuration.support;
 import java.lang.annotation.Annotation;
 import java.lang.reflect.AccessibleObject;
 
-import javax.batch.api.BatchProperty;
+import jakarta.batch.api.BatchProperty;
 
 import org.springframework.beans.factory.annotation.InjectionMetadata;
 

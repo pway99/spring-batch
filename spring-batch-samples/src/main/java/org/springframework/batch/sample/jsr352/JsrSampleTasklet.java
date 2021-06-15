@@ -23,7 +23,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.lang.Nullable;
 
-import javax.batch.api.BatchProperty;
+import jakarta.batch.api.BatchProperty;
 import javax.inject.Inject;
 
 /**

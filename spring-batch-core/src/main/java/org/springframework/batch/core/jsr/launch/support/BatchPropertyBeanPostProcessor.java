@@ -22,7 +22,7 @@ import java.util.HashSet;
 import java.util.Properties;
 import java.util.Set;
 
-import javax.batch.api.BatchProperty;
+import jakarta.batch.api.BatchProperty;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

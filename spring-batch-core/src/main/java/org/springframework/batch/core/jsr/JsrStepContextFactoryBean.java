@@ -17,7 +17,7 @@ package org.springframework.batch.core.jsr;
 
 import java.util.Properties;
 
-import javax.batch.runtime.context.StepContext;
+import jakarta.batch.runtime.context.StepContext;
 
 import org.springframework.batch.core.jsr.configuration.support.BatchPropertyContext;
 import org.springframework.batch.core.scope.context.StepSynchronizationManager;
@@ -39,7 +39,7 @@ public class JsrStepContextFactoryBean implements FactoryBean<StepContext>, Init
 	@Autowired
 	private BatchPropertyContext batchPropertyContext;
 
-	private static final ThreadLocal<javax.batch.runtime.context.StepContext> contextHolder = new ThreadLocal<>();
+	private static final ThreadLocal<jakarta.batch.runtime.context.StepContext> contextHolder = new ThreadLocal<>();
 
 	protected void setBatchPropertyContext(BatchPropertyContext batchPropertyContext) {
 		this.batchPropertyContext = batchPropertyContext;
@@ -53,7 +53,7 @@ public class JsrStepContextFactoryBean implements FactoryBean<StepContext>, Init
 		return getCurrent();
 	}
 
-	private javax.batch.runtime.context.StepContext getCurrent() {
+	private jakarta.batch.runtime.context.StepContext getCurrent() {
 		org.springframework.batch.core.StepExecution curStepExecution = null;
 
 		if(StepSynchronizationManager.getContext() != null) {

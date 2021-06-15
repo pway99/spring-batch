@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import javax.batch.api.chunk.ItemProcessor;
+import jakarta.batch.api.chunk.ItemProcessor;
 
 
 public class CountingItemProcessor implements ItemProcessor {

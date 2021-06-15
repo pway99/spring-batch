@@ -17,8 +17,8 @@ package org.springframework.batch.jsr.item;
 
 import java.io.Serializable;
 
-import javax.batch.api.chunk.ItemReader;
-import javax.batch.api.chunk.ItemWriter;
+import jakarta.batch.api.chunk.ItemReader;
+import jakarta.batch.api.chunk.ItemWriter;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

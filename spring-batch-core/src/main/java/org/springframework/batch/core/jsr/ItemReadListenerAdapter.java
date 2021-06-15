@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.jsr;
 
-import javax.batch.operations.BatchRuntimeException;
+import jakarta.batch.operations.BatchRuntimeException;
 
 import org.springframework.batch.core.ItemReadListener;
 import org.springframework.batch.item.ItemReader;
@@ -33,9 +33,9 @@ import org.springframework.util.Assert;
  */
 public class ItemReadListenerAdapter<T> implements ItemReadListener<T> {
 
-	private javax.batch.api.chunk.listener.ItemReadListener delegate;
+	private jakarta.batch.api.chunk.listener.ItemReadListener delegate;
 
-	public ItemReadListenerAdapter(javax.batch.api.chunk.listener.ItemReadListener delegate) {
+	public ItemReadListenerAdapter(jakarta.batch.api.chunk.listener.ItemReadListener delegate) {
 		Assert.notNull(delegate, "An ItemReadListener is required");
 		this.delegate = delegate;
 	}

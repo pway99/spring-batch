@@ -18,7 +18,7 @@ package org.springframework.batch.core.jsr;
 import java.util.Date;
 import java.util.Properties;
 
-import javax.batch.runtime.BatchStatus;
+import jakarta.batch.runtime.BatchStatus;
 
 import org.springframework.batch.core.converter.JobParametersConverter;
 import org.springframework.util.Assert;
@@ -30,7 +30,7 @@ import org.springframework.util.Assert;
  * @author Michael Minella
  * @since 3.0
  */
-public class JsrJobExecution implements javax.batch.runtime.JobExecution {
+public class JsrJobExecution implements jakarta.batch.runtime.JobExecution {
 
 	private org.springframework.batch.core.JobExecution execution;
 	private JobParametersConverter parametersConverter;

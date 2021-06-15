@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.jsr.step.builder;
 
-import javax.batch.api.partition.PartitionReducer;
+import jakarta.batch.api.partition.PartitionReducer;
 
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.jsr.step.PartitionStep;

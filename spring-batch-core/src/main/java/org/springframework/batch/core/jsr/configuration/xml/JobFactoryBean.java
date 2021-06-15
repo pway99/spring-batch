@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import javax.batch.api.listener.JobListener;
+import jakarta.batch.api.listener.JobListener;
 
 import org.springframework.batch.core.JobExecutionListener;
 import org.springframework.batch.core.JobParametersIncrementer;

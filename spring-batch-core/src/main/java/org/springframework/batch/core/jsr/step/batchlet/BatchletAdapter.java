@@ -15,8 +15,8 @@
  */
 package org.springframework.batch.core.jsr.step.batchlet;
 
-import javax.batch.api.Batchlet;
-import javax.batch.operations.BatchRuntimeException;
+import jakarta.batch.api.Batchlet;
+import jakarta.batch.operations.BatchRuntimeException;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;

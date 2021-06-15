@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import javax.batch.api.chunk.AbstractItemWriter;
+import jakarta.batch.api.chunk.AbstractItemWriter;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -85,7 +85,7 @@ public class ChunkListenerParsingTests {
 		}
 	}
 
-	public static class JsrChunkListener implements javax.batch.api.chunk.listener.ChunkListener {
+	public static class JsrChunkListener implements jakarta.batch.api.chunk.listener.ChunkListener {
 
 		protected int beforeChunkCount = 0;
 		protected int afterChunkCount = 0;

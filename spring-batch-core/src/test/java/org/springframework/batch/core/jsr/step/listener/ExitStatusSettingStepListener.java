@@ -15,9 +15,9 @@
  */
 package org.springframework.batch.core.jsr.step.listener;
 
-import javax.batch.api.BatchProperty;
-import javax.batch.api.listener.StepListener;
-import javax.batch.runtime.context.JobContext;
+import jakarta.batch.api.BatchProperty;
+import jakarta.batch.api.listener.StepListener;
+import jakarta.batch.runtime.context.JobContext;
 import javax.inject.Inject;
 
 /**

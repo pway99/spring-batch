@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.jsr;
 
-import javax.batch.runtime.Metric;
+import jakarta.batch.runtime.Metric;
 
 import org.springframework.util.Assert;
 

@@ -22,8 +22,8 @@ import static org.junit.Assert.fail;
 
 import java.util.Properties;
 
-import javax.batch.runtime.Metric;
-import javax.batch.runtime.context.StepContext;
+import jakarta.batch.runtime.Metric;
+import jakarta.batch.runtime.context.StepContext;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -71,7 +71,7 @@ public class JsrStepContextTests {
 
 	@Test
 	public void testBasicProperties() {
-		assertEquals(javax.batch.runtime.BatchStatus.STARTED, stepContext.getBatchStatus());
+		assertEquals(jakarta.batch.runtime.BatchStatus.STARTED, stepContext.getBatchStatus());
 		assertEquals(null, stepContext.getExitStatus());
 		stepContext.setExitStatus("customExitStatus");
 		assertEquals("customExitStatus", stepContext.getExitStatus());

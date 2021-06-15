@@ -18,7 +18,7 @@ package org.springframework.batch.core.jsr;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import javax.batch.runtime.BatchStatus;
+import jakarta.batch.runtime.BatchStatus;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -35,7 +35,7 @@ import org.springframework.util.Assert;
  * @author Mahmoud Ben Hassine
  * @since 3.0
  */
-public class JsrJobContext implements javax.batch.runtime.context.JobContext {
+public class JsrJobContext implements jakarta.batch.runtime.context.JobContext {
 	private Object transientUserData;
 	private Properties properties;
 	private JobExecution jobExecution;

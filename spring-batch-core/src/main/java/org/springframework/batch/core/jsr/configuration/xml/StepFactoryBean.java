@@ -15,12 +15,12 @@
  */
 package org.springframework.batch.core.jsr.configuration.xml;
 
-import javax.batch.api.Batchlet;
-import javax.batch.api.chunk.CheckpointAlgorithm;
-import javax.batch.api.chunk.ItemProcessor;
-import javax.batch.api.chunk.ItemReader;
-import javax.batch.api.chunk.ItemWriter;
-import javax.batch.api.partition.PartitionReducer;
+import jakarta.batch.api.Batchlet;
+import jakarta.batch.api.chunk.CheckpointAlgorithm;
+import jakarta.batch.api.chunk.ItemProcessor;
+import jakarta.batch.api.chunk.ItemReader;
+import jakarta.batch.api.chunk.ItemWriter;
+import jakarta.batch.api.partition.PartitionReducer;
 
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.xml.StepParserStepFactoryBean;

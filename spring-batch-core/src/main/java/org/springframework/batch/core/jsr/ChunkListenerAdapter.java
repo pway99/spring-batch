@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.jsr;
 
-import javax.batch.operations.BatchRuntimeException;
+import jakarta.batch.operations.BatchRuntimeException;
 
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -31,12 +31,12 @@ import org.springframework.util.Assert;
  */
 public class ChunkListenerAdapter implements ChunkListener {
 
-	private final javax.batch.api.chunk.listener.ChunkListener delegate;
+	private final jakarta.batch.api.chunk.listener.ChunkListener delegate;
 
 	/**
 	 * @param delegate to be called within the step chunk lifecycle
 	 */
-	public ChunkListenerAdapter(javax.batch.api.chunk.listener.ChunkListener delegate) {
+	public ChunkListenerAdapter(jakarta.batch.api.chunk.listener.ChunkListener delegate) {
 		Assert.notNull(delegate, "A ChunkListener is required");
 		this.delegate = delegate;
 	}

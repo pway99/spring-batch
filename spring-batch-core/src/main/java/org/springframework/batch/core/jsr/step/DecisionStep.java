@@ -19,7 +19,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import javax.batch.api.Decider;
+import jakarta.batch.api.Decider;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Step;
@@ -52,7 +52,7 @@ public class DecisionStep extends AbstractStep {
 	@Override
 	protected void doExecute(StepExecution stepExecution) throws Exception {
 		ExecutionContext executionContext = stepExecution.getJobExecution().getExecutionContext();
-		List<javax.batch.runtime.StepExecution> stepExecutions = new ArrayList<>();
+		List<jakarta.batch.runtime.StepExecution> stepExecutions = new ArrayList<>();
 
 		if(executionContext.containsKey("batch.lastSteps")) {
 			List<String> stepNames = (List<String>) executionContext.get("batch.lastSteps");
@@ -78,7 +78,7 @@ public class DecisionStep extends AbstractStep {
 		}
 
 		try {
-			ExitStatus exitStatus = new ExitStatus(decider.decide(stepExecutions.toArray(new javax.batch.runtime.StepExecution[0])));
+			ExitStatus exitStatus = new ExitStatus(decider.decide(stepExecutions.toArray(new jakarta.batch.runtime.StepExecution[0])));
 
 			stepExecution.getJobExecution().setExitStatus(exitStatus);
 			stepExecution.setExitStatus(exitStatus);

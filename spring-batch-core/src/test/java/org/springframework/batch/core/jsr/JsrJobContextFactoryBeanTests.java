@@ -26,7 +26,7 @@ import java.util.Set;
 import java.util.concurrent.Callable;
 import java.util.concurrent.Future;
 
-import javax.batch.runtime.context.JobContext;
+import jakarta.batch.runtime.context.JobContext;
 
 import org.junit.After;
 import org.junit.Before;

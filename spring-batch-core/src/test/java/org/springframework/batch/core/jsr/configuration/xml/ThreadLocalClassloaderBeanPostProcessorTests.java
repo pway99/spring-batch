@@ -18,8 +18,8 @@ package org.springframework.batch.core.jsr.configuration.xml;
 import org.junit.Test;
 import org.springframework.batch.core.jsr.AbstractJsrTestCase;
 
-import javax.batch.runtime.BatchStatus;
-import javax.batch.runtime.JobExecution;
+import jakarta.batch.runtime.BatchStatus;
+import jakarta.batch.runtime.JobExecution;
 
 import static org.junit.Assert.assertEquals;
 

@@ -17,7 +17,7 @@ package org.springframework.batch.core.listener;
 
 import java.util.Iterator;
 import java.util.List;
-import javax.batch.api.chunk.listener.RetryWriteListener;
+import jakarta.batch.api.chunk.listener.RetryWriteListener;
 
 /**
  * <p>

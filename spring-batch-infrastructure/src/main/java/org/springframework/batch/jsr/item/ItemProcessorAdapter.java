@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.jsr.item;
 
-import javax.batch.api.chunk.ItemProcessor;
+import jakarta.batch.api.chunk.ItemProcessor;
 
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;

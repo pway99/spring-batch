@@ -15,8 +15,8 @@
  */
 package org.springframework.batch.core.jsr;
 
-import javax.batch.api.listener.StepListener;
-import javax.batch.operations.BatchRuntimeException;
+import jakarta.batch.api.listener.StepListener;
+import jakarta.batch.operations.BatchRuntimeException;
 
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepExecution;

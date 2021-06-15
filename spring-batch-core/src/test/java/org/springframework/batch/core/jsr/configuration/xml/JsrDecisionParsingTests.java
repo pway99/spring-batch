@@ -17,7 +17,7 @@ package org.springframework.batch.core.jsr.configuration.xml;
 
 import static org.junit.Assert.assertEquals;
 
-import javax.batch.api.Decider;
+import jakarta.batch.api.Decider;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -50,7 +50,7 @@ public class JsrDecisionParsingTests {
 	public static class JsrDecider implements Decider {
 
 		@Override
-		public String decide(javax.batch.runtime.StepExecution[] executions)
+		public String decide(jakarta.batch.runtime.StepExecution[] executions)
 				throws Exception {
 			return "next";
 		}

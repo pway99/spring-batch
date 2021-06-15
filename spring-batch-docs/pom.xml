@@ -17,6 +17,12 @@
             <version>${spring-doc-resources.version}</version>
             <type>zip</type>
         </dependency>
+        <dependency>
+            <groupId>jakarta.batch</groupId>
+            <artifactId>jakarta.batch-api</artifactId>
+            <version>2.0.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 
     <build>

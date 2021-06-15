@@ -19,8 +19,8 @@ import java.io.Serializable;
 import java.util.Queue;
 import java.util.concurrent.locks.ReentrantLock;
 
-import javax.batch.api.partition.PartitionCollector;
-import javax.batch.operations.BatchRuntimeException;
+import jakarta.batch.api.partition.PartitionCollector;
+import jakarta.batch.operations.BatchRuntimeException;
 
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.scope.context.ChunkContext;

@@ -16,8 +16,8 @@
 package org.springframework.batch.core.jsr;
 
 import java.util.List;
-import javax.batch.api.chunk.listener.RetryWriteListener;
-import javax.batch.operations.BatchRuntimeException;
+import jakarta.batch.api.chunk.listener.RetryWriteListener;
+import jakarta.batch.operations.BatchRuntimeException;
 
 /**
  * <p>
