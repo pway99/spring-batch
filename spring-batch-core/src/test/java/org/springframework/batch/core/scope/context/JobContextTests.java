@@ -15,22 +15,22 @@
  */
 package org.springframework.batch.core.scope.context;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.item.ExecutionContext;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -44,7 +44,7 @@ public class JobContextTests {
 
 	private JobContext context;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		jobExecution = new JobExecution(1L);
 		JobInstance jobInstance = new JobInstance(2L, "job");
@@ -178,10 +178,12 @@ public class JobContextTests {
 		assertEquals("jobExecution#1", context.getId());
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testIllegalContextId() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		context = new JobContext(new JobExecution((Long) null));
 		context.getId();
+	 });
 	}
 
 }

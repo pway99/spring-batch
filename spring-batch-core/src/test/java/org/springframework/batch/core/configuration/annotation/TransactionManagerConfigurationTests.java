@@ -17,11 +17,9 @@
 package org.springframework.batch.core.configuration.annotation;
 
 import javax.sql.DataSource;
-
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.aop.Advisor;
 import org.springframework.aop.TargetSource;
 import org.springframework.aop.framework.Advised;
@@ -33,7 +31,7 @@ import org.springframework.transaction.interceptor.TransactionInterceptor;
 /**
  * @author Mahmoud Ben Hassine
  */
-@RunWith(MockitoJUnitRunner.class)
+@ExtendWith(MockitoExtension.class)
 public abstract class TransactionManagerConfigurationTests {
 
 	@Mock

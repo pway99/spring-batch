@@ -22,22 +22,19 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.kafka.KafkaItemReader;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Mathieu Ouellet
@@ -45,12 +42,9 @@ import static org.junit.Assert.fail;
  */
 public class KafkaItemReaderBuilderTests {
 
-	@Rule
-	public ExpectedException thrown = ExpectedException.none();
-
 	private Properties consumerProperties;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.consumerProperties = new Properties();
 		this.consumerProperties.setProperty(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -63,13 +57,13 @@ public class KafkaItemReaderBuilderTests {
 
 	@Test
 	public void testNullConsumerProperties() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Consumer properties must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		new KafkaItemReaderBuilder<>()
-				.name("kafkaItemReader")
-				.consumerProperties(null)
-				.build();
+		.name("kafkaItemReader")
+		.consumerProperties(null)
+		.build();
+	 }, "Consumer properties must not be null");
 	}
 
 	@Test
@@ -133,78 +127,78 @@ public class KafkaItemReaderBuilderTests {
 
 	@Test
 	public void testNullTopicName() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Topic name must not be null or empty");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		new KafkaItemReaderBuilder<>()
-				.name("kafkaItemReader")
-				.consumerProperties(this.consumerProperties)
-				.topic(null)
-				.build();
+		.name("kafkaItemReader")
+		.consumerProperties(this.consumerProperties)
+		.topic(null)
+		.build();
+	 }, "Topic name must not be null or empty");
 	}
 
 	@Test
 	public void testEmptyTopicName() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("Topic name must not be null or empty");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		new KafkaItemReaderBuilder<>()
-				.name("kafkaItemReader")
-				.consumerProperties(this.consumerProperties)
-				.topic("")
-				.build();
+		.name("kafkaItemReader")
+		.consumerProperties(this.consumerProperties)
+		.topic("")
+		.build();
+	 }, "Topic name must not be null or empty");
 	}
 
 	@Test
 	public void testNullPollTimeout() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("pollTimeout must not be null");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		new KafkaItemReaderBuilder<>()
-				.name("kafkaItemReader")
-				.consumerProperties(this.consumerProperties)
-				.topic("test")
-				.pollTimeout(null)
-				.build();
+		.name("kafkaItemReader")
+		.consumerProperties(this.consumerProperties)
+		.topic("test")
+		.pollTimeout(null)
+		.build();
+	 }, "pollTimeout must not be null");
 	}
 
 	@Test
 	public void testNegativePollTimeout() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("pollTimeout must not be negative");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		new KafkaItemReaderBuilder<>()
-				.name("kafkaItemReader")
-				.consumerProperties(this.consumerProperties)
-				.topic("test")
-				.pollTimeout(Duration.ofSeconds(-1))
-				.build();
+		.name("kafkaItemReader")
+		.consumerProperties(this.consumerProperties)
+		.topic("test")
+		.pollTimeout(Duration.ofSeconds(-1))
+		.build();
+	 }, "pollTimeout must not be negative");
 	}
 
 	@Test
 	public void testZeroPollTimeout() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("pollTimeout must not be zero");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		new KafkaItemReaderBuilder<>()
-				.name("kafkaItemReader")
-				.consumerProperties(this.consumerProperties)
-				.topic("test")
-				.pollTimeout(Duration.ZERO)
-				.build();
+		.name("kafkaItemReader")
+		.consumerProperties(this.consumerProperties)
+		.topic("test")
+		.pollTimeout(Duration.ZERO)
+		.build();
+	 }, "pollTimeout must not be zero");
 	}
 
 	@Test
 	public void testEmptyPartitions() {
-		this.thrown.expect(IllegalArgumentException.class);
-		this.thrown.expectMessage("At least one partition must be provided");
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		new KafkaItemReaderBuilder<>()
-				.name("kafkaItemReader")
-				.consumerProperties(this.consumerProperties)
-				.topic("test")
-				.pollTimeout(Duration.ofSeconds(10))
-				.build();
+		.name("kafkaItemReader")
+		.consumerProperties(this.consumerProperties)
+		.topic("test")
+		.pollTimeout(Duration.ofSeconds(10))
+		.build();
+	 }, "At least one partition must be provided");
 	}
 
 	@Test

@@ -15,12 +15,9 @@
  */
 package org.springframework.batch.test;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.test.sample.SampleTasklet;
@@ -29,6 +26,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.Repeat;
 import org.springframework.test.context.ContextConfiguration;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * This is an abstract test class to be used by test classes to test the
@@ -54,13 +55,13 @@ public abstract class AbstractSampleJobTests {
 		this.jdbcTemplate = jdbcTemplate;
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.jdbcTemplate.update("create table TESTS (ID integer, NAME varchar(40))");
 		tasklet2.jobContextEntryFound = false;
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.jdbcTemplate.update("drop table TESTS");
 	}
@@ -72,9 +73,11 @@ public abstract class AbstractSampleJobTests {
 		this.verifyTasklet(2);
 	}
 
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testNonExistentStep() {
+	 assertThrows(IllegalStateException.class, () -> {
 		jobLauncherTestUtils.launchStep("nonExistent");
+	 });
 	}
 
 	@Test

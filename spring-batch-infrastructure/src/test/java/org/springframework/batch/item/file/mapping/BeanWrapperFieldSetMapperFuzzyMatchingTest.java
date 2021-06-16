@@ -16,24 +16,28 @@
 
 package org.springframework.batch.item.file.mapping;
 
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
 import org.springframework.beans.NotWritablePropertyException;
 import org.springframework.validation.BindException;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class BeanWrapperFieldSetMapperFuzzyMatchingTest {
 
-	@Test(expected = NotWritablePropertyException.class)
+	@Test
 	public void testFuzzyMatchingWithKeyCandidateCollision() throws BindException {
+	 assertThrows(NotWritablePropertyException.class, () -> {
 		BeanWrapperFieldSetMapper<GreenBean> mapper = new BeanWrapperFieldSetMapper<>();
 		mapper.setStrict(true);
 		mapper.setTargetType(GreenBean.class);
 		DelimitedLineTokenizer lineTokenizer = new DelimitedLineTokenizer();
-		String[] names = { "brown", "green", "great", "groin", "braun" };
+		String[] names = {"brown", "green", "great", "groin", "braun"};
 		lineTokenizer.setNames(names);
 		GreenBean bean = mapper.mapFieldSet(lineTokenizer.tokenize("brown,green,great,groin,braun"));
-		Assert.assertEquals("green", bean.getGreen());
+		Assertions.assertEquals("green", bean.getGreen());
+	 });
 	}
 
 	@Test
@@ -46,7 +50,7 @@ public class BeanWrapperFieldSetMapperFuzzyMatchingTest {
 		String[] names = { "brown", "green", "great", "groin", "braun" };
 		lineTokenizer.setNames(names);
 		GreenBean bean = mapper.mapFieldSet(lineTokenizer.tokenize("brown,green,great,groin,braun"));
-		Assert.assertEquals("green", bean.getGreen());
+		Assertions.assertEquals("green", bean.getGreen());
 	}
 
 	@Test
@@ -59,8 +63,8 @@ public class BeanWrapperFieldSetMapperFuzzyMatchingTest {
 		lineTokenizer.setNames(names);
 		BlueBean bean = mapper.mapFieldSet(lineTokenizer.tokenize("blue"));
 		// An exact match always wins...
-		Assert.assertEquals("blue", bean.getBlue());
-		Assert.assertEquals(null, bean.getBleu());
+		Assertions.assertEquals("blue", bean.getBlue());
+		Assertions.assertEquals(null, bean.getBleu());
 	}
 
 	public static class GreenBean {

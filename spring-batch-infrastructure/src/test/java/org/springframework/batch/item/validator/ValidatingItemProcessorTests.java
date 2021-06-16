@@ -15,12 +15,13 @@
  */
 package org.springframework.batch.item.validator;
 
+import org.junit.jupiter.api.Test;
+
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertSame;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertSame;
-
-import org.junit.Test;
 
 /**
  * Tests for {@link ValidatingItemProcessor}.
@@ -42,12 +43,14 @@ public class ValidatingItemProcessorTests {
 		assertSame(ITEM, tested.process(ITEM));
 	}
 
-	@Test(expected = ValidationException.class)
+	@Test
 	public void testFailedValidation() throws Exception {
+	 assertThrows(ValidationException.class, () -> {
 
 		ValidatingItemProcessor<String> tested = new ValidatingItemProcessor<>(validator);
 
 		processFailedValidation(tested);
+	 });
 	}
 
 	@Test

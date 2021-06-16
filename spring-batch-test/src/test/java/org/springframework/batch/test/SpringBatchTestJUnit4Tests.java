@@ -17,12 +17,10 @@ package org.springframework.batch.test;
 
 import java.util.Arrays;
 import javax.sql.DataSource;
-
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -43,14 +41,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseType;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * Test cases for usage of {@link SpringBatchTest} annotation with JUnit 4.
  *
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 @SpringBatchTest
 @ContextConfiguration
 public class SpringBatchTestJUnit4Tests {
@@ -67,7 +65,7 @@ public class SpringBatchTestJUnit4Tests {
 	@Autowired
 	private ItemReader<String> jobScopedItemReader;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.jobRepositoryTestUtils.removeJobExecutions();
 	}
@@ -86,16 +84,16 @@ public class SpringBatchTestJUnit4Tests {
 
 	@Test
 	public void testStepScopedItemReader() throws Exception {
-		Assert.assertEquals("foo", this.stepScopedItemReader.read());
-		Assert.assertEquals("bar", this.stepScopedItemReader.read());
-		Assert.assertNull(this.stepScopedItemReader.read());
+		Assertions.assertEquals("foo", this.stepScopedItemReader.read());
+		Assertions.assertEquals("bar", this.stepScopedItemReader.read());
+		Assertions.assertNull(this.stepScopedItemReader.read());
 	}
 
 	@Test
 	public void testJobScopedItemReader() throws Exception {
-		Assert.assertEquals("foo", this.jobScopedItemReader.read());
-		Assert.assertEquals("bar", this.jobScopedItemReader.read());
-		Assert.assertNull(this.jobScopedItemReader.read());
+		Assertions.assertEquals("foo", this.jobScopedItemReader.read());
+		Assertions.assertEquals("bar", this.jobScopedItemReader.read());
+		Assertions.assertNull(this.jobScopedItemReader.read());
 	}
 
 	@Test
@@ -104,7 +102,7 @@ public class SpringBatchTestJUnit4Tests {
 		JobExecution jobExecution = this.jobLauncherTestUtils.launchJob();
 
 		// then
-		Assert.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
+		Assertions.assertEquals(ExitStatus.COMPLETED, jobExecution.getExitStatus());
 	}
 
 	@Configuration

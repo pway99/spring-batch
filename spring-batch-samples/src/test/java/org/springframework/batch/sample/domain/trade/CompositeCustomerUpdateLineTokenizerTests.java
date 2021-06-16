@@ -15,14 +15,15 @@
  */
 package org.springframework.batch.sample.domain.trade;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.file.transform.DefaultFieldSet;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.batch.item.file.transform.LineTokenizer;
 import org.springframework.lang.Nullable;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Lucas Ward
@@ -33,15 +34,15 @@ public class CompositeCustomerUpdateLineTokenizerTests {
 	private FieldSet customerFieldSet = new DefaultFieldSet(null);
 	private FieldSet footerFieldSet = new DefaultFieldSet(null);
 	private CompositeCustomerUpdateLineTokenizer compositeTokenizer;
-	
-	@Before
+
+	@BeforeEach
 	public void init(){
 		customerTokenizer = new StubLineTokenizer(customerFieldSet);
 		compositeTokenizer = new CompositeCustomerUpdateLineTokenizer();
 		compositeTokenizer.setCustomerTokenizer(customerTokenizer);
 		compositeTokenizer.setFooterTokenizer(new StubLineTokenizer(footerFieldSet));
 	}
-	
+
 	@Test
 	public void testCustomerAdd() throws Exception{
 		String customerAddLine = "AFDASFDASFDFSA";
@@ -49,7 +50,7 @@ public class CompositeCustomerUpdateLineTokenizerTests {
 		assertEquals(customerFieldSet, fs);
 		assertEquals(customerAddLine, customerTokenizer.getTokenizedLine());
 	}
-	
+
 	@Test
 	public void testCustomerDelete() throws Exception{
 		String customerAddLine = "DFDASFDASFDFSA";
@@ -57,7 +58,7 @@ public class CompositeCustomerUpdateLineTokenizerTests {
 		assertEquals(customerFieldSet, fs);
 		assertEquals(customerAddLine, customerTokenizer.getTokenizedLine());
 	}
-	
+
 	@Test
 	public void testCustomerUpdate() throws Exception{
 		String customerAddLine = "UFDASFDASFDFSA";
@@ -65,17 +66,19 @@ public class CompositeCustomerUpdateLineTokenizerTests {
 		assertEquals(customerFieldSet, fs);
 		assertEquals(customerAddLine, customerTokenizer.getTokenizedLine());
 	}
-	
-	@Test(expected=IllegalArgumentException.class)
+
+	@Test
 	public void testInvalidLine() throws Exception{
+	 assertThrows(IllegalArgumentException.class, () -> {
 		String invalidLine = "INVALID";
 		compositeTokenizer.tokenize(invalidLine);
+	 });
 	}
 
 	private static class StubLineTokenizer implements LineTokenizer{
 		private final FieldSet fieldSetToReturn;
 		private String tokenizedLine;
-		
+
 		public StubLineTokenizer(FieldSet fieldSetToReturn) {
 			this.fieldSetToReturn = fieldSetToReturn;
 		}
@@ -85,7 +88,7 @@ public class CompositeCustomerUpdateLineTokenizerTests {
 			this.tokenizedLine = line;
 			return fieldSetToReturn;
 		}
-		
+
 		public String getTokenizedLine() {
 			return tokenizedLine;
 		}

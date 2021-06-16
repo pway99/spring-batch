@@ -1,12 +1,10 @@
 package org.springframework.batch.integration.chunk;
 
 import java.util.Arrays;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -37,14 +35,13 @@ import org.springframework.messaging.MessageChannel;
 import org.springframework.messaging.PollableChannel;
 import org.springframework.messaging.support.GenericMessage;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.StringUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class ChunkMessageItemWriterIntegrationTests {
 
 	private final ChunkMessageChannelItemWriter<Object> writer = new ChunkMessageChannelItemWriter<>();
@@ -63,7 +60,7 @@ public class ChunkMessageItemWriterIntegrationTests {
 
 	private static long jobCounter;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 
 		jobRepository = new SimpleJobRepository(new MapJobInstanceDao(), new MapJobExecutionDao(),
@@ -92,7 +89,7 @@ public class ChunkMessageItemWriterIntegrationTests {
 
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		while (replies.receive(10L) != null) {
 		}
@@ -178,7 +175,7 @@ public class ChunkMessageItemWriterIntegrationTests {
 		assertEquals(BatchStatus.FAILED, stepExecution.getStatus());
 		assertEquals(ExitStatus.FAILED.getExitCode(), stepExecution.getExitStatus().getExitCode());
 		String message = stepExecution.getExitStatus().getExitDescription();
-		assertTrue("Message does not contain 'wrong job': " + message, message.contains("wrong job"));
+		assertTrue(message.contains("wrong job"), "Message does not contain 'wrong job': " + message);
 
 		waitForResults(1, 10);
 
@@ -210,7 +207,7 @@ public class ChunkMessageItemWriterIntegrationTests {
 		assertEquals(BatchStatus.FAILED, stepExecution.getStatus());
 		assertEquals(ExitStatus.FAILED.getExitCode(), stepExecution.getExitStatus().getExitCode());
 		String message = stepExecution.getExitStatus().getExitDescription();
-		assertTrue("Message does not contain 'fail': " + message, message.contains("fail"));
+		assertTrue(message.contains("fail"), "Message does not contain 'fail': " + message);
 
 		waitForResults(2, 10);
 
@@ -248,7 +245,7 @@ public class ChunkMessageItemWriterIntegrationTests {
 		assertEquals(BatchStatus.FAILED, stepExecution.getStatus());
 		assertEquals(ExitStatus.FAILED.getExitCode(), stepExecution.getExitStatus().getExitCode());
 		String message = stepExecution.getExitStatus().getExitDescription();
-		assertTrue("Message did not contain 'timed out': " + message, message.toLowerCase().contains("timed out"));
+		assertTrue(message.toLowerCase().contains("timed out"), "Message did not contain 'timed out': " + message);
 
 		assertEquals(0, TestItemWriter.count);
 		assertEquals(0, stepExecution.getReadCount());
@@ -281,8 +278,8 @@ public class ChunkMessageItemWriterIntegrationTests {
 		assertEquals(ExitStatus.FAILED.getExitCode(), stepExecution.getExitStatus().getExitCode());
 
 		String exitDescription = stepExecution.getExitStatus().getExitDescription();
-		assertTrue("Exit description does not contain exception type name: " + exitDescription, exitDescription
-				.contains(AsynchronousFailureException.class.getName()));
+		assertTrue(exitDescription
+		.contains(AsynchronousFailureException.class.getName()), "Exit description does not contain exception type name: " + exitDescription);
 
 	}
 

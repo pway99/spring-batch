@@ -23,34 +23,30 @@ import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import javax.sql.DataSource;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.item.database.support.AbstractSqlPagingQueryProvider;
 import org.springframework.batch.item.database.support.SqlPagingQueryProviderFactoryBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.jdbc.JdbcTestUtils;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
  * @author Michael Minella
  * @since 2.1
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "JdbcPagingItemReaderCommonTests-context.xml")
 @DirtiesContext(classMode = DirtiesContext.ClassMode.BEFORE_CLASS)
 public class JdbcPagingQueryIntegrationTests {
@@ -67,8 +63,8 @@ public class JdbcPagingQueryIntegrationTests {
 	private int itemCount = 9;
 
 	private int pageSize = 2;
-	
-	@Before
+
+	@BeforeEach
 	public void testInit() {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 		String[] names = {"Foo", "Bar", "Baz", "Foo", "Bar", "Baz", "Foo", "Bar", "Baz"};
@@ -82,7 +78,7 @@ public class JdbcPagingQueryIntegrationTests {
 		assertEquals(itemCount, JdbcTestUtils.countRowsInTable(jdbcTemplate, "T_FOOS"));
 	}
 
-	@After
+	@AfterEach
 	public void destroy() {
 		JdbcTestUtils.deleteFromTables(jdbcTemplate, "T_FOOS");
 //		jdbcTemplate.update("DELETE from T_FOOS");
@@ -125,7 +121,7 @@ public class JdbcPagingQueryIntegrationTests {
 
 		assertEquals(total, count);
 	}
-	
+
 	@Test
 	public void testQueryFromStartWithGroupBy() throws Exception {
 		AbstractSqlPagingQueryProvider queryProvider = (AbstractSqlPagingQueryProvider) getPagingQueryProvider();
@@ -151,7 +147,7 @@ public class JdbcPagingQueryIntegrationTests {
 			assertNotSame(oldValues, startAfterValues);
 			list = jdbcTemplate.queryForList(queryProvider.generateRemainingPagesQuery(pageSize), getParameterList(null, startAfterValues).toArray());
 			count += list.size();
-			
+
 			if(list.size() < pageSize) {
 				assertEquals(1, list.size());
 			}
@@ -204,7 +200,7 @@ public class JdbcPagingQueryIntegrationTests {
 		return factory.getObject();
 
 	}
-	
+
 	private List<Object> getParameterList(Map<String, Object> values, Map<String, Object> sortKeyValue) {
 		SortedMap<String, Object> sm = new TreeMap<>();
 		if (values != null) {
@@ -223,7 +219,7 @@ public class JdbcPagingQueryIntegrationTests {
 				parameterList.add(keys.get(i).getValue());
 			}
 		}
-		
+
 		if (logger.isDebugEnabled()) {
 			logger.debug("Using parameterList:" + parameterList);
 		}

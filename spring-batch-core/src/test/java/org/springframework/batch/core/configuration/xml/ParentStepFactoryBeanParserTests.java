@@ -15,15 +15,14 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.step.item.FaultTolerantChunkProcessor;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.test.util.ReflectionTestUtils;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -37,10 +36,10 @@ public class ParentStepFactoryBeanParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ParentStepFactoryBeanParserTests-context.xml");
 		Object step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		Object chunkProcessor = ReflectionTestUtils.getField(tasklet, "chunkProcessor");
-		assertTrue("Wrong processor type", chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>);
+		assertTrue(chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>, "Wrong processor type");
 	}
 
 	@Test
@@ -49,10 +48,10 @@ public class ParentStepFactoryBeanParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ParentSkippableStepFactoryBeanParserTests-context.xml");
 		Object step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		Object chunkProcessor = ReflectionTestUtils.getField(tasklet, "chunkProcessor");
-		assertTrue("Wrong processor type", chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>);
+		assertTrue(chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>, "Wrong processor type");
 	}
 
 	@Test
@@ -61,10 +60,10 @@ public class ParentStepFactoryBeanParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ParentRetryableStepFactoryBeanParserTests-context.xml");
 		Object step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		Object chunkProcessor = ReflectionTestUtils.getField(tasklet, "chunkProcessor");
-		assertTrue("Wrong processor type", chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>);
+		assertTrue(chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>, "Wrong processor type");
 	}
 
 	// BATCH-1396
@@ -74,10 +73,10 @@ public class ParentStepFactoryBeanParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ParentRetryableLateBindingStepFactoryBeanParserTests-context.xml");
 		Object step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		Object chunkProcessor = ReflectionTestUtils.getField(tasklet, "chunkProcessor");
-		assertTrue("Wrong processor type", chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>);
+		assertTrue(chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>, "Wrong processor type");
 	}
 
 	// BATCH-1396
@@ -87,10 +86,10 @@ public class ParentStepFactoryBeanParserTests {
 		ConfigurableApplicationContext context = new ClassPathXmlApplicationContext(
 				"org/springframework/batch/core/configuration/xml/ParentSkippableLateBindingStepFactoryBeanParserTests-context.xml");
 		Object step = context.getBean("s1", Step.class);
-		assertNotNull("Step not parsed", step);
+		assertNotNull(step, "Step not parsed");
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		Object chunkProcessor = ReflectionTestUtils.getField(tasklet, "chunkProcessor");
-		assertTrue("Wrong processor type", chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>);
+		assertTrue(chunkProcessor instanceof FaultTolerantChunkProcessor<?, ?>, "Wrong processor type");
 	}
 
 }

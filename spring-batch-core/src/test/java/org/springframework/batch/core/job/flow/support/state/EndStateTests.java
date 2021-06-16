@@ -15,15 +15,14 @@
  */
 package org.springframework.batch.core.job.flow.support.state;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.job.flow.FlowExecutor;
 import org.springframework.batch.core.job.flow.support.JobFlowExecutorSupport;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
@@ -32,8 +31,8 @@ import org.springframework.batch.core.job.flow.support.JobFlowExecutorSupport;
 public class EndStateTests {
 
 	private JobExecution jobExecution;
-	
-	@Before
+
+	@BeforeEach
 	public void setUp() {
 		jobExecution = new JobExecution(0L);
 	}
@@ -46,7 +45,7 @@ public class EndStateTests {
 	public void testHandleRestartSunnyDay() throws Exception {
 
 		BatchStatus status = jobExecution.getStatus();
-	
+
 		EndState state = new EndState(FlowExecutionStatus.UNKNOWN, "end");
 		state.handle(new JobFlowExecutorSupport() {
 			@Override
@@ -54,7 +53,7 @@ public class EndStateTests {
 				return jobExecution;
 			}
 		});
-		
+
 		assertEquals(status, jobExecution.getStatus());
 
 	}
@@ -67,7 +66,7 @@ public class EndStateTests {
 	public void testHandleOngoingSunnyDay() throws Exception {
 
 		jobExecution.createStepExecution("foo");
-	
+
 		EndState state = new EndState(FlowExecutionStatus.UNKNOWN, "end");
 		FlowExecutionStatus status = state.handle(new JobFlowExecutorSupport() {
 			@Override
@@ -75,7 +74,7 @@ public class EndStateTests {
 				return jobExecution;
 			}
 		});
-		
+
 		assertEquals(FlowExecutionStatus.UNKNOWN, status);
 
 	}

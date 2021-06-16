@@ -17,9 +17,6 @@
 package org.springframework.batch.repeat.exception;
 
 import java.io.StringWriter;
-
-import junit.framework.TestCase;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.core.Appender;
 import org.apache.logging.log4j.core.LoggerContext;
@@ -27,14 +24,19 @@ import org.apache.logging.log4j.core.appender.WriterAppender;
 import org.apache.logging.log4j.core.config.Configuration;
 import org.apache.logging.log4j.core.config.LoggerConfig;
 import org.apache.logging.log4j.core.layout.PatternLayout;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.springframework.classify.ClassifierSupport;
 import org.springframework.batch.repeat.RepeatContext;
 import org.springframework.batch.repeat.exception.LogOrRethrowExceptionHandler.Level;
+import org.springframework.classify.ClassifierSupport;
 
-public class LogOrRethrowExceptionHandlerTests extends TestCase {
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.fail;
+
+public class LogOrRethrowExceptionHandlerTests {
 
 	private LogOrRethrowExceptionHandler handler = new LogOrRethrowExceptionHandler();
 
@@ -42,9 +44,8 @@ public class LogOrRethrowExceptionHandlerTests extends TestCase {
 
 	private RepeatContext context = null;
 
-    @Override
-	protected void setUp() throws Exception {
-		super.setUp();
+ @BeforeEach
+	public void setUp() throws Exception {
 		Logger logger = LoggerFactory.getLogger(LogOrRethrowExceptionHandler.class);
 		writer = new StringWriter();
 		LoggerContext loggerContext = (LoggerContext) LogManager.getContext();
@@ -58,7 +59,8 @@ public class LogOrRethrowExceptionHandlerTests extends TestCase {
 		rootLoggerConfig.addAppender(appender, org.apache.logging.log4j.Level.DEBUG, null);
 	}
 
-	public void testRuntimeException() throws Throwable {
+	@Test
+ public void testRuntimeException() throws Throwable {
 		try {
 			handler.handleException(context, new RuntimeException("Foo"));
 			fail("Expected RuntimeException");
@@ -68,7 +70,8 @@ public class LogOrRethrowExceptionHandlerTests extends TestCase {
 		}
 	}
 
-	public void testError() throws Throwable {
+	@Test
+ public void testError() throws Throwable {
 		try {
 			handler.handleException(context, new Error("Foo"));
 			fail("Expected Error");
@@ -79,6 +82,7 @@ public class LogOrRethrowExceptionHandlerTests extends TestCase {
 	}
 
 	@SuppressWarnings("serial")
+ @Test
 	public void testNotRethrownErrorLevel() throws Throwable {
 		handler.setExceptionClassifier(new ClassifierSupport<Throwable,Level>(Level.RETHROW) {
             @Override
@@ -92,6 +96,7 @@ public class LogOrRethrowExceptionHandlerTests extends TestCase {
 	}
 
 	@SuppressWarnings("serial")
+ @Test
 	public void testNotRethrownWarnLevel() throws Throwable {
 		handler.setExceptionClassifier(new ClassifierSupport<Throwable,Level>(Level.RETHROW) {
             @Override
@@ -105,6 +110,7 @@ public class LogOrRethrowExceptionHandlerTests extends TestCase {
 	}
 
 	@SuppressWarnings("serial")
+ @Test
 	public void testNotRethrownDebugLevel() throws Throwable {
 		handler.setExceptionClassifier(new ClassifierSupport<Throwable,Level>(Level.RETHROW) {
             @Override

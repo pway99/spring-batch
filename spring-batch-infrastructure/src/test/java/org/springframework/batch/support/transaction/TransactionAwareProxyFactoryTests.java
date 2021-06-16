@@ -20,40 +20,47 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import org.junit.jupiter.api.Test;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class TransactionAwareProxyFactoryTests extends TestCase {
+public class TransactionAwareProxyFactoryTests {
 
-	public void testCreateList() throws Exception {
+	@Test
+ public void testCreateList() throws Exception {
 		List<String> list = TransactionAwareProxyFactory.createTransactionalList();
 		list.add("foo");
 		assertEquals(1, list.size());
 	}
 
-	public void testCreateListWithValues() throws Exception {
+	@Test
+ public void testCreateListWithValues() throws Exception {
 		List<String> list = TransactionAwareProxyFactory.createTransactionalList(Collections.singletonList("foo"));
 		assertEquals(1, list.size());
 	}
 
-	public void testCreateSet() throws Exception {
+	@Test
+ public void testCreateSet() throws Exception {
 		Set<String> set = TransactionAwareProxyFactory.createTransactionalSet();
 		set.add("foo");
 		assertEquals(1, set.size());
 	}
 
-	public void testCreateSetWithValues() throws Exception {
+	@Test
+ public void testCreateSetWithValues() throws Exception {
 		Set<String> list = TransactionAwareProxyFactory.createTransactionalSet(Collections.singleton("foo"));
 		assertEquals(1, list.size());
 	}
 
-	public void testCreateMap() throws Exception {
+	@Test
+ public void testCreateMap() throws Exception {
 		Map<String, String> map = TransactionAwareProxyFactory.createTransactionalMap();
 		map.put("foo", "bar");
 		assertEquals(1, map.size());
 	}
 
-	public void testCreateMapWithValues() throws Exception {
+	@Test
+ public void testCreateMapWithValues() throws Exception {
 		Map<String, String> map = TransactionAwareProxyFactory.createTransactionalMap(Collections.singletonMap("foo",
 				"bar"));
 		assertEquals(1, map.size());

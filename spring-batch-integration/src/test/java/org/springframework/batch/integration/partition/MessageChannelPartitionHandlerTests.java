@@ -4,9 +4,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.concurrent.TimeoutException;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameters;
@@ -18,9 +16,10 @@ import org.springframework.integration.core.MessagingTemplate;
 import org.springframework.messaging.Message;
 import org.springframework.messaging.PollableChannel;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
@@ -109,8 +108,9 @@ public class MessageChannelPartitionHandlerTests {
 	}
 
 	@SuppressWarnings("rawtypes")
-	@Test(expected = MessageTimeoutException.class)
+	@Test
 	public void messageReceiveTimeout() throws Exception {
+	 assertThrows(MessageTimeoutException.class, () -> {
 		//execute with no default set
 		messageChannelPartitionHandler = new MessageChannelPartitionHandler();
 		//mock
@@ -128,6 +128,7 @@ public class MessageChannelPartitionHandlerTests {
 
 		//execute
 		messageChannelPartitionHandler.handle(stepExecutionSplitter, masterStepExecution);
+	 });
 	}
 
 	@Test
@@ -176,8 +177,9 @@ public class MessageChannelPartitionHandlerTests {
 		verify(operations, times(3)).send(any(Message.class));
 	}
 
-	@Test(expected = TimeoutException.class)
+	@Test
 	public void testHandleWithJobRepositoryPollingTimeout() throws Exception {
+	 assertThrows(TimeoutException.class, () -> {
 		//execute with no default set
 		messageChannelPartitionHandler = new MessageChannelPartitionHandler();
 		//mock
@@ -209,5 +211,6 @@ public class MessageChannelPartitionHandlerTests {
 
 		//execute
 		messageChannelPartitionHandler.handle(stepExecutionSplitter, masterStepExecution);
+	 });
 	}
 }

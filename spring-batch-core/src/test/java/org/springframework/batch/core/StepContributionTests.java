@@ -15,26 +15,29 @@
  */
 package org.springframework.batch.core;
 
-import junit.framework.TestCase;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Test;
 
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 /**
  * @author Dave Syer
  * 
  */
-public class StepContributionTests extends TestCase {
+public class StepContributionTests {
 
 	private StepExecution execution = new StepExecution("step", null);
 
 	private StepContribution contribution = new StepContribution(execution);
 
 	/**
-	 * Test method for
-	 * {@link org.springframework.batch.core.StepContribution#incrementFilterCount(int)}
-	 * .
-	 */
-	public void testIncrementFilterCount() {
+ 	 * Test method for
+ 	 * {@link org.springframework.batch.core.StepContribution#incrementFilterCount(int)}
+ 	 * .
+ 	 */
+	@Test
+ public void testIncrementFilterCount() {
 		assertEquals(0, contribution.getFilterCount());
 		contribution.incrementFilterCount(1);
 		assertEquals(1, contribution.getFilterCount());

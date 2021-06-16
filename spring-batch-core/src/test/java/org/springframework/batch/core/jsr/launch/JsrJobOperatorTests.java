@@ -33,13 +33,11 @@ import javax.batch.operations.NoSuchJobInstanceException;
 import javax.batch.runtime.BatchRuntime;
 import javax.batch.runtime.BatchStatus;
 import javax.sql.DataSource;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParametersBuilder;
@@ -66,11 +64,12 @@ import org.springframework.core.task.SyncTaskExecutor;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -87,7 +86,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 	private JobParametersConverter parameterConverter;
 	private static final long TIMEOUT = 10000L;
 
-	@Before
+	@BeforeEach
 	public void setup() throws Exception {
 
 		MockitoAnnotations.initMocks(this);
@@ -205,19 +204,23 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 
 	}
 
-	@Test(expected=NoSuchJobExecutionException.class)
+	@Test
 	public void testAbandonNoSuchJob() throws Exception {
+	 assertThrows(NoSuchJobExecutionException.class, () -> {
 		jsrJobOperator.abandon(5L);
+	 });
 	}
 
-	@Test(expected=JobExecutionIsRunningException.class)
+	@Test
 	public void testAbandonJobRunning() throws Exception {
+	 assertThrows(JobExecutionIsRunningException.class, () -> {
 		JobExecution jobExecution = new JobExecution(5L);
 		jobExecution.setStartTime(new Date(1L));
 
 		when(jobExplorer.getJobExecution(5L)).thenReturn(jobExecution);
 
 		jsrJobOperator.abandon(5L);
+	 });
 	}
 
 	@Test
@@ -227,9 +230,11 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		assertEquals(5L, jsrJobOperator.getJobExecution(5L).getExecutionId());
 	}
 
-	@Test(expected=NoSuchJobExecutionException.class)
+	@Test
 	public void testGetJobExecutionNoExecutionFound() {
+	 assertThrows(NoSuchJobExecutionException.class, () -> {
 		jsrJobOperator.getJobExecution(5L);
+	 });
 	}
 
 	@Test
@@ -245,26 +250,32 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		assertEquals(2L, executions.get(0).getId().longValue());
 	}
 
-	@Test(expected=NoSuchJobInstanceException.class)
+	@Test
 	public void testGetJobExecutionsNullJobInstance() {
+	 assertThrows(NoSuchJobInstanceException.class, () -> {
 		jsrJobOperator.getJobExecutions(null);
+	 });
 	}
 
-	@Test(expected=NoSuchJobInstanceException.class)
+	@Test
 	public void testGetJobExecutionsNullReturned() {
+	 assertThrows(NoSuchJobInstanceException.class, () -> {
 		org.springframework.batch.core.JobInstance jobInstance = new org.springframework.batch.core.JobInstance(5L, "my job");
 
 		jsrJobOperator.getJobExecutions(jobInstance);
+	 });
 	}
 
-	@Test(expected=NoSuchJobInstanceException.class)
+	@Test
 	public void testGetJobExecutionsNoneReturned() {
+	 assertThrows(NoSuchJobInstanceException.class, () -> {
 		org.springframework.batch.core.JobInstance jobInstance = new org.springframework.batch.core.JobInstance(5L, "my job");
 		List<JobExecution> executions = new ArrayList<>();
 
 		when(jobExplorer.getJobExecutions(jobInstance)).thenReturn(executions);
 
 		jsrJobOperator.getJobExecutions(jobInstance);
+	 });
 	}
 
 	@Test
@@ -282,13 +293,15 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		assertEquals("my job", jobInstance.getJobName());
 	}
 
-	@Test(expected=NoSuchJobExecutionException.class)
+	@Test
 	public void testGetJobInstanceNoExecution() {
+	 assertThrows(NoSuchJobExecutionException.class, () -> {
 		JobInstance instance = new JobInstance(1L, "my job");
 		JobExecution execution = new JobExecution(5L);
 		execution.setJobInstance(instance);
 
 		jsrJobOperator.getJobInstance(5L);
+	 });
 	}
 
 	@Test
@@ -298,18 +311,22 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		assertEquals(4, jsrJobOperator.getJobInstanceCount("myJob"));
 	}
 
-	@Test(expected=NoSuchJobException.class)
+	@Test
 	public void testGetJobInstanceCountNoSuchJob() throws Exception {
+	 assertThrows(NoSuchJobException.class, () -> {
 		when(jobExplorer.getJobInstanceCount("myJob")).thenThrow(new org.springframework.batch.core.launch.NoSuchJobException("expected"));
 
 		jsrJobOperator.getJobInstanceCount("myJob");
+	 });
 	}
 
-	@Test(expected=NoSuchJobException.class)
+	@Test
 	public void testGetJobInstanceCountZeroInstancesReturned() throws Exception {
+	 assertThrows(NoSuchJobException.class, () -> {
 		when(jobExplorer.getJobInstanceCount("myJob")).thenReturn(0);
 
 		jsrJobOperator.getJobInstanceCount("myJob");
+	 });
 	}
 
 	@Test
@@ -329,18 +346,22 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		assertEquals(3L, jobInstances.get(2).getInstanceId());
 	}
 
-	@Test(expected=NoSuchJobException.class)
+	@Test
 	public void testGetJobInstancesNullInstancesReturned() {
+	 assertThrows(NoSuchJobException.class, () -> {
 		jsrJobOperator.getJobInstances("myJob", 0, 3);
+	 });
 	}
 
-	@Test(expected=NoSuchJobException.class)
+	@Test
 	public void testGetJobInstancesZeroInstancesReturned() {
+	 assertThrows(NoSuchJobException.class, () -> {
 		List<JobInstance> instances = new ArrayList<>();
 
 		when(jobExplorer.getJobInstances("myJob", 0, 3)).thenReturn(instances);
 
 		jsrJobOperator.getJobInstances("myJob", 0, 3);
+	 });
 	}
 
 	@Test
@@ -370,18 +391,22 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		assertNull(params.get(JsrJobParametersConverter.JOB_RUN_ID));
 	}
 
-	@Test(expected=NoSuchJobExecutionException.class)
+	@Test
 	public void testGetParametersNoExecution() {
+	 assertThrows(NoSuchJobExecutionException.class, () -> {
 		jsrJobOperator.getParameters(5L);
+	 });
 	}
 
-	@Test(expected=NoSuchJobException.class)
+	@Test
 	public void testGetNoRunningExecutions() {
+	 assertThrows(NoSuchJobException.class, () -> {
 		Set<JobExecution> executions = new HashSet<>();
 
 		when(jobExplorer.findRunningJobExecutions("myJob")).thenReturn(executions);
 
 		jsrJobOperator.getRunningExecutions("myJob");
+	 });
 	}
 
 	@Test
@@ -412,9 +437,11 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		assertEquals("step2", results.get(1).getStepName());
 	}
 
-	@Test(expected=NoSuchJobException.class)
+	@Test
 	public void testGetStepExecutionsNoExecutionReturned() {
+	 assertThrows(NoSuchJobException.class, () -> {
 		jsrJobOperator.getStepExecutions(5L);
+	 });
 	}
 
 	@Test
@@ -491,16 +518,19 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		assertEquals(BatchStatus.COMPLETED, execution.getBatchStatus());
 	}
 
-	@Test(expected = JobRestartException.class)
+	@Test
 	public void testNonRestartableJob() throws Exception {
+	 assertThrows(JobRestartException.class, () -> {
 		javax.batch.runtime.JobExecution jobExecutionStart = runJob("jsrJobOperatorTestNonRestartableJob", new Properties(), TIMEOUT);
 		assertEquals(BatchStatus.FAILED, jobExecutionStart.getBatchStatus());
 
 		restartJob(jobExecutionStart.getExecutionId(), null, TIMEOUT);
+	 });
 	}
 
-	@Test(expected = JobRestartException.class)
+	@Test
 	public void testRestartAbandoned() throws Exception {
+	 assertThrows(JobRestartException.class, () -> {
 		jsrJobOperator = BatchRuntime.getJobOperator();
 		javax.batch.runtime.JobExecution execution = runJob("jsrJobOperatorTestRestartAbandonJob", null, TIMEOUT);
 
@@ -508,6 +538,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 
 		jsrJobOperator.abandon(execution.getExecutionId());
 		jsrJobOperator.restart(execution.getExecutionId(), null);
+	 });
 	}
 
 	@Test
@@ -549,7 +580,7 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 
 		assertTrue(properties.size() == 2);
 		assertTrue(properties.getProperty("prevKey1").equals("prevVal1"));
-		assertTrue("prevKey2 = " + properties.getProperty("prevKey2"), properties.getProperty("prevKey2").equals("not value 2"));
+		assertTrue(properties.getProperty("prevKey2").equals("not value 2"), "prevKey2 = " + properties.getProperty("prevKey2"));
 	}
 
 	@Test
@@ -574,26 +605,30 @@ public class JsrJobOperatorTests extends AbstractJsrTestCase {
 		assertTrue(properties.getProperty("overrideTest").equals("userProperties"));
 	}
 
-	@Test(expected = JobStartException.class)
+	@Test
 	public void testBeanCreationExceptionOnStart() throws Exception {
+	 assertThrows(JobStartException.class, () -> {
 		jsrJobOperator = BatchRuntime.getJobOperator();
 
 		try {
-			jsrJobOperator.start("jsrJobOperatorTestBeanCreationException", null);
+		jsrJobOperator.start("jsrJobOperatorTestBeanCreationException", null);
 		} catch (JobStartException e) {
-			assertTrue(e.getCause() instanceof BeanCreationException);
-			throw e;
+		assertTrue(e.getCause() instanceof BeanCreationException);
+		throw e;
 		}
 
 		fail("Should have failed");
+	 });
 	}
 
 	@SuppressWarnings("unchecked")
-	@Test(expected=JobStartException.class)
+	@Test
 	public void testStartUnableToCreateJobExecution() throws Exception {
+	 assertThrows(JobStartException.class, () -> {
 		when(jobRepository.createJobExecution("myJob", null)).thenThrow(RuntimeException.class);
 
 		jsrJobOperator.start("myJob", null);
+	 });
 	}
 
 	@Test

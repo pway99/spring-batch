@@ -16,18 +16,16 @@
 
 package org.springframework.batch.item.file.mapping;
 
-import static org.junit.Assert.assertTrue;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.batch.item.file.transform.DelimitedLineTokenizer;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class BeanWrapperFieldSetMapperConcurrentTests {
 
@@ -49,7 +47,7 @@ public class BeanWrapperFieldSetMapperConcurrentTests {
 				public Boolean call() throws Exception {
 					for (int i = 0; i < 10; i++) {
 						GreenBean bean = mapper.mapFieldSet(lineTokenizer.tokenize("blue,green"));
-						Assert.assertEquals("green", bean.getGreen());
+						Assertions.assertEquals("green", bean.getGreen());
 					}
 					return true;
 				}

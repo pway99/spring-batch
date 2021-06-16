@@ -15,22 +15,22 @@
  */
 package org.springframework.batch.core.jsr.step.batchlet;
 
-import static org.junit.Assert.assertEquals;
-import static org.mockito.Mockito.doThrow;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-
 import javax.batch.api.Batchlet;
 import javax.batch.operations.BatchRuntimeException;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.repeat.RepeatStatus;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 public class BatchletAdapterTests {
 
@@ -40,16 +40,18 @@ public class BatchletAdapterTests {
 	@Mock
 	private StepContribution contribution;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 
 		adapter = new BatchletAdapter(delegate);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testCreateWithNull() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		adapter = new BatchletAdapter(null);
+	 });
 	}
 
 	@Test
@@ -75,9 +77,11 @@ public class BatchletAdapterTests {
 		verify(delegate).stop();
 	}
 
-	@Test(expected=BatchRuntimeException.class)
+	@Test
 	public void testStopException() throws Exception{
+	 assertThrows(BatchRuntimeException.class, () -> {
 		doThrow(new Exception("expected")).when(delegate).stop();
 		adapter.stop();
+	 });
 	}
 }

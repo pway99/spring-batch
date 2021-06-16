@@ -15,18 +15,17 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class JobParserJobFactoryBeanTests {
-	
+
 	private JobParserJobFactoryBean factory = new JobParserJobFactoryBean("jobFactory");
-	
+
 	@Test
 	public void testSingleton() throws Exception {
-		assertTrue("Expected singleton", factory.isSingleton());
+		assertTrue(factory.isSingleton(), "Expected singleton");
 	}
 
 }

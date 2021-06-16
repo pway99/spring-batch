@@ -22,13 +22,11 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.JobExecution;
@@ -53,10 +51,10 @@ import org.springframework.transaction.interceptor.TransactionAttributeEditor;
 import org.springframework.util.StringUtils;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.batch.core.BatchStatus.FAILED;
 
 /**
@@ -81,7 +79,7 @@ public class FaultTolerantStepFactoryBeanRollbackTests {
 	private JobRepository repository;
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		reader = new SkipReaderStub<>();
 		processor = new SkipProcessorStub<>();
@@ -117,7 +115,7 @@ public class FaultTolerantStepFactoryBeanRollbackTests {
 		repository.add(stepExecution);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		reader = null;
 		processor = null;

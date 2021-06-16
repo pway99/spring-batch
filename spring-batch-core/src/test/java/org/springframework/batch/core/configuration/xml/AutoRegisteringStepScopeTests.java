@@ -15,37 +15,35 @@
  */
 package org.springframework.batch.core.configuration.xml;
 
-import org.junit.Test;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.scope.StepScope;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import java.util.Map;
-
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 /**
  * @author Thomas Risberg
  */
 public class AutoRegisteringStepScopeTests {
-	
+
 	@Test
 	@SuppressWarnings("resource")
 	public void testJobElement() throws Exception {
-		ConfigurableApplicationContext ctx = 
+		ConfigurableApplicationContext ctx =
 			new ClassPathXmlApplicationContext("org/springframework/batch/core/configuration/xml/AutoRegisteringStepScopeForJobElementTests-context.xml");
 		Map<String, StepScope> beans = ctx.getBeansOfType(StepScope.class);
-		assertTrue("StepScope not defined properly", beans.size() == 1);
+		assertTrue(beans.size() == 1, "StepScope not defined properly");
 	}
 
 	@Test
 	@SuppressWarnings("resource")
 	public void testStepElement() throws Exception {
-		ConfigurableApplicationContext ctx = 
+		ConfigurableApplicationContext ctx =
 			new ClassPathXmlApplicationContext("org/springframework/batch/core/configuration/xml/AutoRegisteringStepScopeForStepElementTests-context.xml");
 		Map<String, StepScope> beans = ctx.getBeansOfType(StepScope.class);
-		assertTrue("StepScope not defined properly", beans.size() == 1);
+		assertTrue(beans.size() == 1, "StepScope not defined properly");
 	}
 
 }

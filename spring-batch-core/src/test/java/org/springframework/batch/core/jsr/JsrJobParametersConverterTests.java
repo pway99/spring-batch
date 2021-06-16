@@ -15,30 +15,27 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
-
 import javax.sql.DataSource;
-
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.batch.core.PooledEmbeddedDataSource;
 import org.springframework.jdbc.datasource.embedded.EmbeddedDatabaseBuilder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class JsrJobParametersConverterTests {
 
 	private JsrJobParametersConverter converter;
 	private static DataSource dataSource;
 
-	@BeforeClass
+	@BeforeAll
 	public static void setupDatabase() {
 		dataSource = new PooledEmbeddedDataSource(new EmbeddedDatabaseBuilder().
 				addScript("classpath:org/springframework/batch/core/schema-drop-hsqldb.sql").
@@ -46,7 +43,7 @@ public class JsrJobParametersConverterTests {
 				build());
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		converter = new JsrJobParametersConverter(dataSource);
 		converter.afterPropertiesSet();

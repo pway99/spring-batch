@@ -20,12 +20,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
-
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.aop.framework.ProxyFactory;
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.ExitStatus;
@@ -58,9 +56,10 @@ import org.springframework.core.Ordered;
 import org.springframework.lang.Nullable;
 import org.springframework.util.Assert;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.springframework.batch.core.listener.StepListenerMetaData.AFTER_STEP;
 import static org.springframework.batch.core.listener.StepListenerMetaData.AFTER_WRITE;
 
@@ -76,7 +75,7 @@ public class StepListenerFactoryBeanTests {
 
 	private StepExecution stepExecution = new StepExecution("testStep", jobExecution);
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		factoryBean = new StepListenerFactoryBean();
 	}
@@ -200,7 +199,7 @@ public class StepListenerFactoryBeanTests {
 			}
 		};
 		StepListener listener = StepListenerFactoryBean.getListener(delegate);
-		assertTrue("Listener is not of correct type", listener instanceof Ordered);
+		assertTrue(listener instanceof Ordered, "Listener is not of correct type");
 		assertEquals(3, ((Ordered) listener).getOrder());
 	}
 
@@ -216,8 +215,8 @@ public class StepListenerFactoryBeanTests {
 			}
 		};
 		ProxyFactory factory = new ProxyFactory(delegate);
-		assertTrue("Listener is not of correct type",
-				StepListenerFactoryBean.getListener(factory.getProxy()) instanceof StepExecutionListener);
+		assertTrue(
+		StepListenerFactoryBean.getListener(factory.getProxy()) instanceof StepExecutionListener, "Listener is not of correct type");
 	}
 
 	@Test
@@ -309,16 +308,18 @@ public class StepListenerFactoryBeanTests {
 		assertTrue(delegate.isExecuted());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testWrongSignatureAnnotation() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		AbstractTestComponent delegate = new AbstractTestComponent() {
-			@AfterWrite
-			public void aMethod(Integer item) {
-				executed = true;
-			}
+		@AfterWrite
+		public void aMethod(Integer item) {
+		executed = true;
+		}
 		};
 		factoryBean.setDelegate(delegate);
 		factoryBean.getObject();
+	 });
 	}
 
 	@Test
@@ -359,19 +360,21 @@ public class StepListenerFactoryBeanTests {
 		assertTrue(delegate.isExecuted());
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testWrongSignatureNamedMethod() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		AbstractTestComponent delegate = new AbstractTestComponent() {
-			@SuppressWarnings("unused")
-			public void aMethod(Integer item) {
-				executed = true;
-			}
+		@SuppressWarnings("unused")
+		public void aMethod(Integer item) {
+		executed = true;
+		}
 		};
 		factoryBean.setDelegate(delegate);
 		Map<String, String> metaDataMap = new HashMap<>();
 		metaDataMap.put(AFTER_WRITE.getPropertyName(), "aMethod");
 		factoryBean.setMetaDataMap(metaDataMap);
 		factoryBean.getObject();
+	 });
 	}
 
 	private class MultipleAfterStep implements StepExecutionListener {

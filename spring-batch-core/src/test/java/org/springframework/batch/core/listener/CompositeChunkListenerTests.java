@@ -17,8 +17,8 @@ package org.springframework.batch.core.listener;
 
 import static org.mockito.Mockito.mock;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ChunkListener;
 import org.springframework.batch.core.scope.context.ChunkContext;
 
@@ -34,7 +34,7 @@ public class CompositeChunkListenerTests {
 	CompositeChunkListener compositeListener;
 	ChunkContext chunkContext;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		chunkContext = new ChunkContext(null);
 		listener = mock(ChunkListener.class);

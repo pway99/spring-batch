@@ -21,15 +21,11 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import javax.xml.transform.stream.StreamResult;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.xmlunit.builder.Input;
-import org.xmlunit.matchers.CompareMatcher;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.xml.domain.QualifiedTrade;
 import org.springframework.batch.support.transaction.ResourcelessTransactionManager;
@@ -43,12 +39,14 @@ import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionTemplate;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.StopWatch;
+import org.xmlunit.builder.Input;
+import org.xmlunit.matchers.CompareMatcher;
 
-import static org.junit.Assert.assertThat;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class Jaxb2NamespaceMarshallingTests {
-	
+
 	private Log logger = LogFactory.getLog(getClass());
 
 	private static final int MAX_WRITE = 100;
@@ -104,14 +102,14 @@ public class Jaxb2NamespaceMarshallingTests {
 				CompareMatcher.isSimilarTo(Input.from(resource.getFile())).normalizeWhitespace());
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 
 		File directory = new File("target/data");
 		directory.mkdirs();
 		outputFile = File.createTempFile(ClassUtils.getShortName(this.getClass()), ".xml", directory);
 		resource = new FileSystemResource(outputFile);
-		
+
 		writer.setResource(resource);
 
 		writer.setMarshaller(getMarshaller());
@@ -123,21 +121,21 @@ public class Jaxb2NamespaceMarshallingTests {
 
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() throws Exception {
 		outputFile.delete();
 	}
 
 	protected Marshaller getMarshaller() throws Exception {
-		
+
 		Jaxb2Marshaller marshaller = new Jaxb2Marshaller();
 		marshaller.setClassesToBeBound(new Class<?>[] { QualifiedTrade.class });
 		marshaller.afterPropertiesSet();
-		
+
 		StringWriter string = new StringWriter();
 		marshaller.marshal(new QualifiedTrade("FOO", 100, BigDecimal.valueOf(10.), "bar"), new StreamResult(string));
 		String content = string.toString();
-		assertTrue("Wrong content: "+content, content.contains("<customer>bar</customer>"));
+		assertTrue(content.contains("<customer>bar</customer>"), "Wrong content: " + content);
 		return marshaller;
 	}
 

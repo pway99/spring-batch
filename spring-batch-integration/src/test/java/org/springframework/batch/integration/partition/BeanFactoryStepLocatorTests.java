@@ -1,20 +1,19 @@
 package org.springframework.batch.integration.partition;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobInterruptedException;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 
 public class BeanFactoryStepLocatorTests {
-	
+
 	private BeanFactoryStepLocator stepLocator = new BeanFactoryStepLocator();
 	private DefaultListableBeanFactory beanFactory = new DefaultListableBeanFactory();
-	
+
 	@Test
 	public void testGetStep() throws Exception {
 		beanFactory.registerSingleton("foo", new StubStep("foo"));
@@ -33,7 +32,7 @@ public class BeanFactoryStepLocatorTests {
 	private static final class StubStep implements Step {
 
 		private String name;
-		
+
 		public StubStep(String name) {
 			this.name = name;
 		}

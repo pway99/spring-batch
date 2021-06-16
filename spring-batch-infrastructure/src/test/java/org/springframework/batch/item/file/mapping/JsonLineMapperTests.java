@@ -15,15 +15,15 @@
  */
 package org.springframework.batch.item.file.mapping;
 
-import java.util.Map;
-
 import com.fasterxml.jackson.core.JsonParseException;
-import org.junit.Test;
+import java.util.Map;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 public class JsonLineMapperTests {
-	
+
 	private JsonLineMapper mapper = new JsonLineMapper();
 
 	@Test
@@ -40,10 +40,12 @@ public class JsonLineMapperTests {
 		assertEquals(2, ((Map<String, Object>) map.get("bar")).get("foo"));
 	}
 
-	@Test(expected=JsonParseException.class)
+	@Test
 	public void testMappingError() throws Exception {
+	 assertThrows(JsonParseException.class, () -> {
 		Map<String, Object> map = mapper.mapLine("{\"foo\": 1", 1);
 		assertEquals(1, map.get("foo"));
+	 });
 	}
 
 }

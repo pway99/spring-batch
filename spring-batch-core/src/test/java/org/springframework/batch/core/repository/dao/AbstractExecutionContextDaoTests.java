@@ -15,15 +15,12 @@
  */
 package org.springframework.batch.core.repository.dao;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
@@ -32,6 +29,9 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.test.context.junit4.AbstractTransactionalJUnit4SpringContextTests;
 import org.springframework.transaction.annotation.Transactional;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * Tests for {@link ExecutionContextDao} implementations.
@@ -50,7 +50,7 @@ public abstract class AbstractExecutionContextDaoTests extends AbstractTransacti
 
 	private StepExecution stepExecution;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		jobInstanceDao = getJobInstanceDao();
 		jobExecutionDao = getJobExecutionDao();
@@ -133,9 +133,11 @@ public abstract class AbstractExecutionContextDaoTests extends AbstractTransacti
 	}
 
 	@Transactional
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testSaveNullExecutionContexts() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		contextDao.saveExecutionContexts(null);
+	 });
 	}
 
 	@Transactional

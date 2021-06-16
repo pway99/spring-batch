@@ -15,12 +15,10 @@
  */
 package org.springframework.batch.sample.support;
 
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * Encapsulates basic logic for testing custom {@link FieldSetMapper} implementations.
@@ -33,20 +31,20 @@ public abstract class AbstractFieldSetMapperTests {
 	 * @return <code>FieldSet</code> used for mapping
 	 */
 	protected abstract FieldSet fieldSet();
-	
+
 	/**
 	 * @return domain object excepted as a result of mapping the <code>FieldSet</code>
 	 * returned by <code>this.fieldSet()</code>
 	 */
 	protected abstract Object expectedDomainObject();
-	
+
 	/**
 	 * @return mapper which takes <code>this.fieldSet()</code> and maps it to
 	 * domain object.
 	 */
 	protected abstract FieldSetMapper<?> fieldSetMapper();
-	
-	
+
+
 	/**
 	 * Regular usage scenario.
 	 * Assumes the domain object implements sensible <code>equals(Object other)</code>
@@ -55,5 +53,5 @@ public abstract class AbstractFieldSetMapperTests {
 	public void testRegularUse() throws Exception {
 		assertEquals(expectedDomainObject(), fieldSetMapper().mapFieldSet(fieldSet()));
 	}
-	
+
 }

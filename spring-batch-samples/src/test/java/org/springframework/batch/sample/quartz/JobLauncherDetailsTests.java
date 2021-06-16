@@ -15,16 +15,12 @@
  */
 package org.springframework.batch.sample.quartz;
 
-import static org.mockito.Mockito.mock;
-import static org.junit.Assert.assertEquals;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.quartz.Job;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
@@ -43,6 +39,8 @@ import org.springframework.batch.core.launch.NoSuchJobException;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.Mockito.mock;
 
 /**
  * @author Dave Syer
@@ -52,8 +50,8 @@ public class JobLauncherDetailsTests {
 	private JobLauncherDetails details = new JobLauncherDetails();
 	private TriggerFiredBundle firedBundle;
 	private List<Serializable> list = new ArrayList<>();
-	
-	@Before
+
+	@BeforeEach
 	public void setUp() throws Exception {
 		details.setJobLauncher(new JobLauncher() {
 			@Override
@@ -162,7 +160,7 @@ public class JobLauncherDetailsTests {
 			super(mock(Scheduler.class), firedBundle, mock(Job.class));
 		}
 	}
-	
+
 	private static class StubJob implements org.springframework.batch.core.Job {
 		private final String name;
 

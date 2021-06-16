@@ -15,19 +15,17 @@
  */
 package org.springframework.batch.sample.common;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 /**
  * Unit test class that was used as part of the Reference Documentation.  I'm only including it in the
@@ -38,20 +36,20 @@ import org.springframework.lang.Nullable;
  */
 public class CustomItemReaderTests {
 	private ItemReader<String> itemReader;
-	
+
 	/* (non-Javadoc)
 	 * @see junit.framework.TestCase#setUp()
 	 */
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		List<String> items = new ArrayList<>();
 		items.add("1");
 		items.add("2");
 		items.add("3");
-		
+
 		itemReader = new CustomItemReader<>(items);
 	}
-	
+
 	@Test
 	public void testRead() throws Exception{
 		assertEquals("1", itemReader.read());
@@ -59,7 +57,7 @@ public class CustomItemReaderTests {
 		assertEquals("3", itemReader.read());
 		assertNull(itemReader.read());
 	}
-	
+
 	@Test
 	public void testRestart() throws Exception{
 		ExecutionContext executionContext = new ExecutionContext();
@@ -71,7 +69,7 @@ public class CustomItemReaderTests {
 		items.add("2");
 		items.add("3");
 		itemReader = new CustomItemReader<>(items);
-		
+
 		((ItemStream)itemReader).open(executionContext);
 		assertEquals("2", itemReader.read());
 	}

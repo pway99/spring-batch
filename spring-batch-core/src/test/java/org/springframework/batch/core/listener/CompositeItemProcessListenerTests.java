@@ -19,8 +19,8 @@ import static org.mockito.Mockito.mock;
 
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ItemProcessListener;
 
 /**
@@ -35,7 +35,7 @@ public class CompositeItemProcessListenerTests {
 	private CompositeItemProcessListener<Object, Object> compositeListener;
 
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		listener = mock(ItemProcessListener.class);
 		compositeListener = new CompositeItemProcessListener<>();

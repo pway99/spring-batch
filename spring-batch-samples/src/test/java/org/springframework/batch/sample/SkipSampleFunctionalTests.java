@@ -15,17 +15,12 @@
  */
 package org.springframework.batch.sample;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-
 import java.math.BigDecimal;
 import java.util.Map;
-
 import javax.sql.DataSource;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -47,16 +42,18 @@ import org.springframework.batch.sample.domain.trade.internal.TradeWriter;
 import org.springframework.batch.sample.skip.SkippableExceptionDuringProcessSample;
 import org.springframework.batch.sample.skip.SkippableExceptionDuringReadSample;
 import org.springframework.batch.sample.skip.SkippableExceptionDuringWriteSample;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.springframework.test.jdbc.JdbcTestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.jdbc.JdbcTestUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Error is encountered during writing - transaction is rolled back and the
@@ -66,7 +63,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Dan Garrette
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/skipSample-job-launcher-context.xml" })
 public class SkipSampleFunctionalTests {
 
@@ -87,7 +84,7 @@ public class SkipSampleFunctionalTests {
 		this.jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() {
         jdbcTemplate.update("DELETE from TRADE");
         jdbcTemplate.update("DELETE from CUSTOMER");

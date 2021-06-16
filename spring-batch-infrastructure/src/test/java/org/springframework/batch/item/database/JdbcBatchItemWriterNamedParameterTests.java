@@ -18,24 +18,21 @@ package org.springframework.batch.item.database;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.hamcrest.BaseMatcher;
 import org.hamcrest.Description;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
 import org.springframework.jdbc.core.namedparam.NamedParameterJdbcOperations;
 import org.springframework.jdbc.core.namedparam.SqlParameterSource;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.ArgumentMatchers.eq;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import static org.mockito.hamcrest.MockitoHamcrest.argThat;
@@ -81,7 +78,7 @@ public class JdbcBatchItemWriterNamedParameterTests {
 
 	}
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		namedParameterJdbcOperations = mock(NamedParameterJdbcOperations.class);
 		writer.setSql(sql);
@@ -106,7 +103,7 @@ public class JdbcBatchItemWriterNamedParameterTests {
 		catch (IllegalArgumentException e) {
 			// expected
 			String message = e.getMessage();
-			assertTrue("Message does not contain 'NamedParameterJdbcTemplate'.", message.contains("NamedParameterJdbcTemplate"));
+			assertTrue(message.contains("NamedParameterJdbcTemplate"), "Message does not contain 'NamedParameterJdbcTemplate'.");
 		}
 		writer.setJdbcTemplate(namedParameterJdbcOperations);
 		try {
@@ -116,7 +113,7 @@ public class JdbcBatchItemWriterNamedParameterTests {
 		catch (IllegalArgumentException e) {
 			// expected
 			String message = e.getMessage().toLowerCase();
-			assertTrue("Message does not contain 'sql'.", message.contains("sql"));
+			assertTrue(message.contains("sql"), "Message does not contain 'sql'.");
 		}
 		writer.setSql("select * from foo where id = :id");
 
@@ -135,11 +132,11 @@ public class JdbcBatchItemWriterNamedParameterTests {
 	@Test
 	public void testWriteAndFlushMap() throws Exception {
 		JdbcBatchItemWriter<Map<String, Object>> mapWriter = new JdbcBatchItemWriter<>();
-		
+
 		mapWriter.setSql(sql);
 		mapWriter.setJdbcTemplate(namedParameterJdbcOperations);
 		mapWriter.afterPropertiesSet();
-		
+
 		ArgumentCaptor<Map []> captor = ArgumentCaptor.forClass(Map[].class);
 
 		when(namedParameterJdbcOperations.batchUpdate(eq(sql),
@@ -191,7 +188,7 @@ public class JdbcBatchItemWriterNamedParameterTests {
 		catch (EmptyResultDataAccessException e) {
 			// expected
 			String message = e.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("did not update"));
+			assertTrue(message.contains("did not update"), "Wrong message: " + message);
 		}
 	}
 

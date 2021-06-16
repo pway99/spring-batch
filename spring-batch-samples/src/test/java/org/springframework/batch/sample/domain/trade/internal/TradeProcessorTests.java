@@ -19,8 +19,8 @@ import static org.mockito.Mockito.mock;
 
 import java.util.Collections;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.sample.domain.trade.Trade;
 import org.springframework.batch.sample.domain.trade.TradeDao;
 
@@ -28,7 +28,7 @@ public class TradeProcessorTests {
 	private TradeDao writer;
 	private TradeWriter processor;
 	
-	@Before
+	@BeforeEach
 	public void setUp() {
 		writer = mock(TradeDao.class);
 		

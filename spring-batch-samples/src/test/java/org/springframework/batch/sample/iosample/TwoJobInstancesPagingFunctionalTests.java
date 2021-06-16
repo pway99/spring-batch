@@ -16,15 +16,10 @@
 
 package org.springframework.batch.sample.iosample;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotSame;
-
 import java.util.Date;
-
 import javax.sql.DataSource;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -35,13 +30,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 
 /**
  * @author Dave Syer
  * @since 2.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/simple-job-launcher-context.xml", "/jobs/ioSampleJob.xml",
 		"/jobs/iosample/jdbcPaging.xml" })
 public class TwoJobInstancesPagingFunctionalTests {
@@ -65,7 +62,7 @@ public class TwoJobInstancesPagingFunctionalTests {
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
 		assertEquals(first, jobExecution.getStepExecutions().iterator().next().getWriteCount());
 		int second = jdbcTemplate.queryForObject("select count(0) from CUSTOMER where credit>1000000", Integer.class);
-		assertNotSame("The number of records above the threshold did not change", first, second);
+		assertNotSame(first, second, "The number of records above the threshold did not change");
 		jobExecution = launcher.run(this.job, getJobParameters(1000000.));
 		assertEquals(BatchStatus.COMPLETED, jobExecution.getStatus());
 		assertEquals(second, jobExecution.getStepExecutions().iterator().next().getWriteCount());

@@ -19,12 +19,9 @@ package org.springframework.batch.item.mail.builder;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.concurrent.atomic.AtomicReference;
-
 import javax.mail.MessagingException;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.mail.MailErrorHandler;
 import org.springframework.batch.item.mail.SimpleMailMessageItemWriter;
 import org.springframework.mail.MailException;
@@ -33,8 +30,9 @@ import org.springframework.mail.MailSendException;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -52,7 +50,7 @@ public class SimpleMailMessageItemWriterBuilderTests {
 
 	private SimpleMailMessage[] items;
 
-	@Before
+	@BeforeEach
 	public void setup() {
 		mailSender = mock(MailSender.class);
 		this.foo = new SimpleMailMessage();
@@ -80,15 +78,17 @@ public class SimpleMailMessageItemWriterBuilderTests {
 		}
 	}
 
-	@Test(expected = MailSendException.class)
+	@Test
 	public void testErrorHandler() throws Exception {
+	 assertThrows(MailSendException.class, () -> {
 		SimpleMailMessageItemWriter writer = new SimpleMailMessageItemWriterBuilder().mailSender(this.mailSender)
-				.build();
+		.build();
 
 		this.mailSender.send(this.foo, this.bar);
 		when(this.mailSender)
-				.thenThrow(new MailSendException(Collections.singletonMap(this.foo, new MessagingException("FOO"))));
+		.thenThrow(new MailSendException(Collections.singletonMap(this.foo, new MessagingException("FOO"))));
 		writer.write(Arrays.asList(this.items));
+	 });
 	}
 
 	@Test

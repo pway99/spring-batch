@@ -17,18 +17,14 @@
 package org.springframework.batch.item.jms.builder;
 
 import java.util.Date;
-
 import javax.jms.Message;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.jms.JmsItemReader;
 import org.springframework.jms.core.JmsOperations;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -40,7 +36,7 @@ public class JmsItemReaderBuilderTests {
 
 	private JmsOperations defaultJmsTemplate;
 
-	@Before
+	@BeforeEach
 	public void setupJmsTemplate() {
 		this.defaultJmsTemplate = mock(JmsOperations.class);
 		when(this.defaultJmsTemplate.receiveAndConvert()).thenReturn("foo");
@@ -97,8 +93,8 @@ public class JmsItemReaderBuilderTests {
 			fail("IllegalArgumentException should have been thrown");
 		}
 		catch (IllegalArgumentException ise) {
-			assertEquals("IllegalArgumentException message did not match the expected result.",
-					"jmsTemplate is required.", ise.getMessage());
+			assertEquals(
+			"jmsTemplate is required.", ise.getMessage(), "IllegalArgumentException message did not match the expected result.");
 		}
 	}
 }

@@ -16,14 +16,9 @@
 package org.springframework.batch.item.database.builder;
 
 import javax.sql.DataSource;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import test.jdbc.datasource.DataSourceInitializer;
-import test.jdbc.datasource.DerbyDataSourceFactoryBean;
-import test.jdbc.datasource.DerbyShutdownBean;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.database.FooRowMapper;
 import org.springframework.batch.item.database.StoredProcedureItemReader;
@@ -38,11 +33,13 @@ import org.springframework.jdbc.core.SqlParameter;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.springframework.transaction.PlatformTransactionManager;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import test.jdbc.datasource.DataSourceInitializer;
+import test.jdbc.datasource.DerbyDataSourceFactoryBean;
+import test.jdbc.datasource.DerbyShutdownBean;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Michael Minella
@@ -54,13 +51,13 @@ public class StoredProcedureItemReaderBuilderTests {
 
 	private ConfigurableApplicationContext context;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		this.context = new AnnotationConfigApplicationContext(TestDataSourceConfiguration.class);
 		this.dataSource = (DataSource) this.context.getBean("dataSource");
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.context.close();
 	}

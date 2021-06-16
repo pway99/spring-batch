@@ -15,16 +15,16 @@
  */
 package org.springframework.batch.support;
 
-import org.junit.Test;
+import javax.sql.DataSource;
+import org.junit.jupiter.api.Test;
 import org.springframework.jdbc.support.MetaDataAccessException;
 
-import javax.sql.DataSource;
-
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.batch.support.DatabaseType.DB2;
+import static org.springframework.batch.support.DatabaseType.DB2AS400;
 import static org.springframework.batch.support.DatabaseType.DB2VSE;
 import static org.springframework.batch.support.DatabaseType.DB2ZOS;
-import static org.springframework.batch.support.DatabaseType.DB2AS400;
 import static org.springframework.batch.support.DatabaseType.DERBY;
 import static org.springframework.batch.support.DatabaseType.HSQL;
 import static org.springframework.batch.support.DatabaseType.MYSQL;
@@ -59,10 +59,12 @@ public class DatabaseTypeTests {
 		assertEquals(SQLITE, fromProductName("SQLite"));
 	}
 
-	@Test(expected = IllegalArgumentException.class)
+	@Test
 	public void testInvalidProductName() {
+	 assertThrows(IllegalArgumentException.class, () -> {
 
 		fromProductName("bad product name");
+	 });
 	}
 
 	@Test
@@ -143,10 +145,12 @@ public class DatabaseTypeTests {
 		assertEquals(SYBASE, DatabaseType.fromMetaData(ds));
 	}
 
-	@Test(expected=MetaDataAccessException.class)
+	@Test
 	public void testBadMetaData() throws Exception {
+	 assertThrows(MetaDataAccessException.class, () -> {
 		DataSource ds = DatabaseTypeTestUtils.getMockDataSource(new MetaDataAccessException("Bad!"));
 		assertEquals(SYBASE, DatabaseType.fromMetaData(ds));
+	 });
 	}
 
 }

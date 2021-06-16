@@ -15,13 +15,11 @@
  */
 package org.springframework.batch.core.scope;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Ignore;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.scope.context.StepSynchronizationManager;
@@ -33,11 +31,12 @@ import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @ContextConfiguration
-@RunWith(SpringJUnit4ClassRunner.class)
-@Ignore // Maybe one day support class replacement?
+@ExtendWith(SpringExtension.class)
+@Disabled // Maybe one day support class replacement?
 public class StepScopeClassIntegrationTests implements BeanFactoryAware {
 
 
@@ -60,7 +59,7 @@ public class StepScopeClassIntegrationTests implements BeanFactoryAware {
 		this.beanFactory = (ListableBeanFactory) beanFactory;
 	}
 
-	@Before
+	@BeforeEach
 	public void start() {
 		start("bar");
 	}
@@ -81,7 +80,7 @@ public class StepScopeClassIntegrationTests implements BeanFactoryAware {
 
 	}
 
-	@After
+	@AfterEach
 	public void stop() {
 		StepSynchronizationManager.close();
 		// Check that all temporary bean definitions are cleaned up

@@ -15,14 +15,13 @@
  */
 package org.springframework.batch.core.launch.support;
 
-import org.junit.Assert;
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.JobParametersBuilder;
 import org.springframework.jdbc.support.incrementer.DataFieldMaxValueIncrementer;
 
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -42,7 +41,7 @@ public class DataFieldMaxValueJobParametersIncrementerTests {
 			fail("Must fail if the key is empty");
 		}
 		catch (IllegalArgumentException exception) {
-			Assert.assertEquals("key must not be null or empty", exception.getMessage());
+			Assertions.assertEquals("key must not be null or empty", exception.getMessage());
 		}
 	}
 
@@ -53,7 +52,7 @@ public class DataFieldMaxValueJobParametersIncrementerTests {
 			fail("Must fail if the incrementer is null");
 		}
 		catch (IllegalArgumentException exception) {
-			Assert.assertEquals("dataFieldMaxValueIncrementer must not be null", exception.getMessage());
+			Assertions.assertEquals("dataFieldMaxValueIncrementer must not be null", exception.getMessage());
 		}
 	}
 
@@ -70,7 +69,7 @@ public class DataFieldMaxValueJobParametersIncrementerTests {
 
 		// then
 		Long runId = nextParameters.getLong("run.id");
-		Assert.assertEquals(new Long(10) ,runId);
+		Assertions.assertEquals(new Long(10) ,runId);
 	}
 
 	@Test
@@ -89,8 +88,8 @@ public class DataFieldMaxValueJobParametersIncrementerTests {
 		// then
 		Long runId = nextParameters.getLong("run.id");
 		String foo = nextParameters.getString("foo");
-		Assert.assertEquals(new Long(10) ,runId);
-		Assert.assertEquals("bar" ,foo);
+		Assertions.assertEquals(new Long(10) ,runId);
+		Assertions.assertEquals("bar" ,foo);
 	}
 
 	@Test
@@ -108,6 +107,6 @@ public class DataFieldMaxValueJobParametersIncrementerTests {
 
 		// then
 		Long runId = nextParameters.getLong("run.id");
-		Assert.assertEquals(new Long(10) ,runId);
+		Assertions.assertEquals(new Long(10) ,runId);
 	}
 }

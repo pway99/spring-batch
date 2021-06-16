@@ -27,7 +27,7 @@ import javax.batch.api.chunk.listener.RetryWriteListener;
 import javax.batch.operations.BatchRuntimeException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -38,8 +38,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.retry.RetryException;
 import org.springframework.util.Assert;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * <p>
@@ -61,9 +61,9 @@ public class RetryListenerTests {
 		JobExecution jobExecution = jobLauncher.run(context.getBean(Job.class), new JobParameters());
 
 		List<Throwable> failureExceptions = jobExecution.getAllFailureExceptions();
-		assertTrue("Expected 1 failure exceptions", failureExceptions.size() == 1);
-		assertTrue("Failure exception must be of type RetryException", (failureExceptions.get(0) instanceof RetryException));
-		assertTrue("Exception cause must be of type IllegalArgumentException", (failureExceptions.get(0).getCause() instanceof IllegalArgumentException));
+		assertTrue(failureExceptions.size() == 1, "Expected 1 failure exceptions");
+		assertTrue((failureExceptions.get(0) instanceof RetryException), "Failure exception must be of type RetryException");
+		assertTrue((failureExceptions.get(0).getCause() instanceof IllegalArgumentException), "Exception cause must be of type IllegalArgumentException");
 
 		assertEquals(ExitStatus.FAILED, jobExecution.getExitStatus());
 	}
@@ -95,9 +95,9 @@ public class RetryListenerTests {
 		JobExecution jobExecution = jobLauncher.run(context.getBean(Job.class), new JobParameters());
 
 		List<Throwable> failureExceptions = jobExecution.getAllFailureExceptions();
-		assertTrue("Failure exceptions must equal one", failureExceptions.size() == 1);
-		assertTrue("Failure exception must be of type RetryException", (failureExceptions.get(0) instanceof RetryException));
-		assertTrue("Exception cause must be of type BatchRuntimeException", (failureExceptions.get(0).getCause() instanceof BatchRuntimeException));
+		assertTrue(failureExceptions.size() == 1, "Failure exceptions must equal one");
+		assertTrue((failureExceptions.get(0) instanceof RetryException), "Failure exception must be of type RetryException");
+		assertTrue((failureExceptions.get(0).getCause() instanceof BatchRuntimeException), "Exception cause must be of type BatchRuntimeException");
 
 		assertEquals(ExitStatus.FAILED, jobExecution.getExitStatus());
 	}

@@ -16,11 +16,10 @@
 
 package org.springframework.batch.integration.partition;
 
-import java.io.IOException;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.Assert;
-import org.junit.Test;
+import java.io.IOException;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 
 /**
  * @author Mahmoud Ben Hassine
@@ -40,7 +39,7 @@ public class StepExecutionRequestTests {
 		String serializedRequest = this.objectMapper.writeValueAsString(request);
 
 		// then
-		Assert.assertEquals(SERIALIZED_REQUEST, serializedRequest);
+		Assertions.assertEquals(SERIALIZED_REQUEST, serializedRequest);
 	}
 
 	@Test
@@ -49,9 +48,9 @@ public class StepExecutionRequestTests {
 		StepExecutionRequest deserializedRequest = this.objectMapper.readValue(SERIALIZED_REQUEST, StepExecutionRequest.class);
 
 		// then
-		Assert.assertNotNull(deserializedRequest);
-		Assert.assertEquals("step", deserializedRequest.getStepName());
-		Assert.assertEquals(1L, deserializedRequest.getJobExecutionId().longValue());
-		Assert.assertEquals(1L, deserializedRequest.getStepExecutionId().longValue());
+		Assertions.assertNotNull(deserializedRequest);
+		Assertions.assertEquals("step", deserializedRequest.getStepName());
+		Assertions.assertEquals(1L, deserializedRequest.getJobExecutionId().longValue());
+		Assertions.assertEquals(1L, deserializedRequest.getStepExecutionId().longValue());
 	}
 }

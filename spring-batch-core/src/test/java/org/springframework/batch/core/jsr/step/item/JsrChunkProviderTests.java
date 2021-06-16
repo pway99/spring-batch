@@ -15,18 +15,17 @@
  */
 package org.springframework.batch.core.jsr.step.item;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.step.item.Chunk;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class JsrChunkProviderTests {
 
 	private JsrChunkProvider<String> provider;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		provider = new JsrChunkProvider<>();
 	}

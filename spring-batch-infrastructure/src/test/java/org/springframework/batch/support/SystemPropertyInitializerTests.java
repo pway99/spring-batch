@@ -15,23 +15,24 @@
  */
 package org.springframework.batch.support;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 /**
  * @author Dave Syer
  *
  */
 public class SystemPropertyInitializerTests {
-	
+
 	private static final String SIMPLE_NAME = SystemPropertyInitializerTests.class.getSimpleName();
 	private SystemPropertyInitializer initializer = new SystemPropertyInitializer();
-	
-	@Before
-	@After
+
+	@BeforeEach
+	@AfterEach
 	public void initializeProperty() {
 		System.clearProperty(SystemPropertyInitializer.ENVIRONMENT);
 		System.clearProperty(SIMPLE_NAME);
@@ -52,9 +53,11 @@ public class SystemPropertyInitializerTests {
 		assertEquals("foo", System.getProperty(SystemPropertyInitializer.ENVIRONMENT));
 	}
 
-	@Test(expected=IllegalStateException.class)
+	@Test
 	public void testNoDefaultValue() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		initializer.afterPropertiesSet();
+	 });
 	}
 
 }

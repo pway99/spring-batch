@@ -15,15 +15,11 @@
  */
 package org.springframework.batch.core.listener;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collections;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ItemProcessListener;
 import org.springframework.batch.core.Job;
@@ -46,7 +42,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.lang.Nullable;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * BATCH-2322
@@ -54,7 +51,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @author Michael Minella
  * @author Mahmoud Ben Hassine
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(classes = {ItemListenerErrorTests.BatchConfiguration.class})
 public class ItemListenerErrorTests {
 
@@ -76,7 +73,7 @@ public class ItemListenerErrorTests {
 	@Autowired
 	private Job job;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		listener.setMethodToThrowExceptionFrom("");
 		reader.setGoingToFail(false);

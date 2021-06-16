@@ -20,14 +20,11 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.junit.Test;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.classify.PatternMatchingClassifier;
-
-import static junit.framework.TestCase.fail;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
@@ -35,7 +32,7 @@ import static org.junit.Assert.assertEquals;
  *
  */
 public class ClassifierCompositeItemWriterTests {
-	
+
 	private ClassifierCompositeItemWriter<String> writer = new ClassifierCompositeItemWriter<>();
 	private List<String> defaults = new ArrayList<>();
 	private List<String> foos = new ArrayList<>();
@@ -71,8 +68,8 @@ public class ClassifierCompositeItemWriterTests {
 			fail("A classifier is required.");
 		}
 		catch (IllegalArgumentException iae) {
-			assertEquals("Message returned from exception did not match expected result.", "A classifier is required.",
-					iae.getMessage());
+			assertEquals("A classifier is required.",
+			iae.getMessage(), "Message returned from exception did not match expected result.");
 		}
 	}
 }

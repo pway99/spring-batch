@@ -15,22 +15,20 @@
  */
 package org.springframework.batch.core.jsr.partition;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Iterator;
 import java.util.Set;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.step.JobRepositorySupport;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class JsrStepExecutionSplitterTests {
 
 	private JsrStepExecutionSplitter splitter;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		splitter = new JsrStepExecutionSplitter(new JobRepositorySupport(), false, "step1", true);
 	}

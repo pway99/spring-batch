@@ -15,17 +15,12 @@
  */
 package org.springframework.batch.core.partition.support;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobExecutionException;
@@ -36,6 +31,9 @@ import org.springframework.batch.core.step.StepSupport;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.core.task.TaskRejectedException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class TaskExecutorPartitionHandlerTests {
 
@@ -64,7 +62,7 @@ public class TaskExecutorPartitionHandlerTests {
 		}
 	};
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		handler.setStep(new StepSupport() {
 			@Override
@@ -86,7 +84,7 @@ public class TaskExecutorPartitionHandlerTests {
 		catch (IllegalStateException e) {
 			// expected
 			String message = e.getMessage();
-			assertEquals("Wrong message: " + message, "A Step must be provided.", message);
+			assertEquals("A Step must be provided.", message, "Wrong message: " + message);
 		}
 	}
 
@@ -100,7 +98,7 @@ public class TaskExecutorPartitionHandlerTests {
 		catch (IllegalArgumentException e) {
 			// expected
 			String message = e.getMessage();
-			assertTrue("Wrong message: " + message, message.contains("Step"));
+			assertTrue(message.contains("Step"), "Wrong message: " + message);
 		}
 	}
 

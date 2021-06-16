@@ -15,24 +15,20 @@
  */
 package org.springframework.batch.core.repository.dao;
 
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
-
 import java.util.Collections;
 import java.util.Date;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
-
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.JUnit4;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
 import org.springframework.batch.core.JobParameters;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
-@RunWith(JUnit4.class)
+
 public class MapJobExecutionDaoTests extends AbstractJobExecutionDaoTests {
 
 	@Override

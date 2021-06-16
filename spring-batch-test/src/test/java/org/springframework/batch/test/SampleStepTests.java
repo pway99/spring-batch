@@ -15,12 +15,10 @@
  */
 package org.springframework.batch.test;
 
-import static org.junit.Assert.*;
-
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.launch.JobLauncher;
@@ -31,9 +29,10 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/simple-job-launcher-context.xml", "/jobs/sample-steps.xml" })
 public class SampleStepTests implements ApplicationContextAware {
 
@@ -50,13 +49,13 @@ public class SampleStepTests implements ApplicationContextAware {
 	@Autowired
 	private JobRepository jobRepository;
 
-	@Before
+	@BeforeEach
 	public void setUp() {
 		jdbcTemplate.update("create table TESTS (ID integer, NAME varchar(40))");
 		stepRunner = new StepRunner(jobLauncher, jobRepository);
 	}
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.jdbcTemplate.update("drop table TESTS");
 	}

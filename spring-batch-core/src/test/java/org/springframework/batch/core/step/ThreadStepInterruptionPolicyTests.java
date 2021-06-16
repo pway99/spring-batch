@@ -15,34 +15,38 @@
  */
 package org.springframework.batch.core.step;
 
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobInterruptedException;
 import org.springframework.batch.core.StepExecution;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Dave Syer
  *
  */
-public class ThreadStepInterruptionPolicyTests extends TestCase {
+public class ThreadStepInterruptionPolicyTests {
 
 	ThreadStepInterruptionPolicy policy = new ThreadStepInterruptionPolicy();
 	private StepExecution context = new StepExecution("stepSupport", null);
-	
+
 	/**
-	 * Test method for {@link org.springframework.batch.core.step.ThreadStepInterruptionPolicy#checkInterrupted(StepExecution)}.
-	 * @throws Exception 
-	 */
-	public void testCheckInterruptedNotComplete() throws Exception {
+ 	 * Test method for {@link org.springframework.batch.core.step.ThreadStepInterruptionPolicy#checkInterrupted(StepExecution)}.
+ 	 * @throws Exception 
+ 	 */
+	@Test
+ public void testCheckInterruptedNotComplete() throws Exception {
 		policy.checkInterrupted(context);
 		// no exception
 	}
 
 	/**
-	 * Test method for {@link org.springframework.batch.core.step.ThreadStepInterruptionPolicy#checkInterrupted(StepExecution)}.
-	 * @throws Exception 
-	 */
-	public void testCheckInterruptedComplete() throws Exception {
+ 	 * Test method for {@link org.springframework.batch.core.step.ThreadStepInterruptionPolicy#checkInterrupted(StepExecution)}.
+ 	 * @throws Exception 
+ 	 */
+	@Test
+ public void testCheckInterruptedComplete() throws Exception {
 		context.setTerminateOnly();
 		try {
 			policy.checkInterrupted(context);

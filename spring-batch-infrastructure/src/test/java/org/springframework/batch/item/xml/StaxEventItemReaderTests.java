@@ -15,10 +15,26 @@
  */
 package org.springframework.batch.item.xml;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.ByteBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import javax.xml.namespace.QName;
+import javax.xml.stream.FactoryConfigurationError;
+import javax.xml.stream.XMLEventReader;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.events.EndElement;
+import javax.xml.stream.events.StartElement;
+import javax.xml.stream.events.XMLEvent;
+import javax.xml.transform.Source;
 import org.hamcrest.Matchers;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemCountAware;
 import org.springframework.batch.item.ItemStreamException;
@@ -33,30 +49,14 @@ import org.springframework.oxm.XmlMappingException;
 import org.springframework.util.ClassUtils;
 import org.springframework.util.xml.StaxUtils;
 
-import javax.xml.namespace.QName;
-import javax.xml.stream.FactoryConfigurationError;
-import javax.xml.stream.XMLEventReader;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.events.EndElement;
-import javax.xml.stream.events.StartElement;
-import javax.xml.stream.events.XMLEvent;
-import javax.xml.transform.Source;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.nio.ByteBuffer;
-import java.nio.charset.Charset;
-import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * Tests for {@link StaxEventItemReader}.
@@ -94,12 +94,12 @@ public class StaxEventItemReaderTests {
 	private Unmarshaller unmarshaller = new MockFragmentUnmarshaller();
 
 	private static final String FRAGMENT_ROOT_ELEMENT = "fragment";
-	
+
 	private static final String[] MULTI_FRAGMENT_ROOT_ELEMENTS = {"fragmentA", "fragmentB"};
 
 	private ExecutionContext executionContext;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		this.executionContext = new ExecutionContext();
 		source = createNewInputSource();
@@ -247,7 +247,7 @@ public class StaxEventItemReaderTests {
 
 		source.close();
 	}
-	
+
 	@Test
 	public void testMultiFragment() throws Exception {
 
@@ -262,7 +262,7 @@ public class StaxEventItemReaderTests {
 		assertNull(source.read()); // there are only three fragments
 
 		source.close();
-	}	
+	}
 
 	@Test
 	public void testMultiFragmentNameSpace() throws Exception {
@@ -277,7 +277,7 @@ public class StaxEventItemReaderTests {
 		assertNull(source.read()); // there are only two fragments (one has wrong namespace)
 
 		source.close();
-	}	
+	}
 
 	@Test
 	public void testMultiFragmentRestart() throws Exception {
@@ -289,23 +289,23 @@ public class StaxEventItemReaderTests {
 		// see asserts in the mock unmarshaller
 		assertNotNull(source.read());
 		assertNotNull(source.read());
-		
-		source.update(executionContext);		
+
+		source.update(executionContext);
 		assertEquals(2, executionContext.getInt(ClassUtils.getShortName(StaxEventItemReader.class) + ".read.count"));
-		
+
 		source.close();
-		
+
 		source = createNewInputSource();
 		source.setResource(new ByteArrayResource(xmlMultiFragment.getBytes()));
 		source.setFragmentRootElementNames(MULTI_FRAGMENT_ROOT_ELEMENTS);
 		source.afterPropertiesSet();
 		source.open(executionContext);
-		
+
 		assertNotNull(source.read());
 		assertNull(source.read()); // there are only three fragments
 
 		source.close();
-	}	
+	}
 
 	@Test
 	public void testMultiFragmentNested() throws Exception {
@@ -322,7 +322,7 @@ public class StaxEventItemReaderTests {
 
 		source.close();
 	}
-	
+
 	@Test
 	public void testMultiFragmentNestedRestart() throws Exception {
 
@@ -333,24 +333,24 @@ public class StaxEventItemReaderTests {
 		// see asserts in the mock unmarshaller
 		assertNotNull(source.read());
 		assertNotNull(source.read());
-		
-		source.update(executionContext);		
+
+		source.update(executionContext);
 		assertEquals(2, executionContext.getInt(ClassUtils.getShortName(StaxEventItemReader.class) + ".read.count"));
-		
+
 		source.close();
-		
+
 		source = createNewInputSource();
 		source.setResource(new ByteArrayResource(xmlMultiFragment.getBytes()));
 		source.setFragmentRootElementNames(MULTI_FRAGMENT_ROOT_ELEMENTS);
 		source.afterPropertiesSet();
 		source.open(executionContext);
-		
+
 		assertNotNull(source.read());
 		assertNull(source.read()); // there are only three fragments
 
 		source.close();
-	}	
-	
+	}
+
 	/**
 	 * Cursor is moved before beginning of next fragment.
 	 */
@@ -565,14 +565,17 @@ public class StaxEventItemReaderTests {
 		source.read();
 	}
 
-	@Test(expected = ItemStreamException.class)
+	@Test
 	public void testStrictness() throws Exception {
+	 assertThrows(ItemStreamException.class, () -> {
 
 		source.setResource(new NonExistentResource());
 		source.setStrict(true);
 		source.afterPropertiesSet();
 
 		source.open(executionContext);
+
+	 });
 
 	}
 
@@ -634,7 +637,7 @@ public class StaxEventItemReaderTests {
 			reader.read();
 			fail("Should fail when XML contains DTD");
 		} catch (Exception e) {
-			Assert.assertThat(e.getMessage(), Matchers.containsString("Undeclared general entity \"entityex\""));
+			assertThat(e.getMessage(), Matchers.containsString("Undeclared general entity \"entityex\""));
 		}
 	}
 
@@ -753,7 +756,7 @@ public class StaxEventItemReaderTests {
 			}
 			return fragmentContent;
 		}
-		
+
 		private boolean isFragmentRootElement(String name) {
 			return FRAGMENT_ROOT_ELEMENT.equals(name) || Arrays.asList(MULTI_FRAGMENT_ROOT_ELEMENTS).contains(name);
 		}

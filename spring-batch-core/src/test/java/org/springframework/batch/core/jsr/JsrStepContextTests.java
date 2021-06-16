@@ -15,18 +15,11 @@
  */
 package org.springframework.batch.core.jsr;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.util.Properties;
-
 import javax.batch.runtime.Metric;
 import javax.batch.runtime.context.StepContext;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -35,6 +28,10 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.util.ExecutionContextUserSupport;
 import org.springframework.util.ClassUtils;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class JsrStepContextTests {
 
@@ -43,7 +40,7 @@ public class JsrStepContextTests {
 	private ExecutionContext executionContext;
 	private ExecutionContextUserSupport executionContextUserSupport = new ExecutionContextUserSupport(ClassUtils.getShortName(JsrStepContext.class));
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		JobExecution jobExecution = new JobExecution(1L, new JobParametersBuilder().addString("key", "value").toJobParameters());
 

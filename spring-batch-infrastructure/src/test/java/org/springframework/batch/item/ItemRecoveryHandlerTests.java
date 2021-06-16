@@ -16,11 +16,12 @@
 
 package org.springframework.batch.item;
 
+import org.junit.jupiter.api.Test;
 import org.springframework.retry.interceptor.MethodInvocationRecoverer;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.fail;
 
-public class ItemRecoveryHandlerTests extends TestCase {
+public class ItemRecoveryHandlerTests {
 
 	MethodInvocationRecoverer<String> recoverer = new MethodInvocationRecoverer<String>() {
         @Override
@@ -29,7 +30,8 @@ public class ItemRecoveryHandlerTests extends TestCase {
 		}
 	};
 
-	public void testRecover() throws Exception {
+	@Test
+ public void testRecover() throws Exception {
 		try {
 			recoverer.recover(new Object[]{"foo"}, null);
 		} catch (Exception e) {

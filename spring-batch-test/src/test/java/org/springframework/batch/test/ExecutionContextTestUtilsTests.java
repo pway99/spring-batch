@@ -16,17 +16,17 @@
 
 package org.springframework.batch.test;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Arrays;
 import java.util.Date;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 public class ExecutionContextTestUtilsTests {
-	
+
 	@Test
 	public void testFromJob() throws Exception {
 		Date date = new Date();
@@ -46,12 +46,14 @@ public class ExecutionContextTestUtilsTests {
 		assertEquals(date, result);
 	}
 
-	@Test(expected=IllegalArgumentException.class)
+	@Test
 	public void testFromStepInJobNoSuchStep() throws Exception {
+	 assertThrows(IllegalArgumentException.class, () -> {
 		Date date = new Date();
 		JobExecution jobExecution = MetaDataInstanceFactory.createJobExecutionWithStepExecutions(123L, Arrays.asList("foo", "bar"));
 		Date result = ExecutionContextTestUtils.getValueFromStepInJob(jobExecution, "spam", "foo");
 		assertEquals(date, result);
+	 });
 	}
 
 	@Test

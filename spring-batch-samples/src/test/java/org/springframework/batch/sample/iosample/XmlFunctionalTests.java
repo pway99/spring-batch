@@ -16,31 +16,31 @@
 
 package org.springframework.batch.sample.iosample;
 
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.item.ItemReader;
 import org.springframework.batch.item.xml.StaxEventItemReader;
 import org.springframework.batch.sample.domain.trade.CustomerCredit;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * @author Dan Garrette
  * @since 2.0
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = "/jobs/iosample/xml.xml" )
 public class XmlFunctionalTests extends AbstractIoSampleTests {
 
 	@Autowired
 	private Resource outputResource;
-	
+
 	@Override
 	protected void pointReaderToOutput(ItemReader<CustomerCredit> reader) {
 		StaxEventItemReader<?> xmlReader = (StaxEventItemReader<?>) reader;
 		xmlReader.setResource(outputResource);
 	}
 
-	
+
 }

@@ -16,13 +16,10 @@
 
 package org.springframework.batch.core.test.step;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.concurrent.atomic.AtomicInteger;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -34,6 +31,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.lang.Nullable;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
@@ -46,13 +44,13 @@ public class SplitJobMapRepositoryIntegrationTests {
 	/** Logger */
 	private final Log logger = LogFactory.getLog(getClass());
 
-	@SuppressWarnings("resource")	
+	@SuppressWarnings("resource")
 	@Test
 	public void testMultithreadedSplit() throws Throwable {
 
 		JobLauncher jobLauncher = null;
 		Job job = null;
-		
+
 		ClassPathXmlApplicationContext context = null;
 
 		for (int i = 0; i < MAX_COUNT; i++) {

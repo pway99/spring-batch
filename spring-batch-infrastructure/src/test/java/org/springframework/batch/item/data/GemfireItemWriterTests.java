@@ -15,20 +15,18 @@
  */
 package org.springframework.batch.item.data;
 
-import static org.junit.Assert.fail;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyZeroInteractions;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.batch.item.SpELItemKeyMapper;
-import org.springframework.data.gemfire.GemfireTemplate;
 import org.springframework.core.convert.converter.Converter;
+import org.springframework.data.gemfire.GemfireTemplate;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyZeroInteractions;
 
 @SuppressWarnings("serial")
 public class GemfireItemWriterTests {
@@ -37,7 +35,7 @@ public class GemfireItemWriterTests {
 	@Mock
 	private GemfireTemplate template;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		MockitoAnnotations.initMocks(this);
 		writer = new GemfireItemWriter<>();

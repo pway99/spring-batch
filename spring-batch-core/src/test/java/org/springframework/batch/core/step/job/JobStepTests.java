@@ -16,10 +16,8 @@
 package org.springframework.batch.core.step.job;
 
 import java.util.Date;
-
-import org.junit.Before;
-import org.junit.Test;
-
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -32,8 +30,9 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.batch.item.ExecutionContext;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * @author Dave Syer
@@ -47,7 +46,7 @@ public class JobStepTests {
 
 	private JobRepository jobRepository;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		step.setName("step");
 		MapJobRepositoryFactoryBean factory = new MapJobRepositoryFactoryBean();
@@ -67,9 +66,11 @@ public class JobStepTests {
 	 * {@link org.springframework.batch.core.step.job.JobStep#afterPropertiesSet()}
 	 * .
 	 */
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testAfterPropertiesSet() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		step.afterPropertiesSet();
+	 });
 	}
 
 	/**
@@ -77,11 +78,13 @@ public class JobStepTests {
 	 * {@link org.springframework.batch.core.step.job.JobStep#afterPropertiesSet()}
 	 * .
 	 */
-	@Test(expected = IllegalStateException.class)
+	@Test
 	public void testAfterPropertiesSetWithNoLauncher() throws Exception {
+	 assertThrows(IllegalStateException.class, () -> {
 		step.setJob(new JobSupport("child"));
 		step.setJobLauncher(null);
 		step.afterPropertiesSet();
+	 });
 	}
 
 	/**
@@ -101,8 +104,8 @@ public class JobStepTests {
 		step.afterPropertiesSet();
 		step.execute(stepExecution);
 		assertEquals(BatchStatus.COMPLETED, stepExecution.getStatus());
-		assertTrue("Missing job parameters in execution context: " + stepExecution.getExecutionContext(), stepExecution
-				.getExecutionContext().containsKey(JobStep.class.getName() + ".JOB_PARAMETERS"));
+		assertTrue(stepExecution
+		.getExecutionContext().containsKey(JobStep.class.getName() + ".JOB_PARAMETERS"), "Missing job parameters in execution context: " + stepExecution.getExecutionContext());
 	}
 
 	@Test
@@ -204,7 +207,7 @@ public class JobStepTests {
 
 		assertEquals(BatchStatus.STOPPED, stepExecution.getStatus());
 	}
-	
+
 	@Test
 	public void testStepExecutionExitStatus() throws Exception {
 		step.setJob(new JobSupport("child") {

@@ -18,27 +18,28 @@ package org.springframework.batch.core.listener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
-import junit.framework.TestCase;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobInstance;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
  *
  */
-public class CompositeJobExecutionListenerTests extends TestCase {
+public class CompositeJobExecutionListenerTests {
 
 	private CompositeJobExecutionListener listener = new CompositeJobExecutionListener();
 
 	private List<String> list = new ArrayList<>();
 
 	/**
-	 * Test method for
-	 * {@link org.springframework.batch.core.listener.CompositeJobExecutionListener#setListeners(List)}
-	 */
-	public void testSetListeners() {
+ 	 * Test method for
+ 	 * {@link org.springframework.batch.core.listener.CompositeJobExecutionListener#setListeners(List)}
+ 	 */
+	@Test
+ public void testSetListeners() {
 		listener.setListeners(Arrays.asList(new JobExecutionListenerSupport() {
 			@Override
 			public void afterJob(JobExecution jobExecution) {
@@ -55,11 +56,12 @@ public class CompositeJobExecutionListenerTests extends TestCase {
 	}
 
 	/**
-	 * Test method for
-	 * {@link org.springframework.batch.core.listener.CompositeJobExecutionListener#register(org.springframework.batch.core.JobExecutionListener)}
-	 * .
-	 */
-	public void testSetListener() {
+ 	 * Test method for
+ 	 * {@link org.springframework.batch.core.listener.CompositeJobExecutionListener#register(org.springframework.batch.core.JobExecutionListener)}
+ 	 * .
+ 	 */
+	@Test
+ public void testSetListener() {
 		listener.register(new JobExecutionListenerSupport() {
 			@Override
 			public void afterJob(JobExecution jobExecution) {
@@ -71,11 +73,12 @@ public class CompositeJobExecutionListenerTests extends TestCase {
 	}
 
 	/**
-	 * Test method for
-	 * {@link org.springframework.batch.core.listener.CompositeJobExecutionListener#beforeJob(JobExecution)}
-	 * .
-	 */
-	public void testOpen() {
+ 	 * Test method for
+ 	 * {@link org.springframework.batch.core.listener.CompositeJobExecutionListener#beforeJob(JobExecution)}
+ 	 * .
+ 	 */
+	@Test
+ public void testOpen() {
 		listener.register(new JobExecutionListenerSupport() {
 			@Override
 			public void beforeJob(JobExecution stepExecution) {

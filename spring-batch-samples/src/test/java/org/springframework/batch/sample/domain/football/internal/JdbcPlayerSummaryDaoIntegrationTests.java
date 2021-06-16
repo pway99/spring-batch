@@ -15,28 +15,25 @@
  */
 package org.springframework.batch.sample.domain.football.internal;
 
-import static org.junit.Assert.assertEquals;
-
 import java.util.Collections;
-
 import javax.sql.DataSource;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.sample.domain.football.PlayerSummary;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Lucas Ward
  *
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { "/data-source-context.xml" })
 public class JdbcPlayerSummaryDaoIntegrationTests {
 	private JdbcPlayerSummaryDao playerSummaryDao;
@@ -64,7 +61,7 @@ public class JdbcPlayerSummaryDaoIntegrationTests {
 		summary.setTotalTd(0);
 	}
 
-	@Before
+	@BeforeEach
 	public void onSetUpInTransaction() throws Exception {
         jdbcTemplate.execute("delete from PLAYER_SUMMARY");
 	}

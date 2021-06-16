@@ -16,10 +16,9 @@
 
 package org.springframework.batch.core.test.ldif.builder;
 
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStreamException;
 import org.springframework.batch.item.ldif.LdifReader;
@@ -29,16 +28,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.ldap.core.LdapAttributes;
-import org.springframework.test.context.junit4.SpringRunner;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.fail;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * @author Glenn Renfro
  */
-@RunWith(SpringRunner.class)
+@ExtendWith(SpringExtension.class)
 public class LdifReaderBuilderTests {
 
 	@Autowired
@@ -48,7 +46,7 @@ public class LdifReaderBuilderTests {
 
 	private String callbackAttributeName;
 
-	@After
+	@AfterEach
 	public void tearDown() {
 		this.callbackAttributeName = null;
 		if (this.ldifReader != null) {
@@ -61,16 +59,16 @@ public class LdifReaderBuilderTests {
 		this.ldifReader = new LdifReaderBuilder().recordsToSkip(1).resource(context.getResource("classpath:/test.ldif"))
 				.name("foo").build();
 		LdapAttributes ldapAttributes = firstRead();
-		assertEquals("The attribute name for the second record did not match expected result",
-				"cn=Bjorn Jensen, ou=Accounting, dc=airius, dc=com", ldapAttributes.getName().toString());
+		assertEquals(
+		"cn=Bjorn Jensen, ou=Accounting, dc=airius, dc=com", ldapAttributes.getName().toString(), "The attribute name for the second record did not match expected result");
 	}
 
 	@Test
 	public void testBasicRead() throws Exception {
 		this.ldifReader = new LdifReaderBuilder().resource(context.getResource("classpath:/test.ldif")).name("foo").build();
 		LdapAttributes ldapAttributes = firstRead();
-		assertEquals("The attribute name for the first record did not match expected result",
-				"cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com", ldapAttributes.getName().toString());
+		assertEquals(
+		"cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com", ldapAttributes.getName().toString(), "The attribute name for the first record did not match expected result");
 	}
 
 	@Test
@@ -78,8 +76,8 @@ public class LdifReaderBuilderTests {
 		this.ldifReader = new LdifReaderBuilder().currentItemCount(3)
 				.resource(context.getResource("classpath:/test.ldif")).name("foo").build();
 		LdapAttributes ldapAttributes = firstRead();
-		assertEquals("The attribute name for the third record did not match expected result",
-				"cn=Gern Jensen, ou=Product Testing, dc=airius, dc=com", ldapAttributes.getName().toString());
+		assertEquals(
+		"cn=Gern Jensen, ou=Product Testing, dc=airius, dc=com", ldapAttributes.getName().toString(), "The attribute name for the third record did not match expected result");
 	}
 
 	@Test
@@ -87,10 +85,10 @@ public class LdifReaderBuilderTests {
 		this.ldifReader = new LdifReaderBuilder().maxItemCount(1).resource(context.getResource("classpath:/test.ldif"))
 				.name("foo").build();
 		LdapAttributes ldapAttributes = firstRead();
-		assertEquals("The attribute name for the first record did not match expected result",
-				"cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com", ldapAttributes.getName().toString());
+		assertEquals(
+		"cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com", ldapAttributes.getName().toString(), "The attribute name for the first record did not match expected result");
 		ldapAttributes = this.ldifReader.read();
-		assertNull("The second read should have returned null", ldapAttributes);
+		assertNull(ldapAttributes, "The second read should have returned null");
 	}
 
 	@Test
@@ -98,8 +96,8 @@ public class LdifReaderBuilderTests {
 		this.ldifReader = new LdifReaderBuilder().recordsToSkip(1).skippedRecordsCallback(new TestCallBackHandler())
 				.resource(context.getResource("classpath:/test.ldif")).name("foo").build();
 		firstRead();
-		assertEquals("The attribute name from the callback handler did not match the  expected result",
-				"cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com", this.callbackAttributeName);
+		assertEquals(
+		"cn=Barbara Jensen, ou=Product Development, dc=airius, dc=com", this.callbackAttributeName, "The attribute name from the callback handler did not match the  expected result");
 	}
 
 	@Test
@@ -108,8 +106,8 @@ public class LdifReaderBuilderTests {
 		ExecutionContext executionContext = new ExecutionContext();
 		firstRead(executionContext);
 		this.ldifReader.update(executionContext);
-		assertEquals("foo.read.count did not have the expected result", 1,
-				executionContext.getInt("foo.read.count"));
+		assertEquals(1,
+		executionContext.getInt("foo.read.count"), "foo.read.count did not have the expected result");
 	}
 
 	@Test
@@ -119,7 +117,7 @@ public class LdifReaderBuilderTests {
 		ExecutionContext executionContext = new ExecutionContext();
 		firstRead(executionContext);
 		this.ldifReader.update(executionContext);
-		assertEquals("ExecutionContext should have been empty", 0, executionContext.size());
+		assertEquals(0, executionContext.size(), "ExecutionContext should have been empty");
 	}
 
 	@Test
@@ -131,8 +129,8 @@ public class LdifReaderBuilderTests {
 			fail("IllegalStateException should have been thrown, because strict was set to true");
 		}
 		catch (ItemStreamException ise) {
-			assertEquals("IllegalStateException message did not match the expected result.",
-					"Failed to initialize the reader", ise.getMessage());
+			assertEquals(
+			"Failed to initialize the reader", ise.getMessage(), "IllegalStateException message did not match the expected result.");
 		}
 		// Test that strict when disabled will still allow the ldap resource to be opened.
 		this.ldifReader = new LdifReaderBuilder().strict(false)

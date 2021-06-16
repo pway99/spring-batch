@@ -20,13 +20,11 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
-
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
@@ -38,10 +36,10 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.Assert;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {"/simple-job-launcher-context.xml", "/applicationContext-test2.xml"})
 public class MappingLdifReaderTests {
 	private static Logger log = LoggerFactory.getLogger(MappingLdifReaderTests.class);
@@ -65,7 +63,7 @@ public class MappingLdifReaderTests {
 		actual = new UrlResource("file:target/test-outputs/output.ldif");
 	}
 
-	@Before
+	@BeforeEach
 	public void checkFiles() {
 		Assert.isTrue(expected.exists(), "Expected does not exist.");
 	}

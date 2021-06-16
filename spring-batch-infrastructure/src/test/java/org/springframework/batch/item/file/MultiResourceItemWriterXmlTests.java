@@ -14,24 +14,22 @@
  * limitations under the License.
  */
 package org.springframework.batch.item.file;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
-
 import javax.xml.stream.XMLEventFactory;
 import javax.xml.stream.XMLEventWriter;
 import javax.xml.transform.Result;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.xml.StaxEventItemWriter;
 import org.springframework.batch.item.xml.StaxTestUtils;
 import org.springframework.oxm.Marshaller;
 import org.springframework.oxm.XmlMappingException;
 import org.springframework.util.Assert;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests for {@link MultiResourceItemWriter} delegating to
@@ -45,7 +43,7 @@ public class MultiResourceItemWriterXmlTests extends AbstractMultiResourceItemWr
 
 	private StaxEventItemWriter<String> delegate;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		super.createFile();
 		delegate = new StaxEventItemWriter<>();
@@ -56,7 +54,7 @@ public class MultiResourceItemWriterXmlTests extends AbstractMultiResourceItemWr
 	 * Writes object's toString representation as tag.
 	 */
 	private static class SimpleMarshaller implements Marshaller {
-		
+
         @Override
 		public void marshal(Object graph, Result result) throws XmlMappingException, IOException {
 			Assert.isInstanceOf(Result.class, result);

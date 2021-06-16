@@ -15,7 +15,11 @@
  */
 package org.springframework.batch.core.step.item;
 
-import org.junit.Test;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import org.junit.jupiter.api.Test;
 import org.springframework.retry.ExhaustedRetryException;
 import org.springframework.retry.RecoveryCallback;
 import org.springframework.retry.RetryCallback;
@@ -24,14 +28,10 @@ import org.springframework.retry.RetryState;
 import org.springframework.retry.policy.SimpleRetryPolicy;
 import org.springframework.retry.support.DefaultRetryState;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class BatchRetryTemplateTests {
 
@@ -56,8 +56,8 @@ public class BatchRetryTemplateTests {
 		String result = template.execute(new RetryCallback<String, Exception>() {
 			@Override
 			public String doWithRetry(RetryContext context) throws Exception {
-				assertTrue("Wrong context type: " + context.getClass().getSimpleName(), context.getClass()
-						.getSimpleName().contains("Batch"));
+				assertTrue(context.getClass()
+				.getSimpleName().contains("Batch"), "Wrong context type: " + context.getClass().getSimpleName());
 				return "2";
 			}
 		}, Arrays.<RetryState> asList(new DefaultRetryState("1")));
@@ -96,33 +96,36 @@ public class BatchRetryTemplateTests {
 
 	}
 
-	@Test(expected = ExhaustedRetryException.class)
+	@Test
 	public void testExhaustedRetry() throws Exception {
+	 assertThrows(ExhaustedRetryException.class, () -> {
 
 		BatchRetryTemplate template = new BatchRetryTemplate();
 		template.setRetryPolicy(new SimpleRetryPolicy(1, Collections
-				.<Class<? extends Throwable>, Boolean> singletonMap(Exception.class, true)));
+		.<Class<? extends Throwable>, Boolean>singletonMap(Exception.class, true)));
 
 		RetryCallback<String[], Exception> retryCallback = new RetryCallback<String[], Exception>() {
-			@Override
-			public String[] doWithRetry(RetryContext context) throws Exception {
-				if (count++ < 2) {
-					throw new RecoverableException("Recoverable");
-				}
-				return outputs.toArray(new String[0]);
-			}
+		@Override
+		public String[] doWithRetry(RetryContext context) throws Exception {
+		if (count++ < 2) {
+			throw new RecoverableException("Recoverable");
+		}
+		return outputs.toArray(new String[0]);
+		}
 		};
 
 		outputs = Arrays.asList("a", "b");
 		try {
-			template.execute(retryCallback, BatchRetryTemplate.createState(outputs));
-			fail("Expected RecoverableException");
+		template.execute(retryCallback, BatchRetryTemplate.createState(outputs));
+		fail("Expected RecoverableException");
 		}
 		catch (RecoverableException e) {
-			assertEquals("Recoverable", e.getMessage());
+		assertEquals("Recoverable", e.getMessage());
 		}
 		outputs = Arrays.asList("a", "c");
 		template.execute(retryCallback, BatchRetryTemplate.createState(outputs));
+
+	 });
 
 	}
 

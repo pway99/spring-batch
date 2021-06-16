@@ -15,19 +15,17 @@
  */
 package org.springframework.batch.core.repository.dao;
 
-import static org.junit.Assert.*;
-
-import org.junit.Test;
-import org.junit.runners.JUnit4;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.item.ExecutionContext;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 
 /**
  * Tests for {@link MapExecutionContextDao}.
  */
-@RunWith(JUnit4.class)
 public class MapExecutionContextDaoTests extends AbstractExecutionContextDaoTests {
 
 	@Override
@@ -55,9 +53,9 @@ public class MapExecutionContextDaoTests extends AbstractExecutionContextDaoTest
 		MapExecutionContextDao tested = new MapExecutionContextDao();
 		JobExecution jobExecution = new JobExecution(1L);
 		StepExecution stepExecution = new StepExecution("stepName", jobExecution, 1L);
-		
+
 		assertTrue(stepExecution.getId() == jobExecution.getId());
-		
+
 		jobExecution.getExecutionContext().put("type", "job");
 		stepExecution.getExecutionContext().put("type", "step");
 		assertTrue(!jobExecution.getExecutionContext().get("type").equals(stepExecution.getExecutionContext().get("type")));
@@ -66,7 +64,7 @@ public class MapExecutionContextDaoTests extends AbstractExecutionContextDaoTest
 
 		tested.saveExecutionContext(jobExecution);
 		tested.saveExecutionContext(stepExecution);
-	
+
 		ExecutionContext jobCtx = tested.getExecutionContext(jobExecution);
 		ExecutionContext stepCtx = tested.getExecutionContext(stepExecution);
 
@@ -80,13 +78,13 @@ public class MapExecutionContextDaoTests extends AbstractExecutionContextDaoTest
 		JobExecution jobExecution = new JobExecution((long)1);
 		StepExecution stepExecution = new StepExecution("stepName", jobExecution, 123L);
 		assertTrue(stepExecution.getExecutionContext().isEmpty());
-		
+
 		tested.updateExecutionContext(stepExecution);
 		stepExecution.getExecutionContext().put("key","value");
-		
+
 		ExecutionContext retrieved = tested.getExecutionContext(stepExecution);
 		assertTrue(retrieved.isEmpty());
-		
+
 		tested.updateExecutionContext(jobExecution);
 		jobExecution.getExecutionContext().put("key", "value");
 		retrieved = tested.getExecutionContext(jobExecution);

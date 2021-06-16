@@ -16,23 +16,22 @@
 
 package org.springframework.batch.support.transaction;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.TransactionCallback;
 import org.springframework.transaction.support.TransactionSynchronization;
 import org.springframework.transaction.support.TransactionSynchronizationAdapter;
 import org.springframework.transaction.support.TransactionSynchronizationManager;
 import org.springframework.transaction.support.TransactionTemplate;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 public class ResourcelessTransactionManagerTests {
 
 	private ResourcelessTransactionManager transactionManager = new ResourcelessTransactionManager();
 
 	private int txStatus = Integer.MIN_VALUE;
-	
+
 	private int count = 0;
 
 	@Test

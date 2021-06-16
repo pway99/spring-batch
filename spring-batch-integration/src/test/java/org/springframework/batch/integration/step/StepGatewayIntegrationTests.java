@@ -15,11 +15,9 @@
  */
 package org.springframework.batch.integration.step;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.After;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.Job;
@@ -30,31 +28,32 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 /**
  * @author Dave Syer
  * 
  */
 @ContextConfiguration()
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 public class StepGatewayIntegrationTests {
 
 	@Autowired
 	private JobLauncher jobLauncher;
-	
+
 	@Autowired
 	@Qualifier("job")
 	private Job job;
-	
+
 	@Autowired
 	private TestTasklet tasklet;
-	
-	@After
+
+	@AfterEach
 	public void clear() {
 		tasklet.setFail(false);
 	}
-	
+
 	@Test
 	public void testLaunchJob() throws Exception {
 		JobExecution jobExecution = jobLauncher.run(job, new JobParameters());

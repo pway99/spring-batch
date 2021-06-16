@@ -15,7 +15,7 @@
  */
 package org.springframework.batch.core.repository.dao;
 
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.batch.core.repository.ExecutionContextSerializer;
 
 /**
@@ -26,7 +26,7 @@ public class XStreamExecutionContextStringSerializerTests extends AbstractExecut
 
 	ExecutionContextSerializer serializer;
 
-	@Before
+	@BeforeEach
 	public void onSetUp() throws Exception {
 		@SuppressWarnings("deprecation")
 		XStreamExecutionContextStringSerializer serializerDeserializer = new XStreamExecutionContextStringSerializer();

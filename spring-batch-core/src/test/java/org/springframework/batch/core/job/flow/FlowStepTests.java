@@ -16,14 +16,10 @@
 
 package org.springframework.batch.core.job.flow;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.JobExecution;
@@ -38,6 +34,10 @@ import org.springframework.batch.core.repository.JobRepository;
 import org.springframework.batch.core.repository.support.MapJobRepositoryFactoryBean;
 import org.springframework.batch.core.step.StepSupport;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.fail;
+
 /**
  * @author Dave Syer
  *
@@ -47,7 +47,7 @@ public class FlowStepTests {
 	private JobRepository jobRepository;
 	private JobExecution jobExecution;
 
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		jobRepository = new MapJobRepositoryFactoryBean().getObject();
 		jobExecution = jobRepository.createJobExecution("job", new JobParameters());
@@ -56,11 +56,13 @@ public class FlowStepTests {
 	/**
 	 * Test method for {@link org.springframework.batch.core.job.flow.FlowStep#afterPropertiesSet()}.
 	 */
-	@Test(expected=IllegalStateException.class)
+	@Test
 	public void testAfterPropertiesSet() throws Exception{
+	 assertThrows(IllegalStateException.class, () -> {
 		FlowStep step = new FlowStep();
 		step.setJobRepository(jobRepository);
 		step.afterPropertiesSet();
+	 });
 	}
 
 	/**

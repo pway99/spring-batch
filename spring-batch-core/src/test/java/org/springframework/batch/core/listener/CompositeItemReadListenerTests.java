@@ -19,8 +19,8 @@ import static org.mockito.Mockito.mock;
 
 import java.util.ArrayList;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.core.ItemReadListener;
 
 /**
@@ -34,7 +34,7 @@ public class CompositeItemReadListenerTests {
 	CompositeItemReadListener<Object> compositeListener;
 	
 	@SuppressWarnings("unchecked")
-	@Before
+	@BeforeEach
 	public void setUp() throws Exception {
 		listener = mock(ItemReadListener.class);
 		compositeListener = new CompositeItemReadListener<>();

@@ -15,21 +15,18 @@
  */
 package org.springframework.batch.item.database.support;
 
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
-
 import javax.sql.DataSource;
-
-import org.junit.Assert;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.springframework.batch.item.database.Order;
 import org.springframework.dao.InvalidDataAccessResourceUsageException;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Thomas Risberg
@@ -41,7 +38,7 @@ public class DerbyPagingQueryProviderTests extends AbstractSqlPagingQueryProvide
 	public DerbyPagingQueryProviderTests() {
 		pagingQueryProvider = new DerbyPagingQueryProvider();
 	}
-	
+
 	@Test
 	public void testInit() throws Exception {
 		DataSource ds = mock(DataSource.class);
@@ -86,7 +83,7 @@ public class DerbyPagingQueryProviderTests extends AbstractSqlPagingQueryProvide
 	public void testGenerateFirstPageQuery() {
 		String sql = "SELECT * FROM ( SELECT TMP_ORDERED.*, ROW_NUMBER() OVER () AS ROW_NUMBER FROM (SELECT id, name, age FROM foo WHERE bar = 1 ) AS TMP_ORDERED) AS TMP_SUB WHERE TMP_SUB.ROW_NUMBER <= 100 ORDER BY id ASC";
 		String s = pagingQueryProvider.generateFirstPageQuery(pageSize);
-		Assert.assertEquals(sql, s);
+		Assertions.assertEquals(sql, s);
 	}
 
 	@Test
@@ -94,7 +91,7 @@ public class DerbyPagingQueryProviderTests extends AbstractSqlPagingQueryProvide
 	public void testGenerateRemainingPagesQuery() {
 		String sql = "SELECT * FROM ( SELECT TMP_ORDERED.*, ROW_NUMBER() OVER () AS ROW_NUMBER FROM (SELECT id, name, age FROM foo WHERE bar = 1 ) AS TMP_ORDERED) AS TMP_SUB WHERE TMP_SUB.ROW_NUMBER <= 100 AND ((id > ?)) ORDER BY id ASC";
 		String s = pagingQueryProvider.generateRemainingPagesQuery(pageSize);
-		Assert.assertEquals(sql, s);
+		Assertions.assertEquals(sql, s);
 	}
 
 	@Test
@@ -102,7 +99,7 @@ public class DerbyPagingQueryProviderTests extends AbstractSqlPagingQueryProvide
 	public void testGenerateJumpToItemQuery() {
 		String sql = "SELECT id FROM ( SELECT id, ROW_NUMBER() OVER () AS ROW_NUMBER FROM (SELECT id, name, age FROM foo WHERE bar = 1 ) AS TMP_ORDERED) AS TMP_SUB WHERE TMP_SUB.ROW_NUMBER = 100 ORDER BY id ASC";
 		String s = pagingQueryProvider.generateJumpToItemQuery(145, pageSize);
-		Assert.assertEquals(sql, s);
+		Assertions.assertEquals(sql, s);
 	}
 
 	@Test
@@ -110,7 +107,7 @@ public class DerbyPagingQueryProviderTests extends AbstractSqlPagingQueryProvide
 	public void testGenerateJumpToItemQueryForFirstPage() {
 		String sql = "SELECT id FROM ( SELECT id, ROW_NUMBER() OVER () AS ROW_NUMBER FROM (SELECT id, name, age FROM foo WHERE bar = 1 ) AS TMP_ORDERED) AS TMP_SUB WHERE TMP_SUB.ROW_NUMBER = 1 ORDER BY id ASC";
 		String s = pagingQueryProvider.generateJumpToItemQuery(45, pageSize);
-		Assert.assertEquals(sql, s);
+		Assertions.assertEquals(sql, s);
 	}
 
 	/**
@@ -120,7 +117,7 @@ public class DerbyPagingQueryProviderTests extends AbstractSqlPagingQueryProvide
 	@Override
 	public void testQueryContainsSortKey() {
 		String s = pagingQueryProvider.generateFirstPageQuery(pageSize).toLowerCase();
-		assertTrue("Wrong query: " + s, s.contains("id asc"));
+		assertTrue(s.contains("id asc"), "Wrong query: " + s);
 	}
 
 	/**
@@ -131,7 +128,7 @@ public class DerbyPagingQueryProviderTests extends AbstractSqlPagingQueryProvide
 	public void testQueryContainsSortKeyDesc() {
 		pagingQueryProvider.getSortKeys().put("id", Order.DESCENDING);
 		String s = pagingQueryProvider.generateFirstPageQuery(pageSize).toLowerCase();
-		assertTrue("Wrong query: " + s, s.contains("id desc"));
+		assertTrue(s.contains("id desc"), "Wrong query: " + s);
 	}
 
 	@Override

@@ -19,23 +19,25 @@ package org.springframework.batch.item.support;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
+import org.junit.jupiter.api.Test;
 import org.springframework.batch.item.support.ListItemReader;
 
-import junit.framework.TestCase;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class ListItemReaderTests extends TestCase {
+public class ListItemReaderTests {
 
 	ListItemReader<String> reader = new ListItemReader<>(Arrays.asList(new String[]{"a", "b", "c"}));
 
-	public void testNext() throws Exception {
+	@Test
+ public void testNext() throws Exception {
 		assertEquals("a", reader.read());
 		assertEquals("b", reader.read());
 		assertEquals("c", reader.read());
 		assertEquals(null, reader.read());
 	}
 
-	public void testChangeList() throws Exception {
+	@Test
+ public void testChangeList() throws Exception {
 		List<String> list = new ArrayList<>(Arrays.asList(new String[]{"a", "b", "c"}));
 		reader = new ListItemReader<>(list);
 		assertEquals("a", reader.read());
