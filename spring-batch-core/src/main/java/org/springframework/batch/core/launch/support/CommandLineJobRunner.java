@@ -475,7 +475,7 @@ public class CommandLineJobRunner {
 
 	private Long getLongIdentifier(String jobIdentifier) {
 		try {
-			return new Long(jobIdentifier);
+			return Long.valueOf(jobIdentifier);
 		}
 		catch (NumberFormatException e) {
 			// Not an ID - must be a name

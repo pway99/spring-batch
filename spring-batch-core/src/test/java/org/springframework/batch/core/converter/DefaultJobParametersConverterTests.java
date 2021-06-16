@@ -254,7 +254,7 @@ public class DefaultJobParametersConverterTests {
 	public void testGetProperties() throws Exception {
 
 		JobParameters parameters = new JobParametersBuilder().addDate("schedule.date", dateFormat.parse("01/23/2008"))
-				.addString("job.key", "myKey").addLong("vendor.id", new Long(33243243)).addDouble("double.key", 1.23)
+				.addString("job.key", "myKey").addLong("vendor.id", Long.valueOf(33243243)).addDouble("double.key", 1.23)
 				.toJobParameters();
 
 		Properties props = factory.getProperties(parameters);

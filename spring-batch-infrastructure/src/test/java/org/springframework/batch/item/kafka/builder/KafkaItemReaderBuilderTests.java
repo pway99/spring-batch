@@ -242,7 +242,7 @@ public class KafkaItemReaderBuilderTests {
 		assertEquals(partitions.get(1).intValue(), topicPartitions.get(1).partition());
 		Map<TopicPartition, Long> partitionOffsetsMap = (Map<TopicPartition, Long>) ReflectionTestUtils.getField(reader, "partitionOffsets");
 		assertEquals(2, partitionOffsetsMap.size());
-		assertEquals(new Long(10), partitionOffsetsMap.get(new TopicPartition(topic, partitions.get(0))));
-		assertEquals(new Long(15), partitionOffsetsMap.get(new TopicPartition(topic, partitions.get(1))));
+		assertEquals(Long.valueOf(10), partitionOffsetsMap.get(new TopicPartition(topic, partitions.get(0))));
+		assertEquals(Long.valueOf(15), partitionOffsetsMap.get(new TopicPartition(topic, partitions.get(1))));
 	}
 }

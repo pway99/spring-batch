@@ -129,7 +129,7 @@ public class JdbcPagingRestartIntegrationTests {
 		List<Map<String, Object>> ids = jdbcTemplate
 				.queryForList("SELECT ID,NAME FROM T_FOOS ORDER BY ID ASC");
 		logger.debug("Ids: "+ids);
-		int startAfterValue = (new Long(ids.get(count - 1).get("ID").toString())).intValue();
+		int startAfterValue = (Long.valueOf(ids.get(count - 1).get("ID").toString())).intValue();
 		logger.debug("Start after: " + startAfterValue);
 		Map<String, Object> startAfterValues = new LinkedHashMap<>();
 		startAfterValues.put("ID", startAfterValue);

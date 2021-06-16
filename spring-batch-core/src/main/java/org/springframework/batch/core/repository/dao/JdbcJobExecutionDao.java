@@ -348,7 +348,7 @@ public class JdbcJobExecutionDao extends AbstractJdbcBatchMetadataDao implements
 					0L, 0D, identifyingFlag};
 		} else if (type == ParameterType.LONG) {
 			args = new Object[] { executionId, key, type, "", new Timestamp(0L),
-					value, new Double(0), identifyingFlag};
+					value, Double.valueOf(0), identifyingFlag};
 		} else if (type == ParameterType.DOUBLE) {
 			args = new Object[] { executionId, key, type, "", new Timestamp(0L), 0L,
 					value, identifyingFlag};

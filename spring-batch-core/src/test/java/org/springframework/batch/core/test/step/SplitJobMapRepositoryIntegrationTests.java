@@ -69,7 +69,7 @@ public class SplitJobMapRepositoryIntegrationTests {
 			}
 
 			try {
-				JobExecution execution = jobLauncher.run(job, new JobParametersBuilder().addLong("count", new Long(i))
+				JobExecution execution = jobLauncher.run(job, new JobParametersBuilder().addLong("count", Long.valueOf(i))
 						.toJobParameters());
 				assertEquals(BatchStatus.COMPLETED, execution.getStatus());
 			}

@@ -65,7 +65,7 @@ public class MapExecutionContextDao implements ExecutionContextDao {
 			if(them == null) {
 				return 1;
 			}
-			final int idCompare = new Long(this.id).compareTo(new Long(them.id)); // JDK6 Make this Long.compare(x,y)
+			final int idCompare = Long.valueOf(this.id).compareTo(Long.valueOf(them.id)); // JDK6 Make this Long.compare(x,y)
 			if(idCompare != 0) {
 				return idCompare;
 			}

@@ -161,7 +161,7 @@ public class JobListenerFactoryBeanTests {
 			@AfterJob
 			public void aMethod(JobExecution jobExecution) {
 				executed = true;
-				assertEquals(new Long(25), jobExecution.getId());
+				assertEquals(Long.valueOf(25), jobExecution.getId());
 			}
 		};
 		factoryBean.setDelegate(delegate);
@@ -205,7 +205,7 @@ public class JobListenerFactoryBeanTests {
 			@SuppressWarnings("unused")
 			public void aMethod(JobExecution jobExecution) {
 				executed = true;
-				assertEquals(new Long(25), jobExecution.getId());
+				assertEquals(Long.valueOf(25), jobExecution.getId());
 			}
 		};
 		factoryBean.setDelegate(delegate);

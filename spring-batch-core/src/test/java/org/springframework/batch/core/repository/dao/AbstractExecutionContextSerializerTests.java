@@ -48,7 +48,7 @@ public abstract class AbstractExecutionContextSerializerTests {
         m1.put("object2", "OBJECT TWO");
         // Use a date after 1971 (otherwise daylight saving screws up)...
         m1.put("object3", new Date(123456790123L));
-        m1.put("object4", new Double(1234567.1234D));
+        m1.put("object4", Double.valueOf(1234567.1234D));
 
         Map<String, Object> m2 = serializationRoundTrip(m1);
 

@@ -96,9 +96,9 @@ public class JobParametersBuilderTests {
 	@Test
 	public void testNonIdentifyingParameters() {
 		this.parametersBuilder.addDate("SCHEDULE_DATE", date, false);
-		this.parametersBuilder.addLong("LONG", new Long(1), false);
+		this.parametersBuilder.addLong("LONG", Long.valueOf(1), false);
 		this.parametersBuilder.addString("STRING", "string value", false);
-		this.parametersBuilder.addDouble("DOUBLE", new Double(1), false);
+		this.parametersBuilder.addDouble("DOUBLE", Double.valueOf(1), false);
 
 		JobParameters parameters = this.parametersBuilder.toJobParameters();
 		assertEquals(date, parameters.getDate("SCHEDULE_DATE"));
@@ -114,9 +114,9 @@ public class JobParametersBuilderTests {
 	@Test
 	public void testToJobRuntimeParameters(){
 		this.parametersBuilder.addDate("SCHEDULE_DATE", date);
-		this.parametersBuilder.addLong("LONG", new Long(1));
+		this.parametersBuilder.addLong("LONG", Long.valueOf(1));
 		this.parametersBuilder.addString("STRING", "string value");
-		this.parametersBuilder.addDouble("DOUBLE", new Double(1));
+		this.parametersBuilder.addDouble("DOUBLE", Double.valueOf(1));
 		JobParameters parameters = this.parametersBuilder.toJobParameters();
 		assertEquals(date, parameters.getDate("SCHEDULE_DATE"));
 		assertEquals(1L, parameters.getLong("LONG").longValue());
@@ -149,7 +149,7 @@ public class JobParametersBuilderTests {
 	@Test
 	public void testOrderedTypes(){
 		this.parametersBuilder.addDate("SCHEDULE_DATE", date);
-		this.parametersBuilder.addLong("LONG", new Long(1));
+		this.parametersBuilder.addLong("LONG", Long.valueOf(1));
 		this.parametersBuilder.addString("STRING", "string value");
 		Iterator<String> parameters = this.parametersBuilder.toJobParameters().getParameters().keySet().iterator();
 		assertEquals("SCHEDULE_DATE", parameters.next());
@@ -231,7 +231,7 @@ public class JobParametersBuilderTests {
 		when(this.jobExplorer.getJobInstances("simpleJob",0,1)).thenReturn(this.jobInstanceList);
 		when(this.jobExplorer.getJobExecutions(any())).thenReturn(this.jobExecutionList);
 		initializeForNextJobParameters();
-		this.parametersBuilder.addLong("NON_IDENTIFYING_LONG", new Long(1), false);
+		this.parametersBuilder.addLong("NON_IDENTIFYING_LONG", Long.valueOf(1), false);
 		this.parametersBuilder.getNextJobParameters(this.job);
 		baseJobParametersVerify(this.parametersBuilder.toJobParameters(), 5);
 	}
@@ -255,7 +255,7 @@ public class JobParametersBuilderTests {
 
 	private void initializeForNextJobParameters() {
 		this.parametersBuilder.addDate("SCHEDULE_DATE", date);
-		this.parametersBuilder.addLong("LONG", new Long(1));
+		this.parametersBuilder.addLong("LONG", Long.valueOf(1));
 		this.parametersBuilder.addString("STRING", "string value");
 	}
 

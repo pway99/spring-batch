@@ -247,7 +247,7 @@ public class StepParserStepFactoryBeanTests {
 		Object step = fb.getObject();
 		assertTrue(step instanceof TaskletStep);
 		Object throttleLimit = ReflectionTestUtils.getField(ReflectionTestUtils.getField(step, "stepOperations"), "throttleLimit");
-		assertEquals(new Integer(10), throttleLimit);
+		assertEquals(Integer.valueOf(10), throttleLimit);
 		Object tasklet = ReflectionTestUtils.getField(step, "tasklet");
 		assertTrue(tasklet instanceof ChunkOrientedTasklet<?>);
 		assertFalse((Boolean) ReflectionTestUtils.getField(tasklet, "buffering"));

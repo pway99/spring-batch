@@ -70,7 +70,7 @@ public class DataFieldMaxValueJobParametersIncrementerTests {
 
 		// then
 		Long runId = nextParameters.getLong("run.id");
-		Assert.assertEquals(new Long(10) ,runId);
+		Assert.assertEquals(Long.valueOf(10) ,runId);
 	}
 
 	@Test
@@ -89,7 +89,7 @@ public class DataFieldMaxValueJobParametersIncrementerTests {
 		// then
 		Long runId = nextParameters.getLong("run.id");
 		String foo = nextParameters.getString("foo");
-		Assert.assertEquals(new Long(10) ,runId);
+		Assert.assertEquals(Long.valueOf(10) ,runId);
 		Assert.assertEquals("bar" ,foo);
 	}
 
@@ -108,6 +108,6 @@ public class DataFieldMaxValueJobParametersIncrementerTests {
 
 		// then
 		Long runId = nextParameters.getLong("run.id");
-		Assert.assertEquals(new Long(10) ,runId);
+		Assert.assertEquals(Long.valueOf(10) ,runId);
 	}
 }

@@ -33,7 +33,7 @@ public class ChunkResponseTests {
 
 	@Test
 	public void testGetJobId() {
-		assertEquals(new Long(111L), response.getJobId());
+		assertEquals(Long.valueOf(111L), response.getJobId());
 	}
 
 	@Test
@@ -50,7 +50,7 @@ public class ChunkResponseTests {
 	public void testSerializable() throws Exception {
 		ChunkResponse result = (ChunkResponse) SerializationUtils.deserialize(SerializationUtils.serialize(response));
 		assertNotNull(result.getStepContribution());
-		assertEquals(new Long(111L), result.getJobId());
+		assertEquals(Long.valueOf(111L), result.getJobId());
 	}
 
 }

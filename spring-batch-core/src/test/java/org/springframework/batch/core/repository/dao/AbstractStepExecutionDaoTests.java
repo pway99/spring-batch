@@ -295,11 +295,11 @@ public abstract class AbstractStepExecutionDaoTests extends AbstractTransactiona
 		exec2.setId(exec1.getId());
 
 		exec2.incrementVersion();
-		assertEquals(new Integer(0), exec1.getVersion());
+		assertEquals(Integer.valueOf(0), exec1.getVersion());
 		assertEquals(exec1.getVersion(), exec2.getVersion());
 
 		dao.updateStepExecution(exec1);
-		assertEquals(new Integer(1), exec1.getVersion());
+		assertEquals(Integer.valueOf(1), exec1.getVersion());
 
 		try {
 			dao.updateStepExecution(exec2);

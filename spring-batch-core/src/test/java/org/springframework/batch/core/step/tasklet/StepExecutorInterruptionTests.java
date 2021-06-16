@@ -104,7 +104,7 @@ public class StepExecutorInterruptionTests {
 				}
 
 				if (foo != 1) {
-					return new Double(foo);
+					return Double.valueOf(foo);
 				}
 				else {
 					return null;

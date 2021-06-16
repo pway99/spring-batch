@@ -67,7 +67,7 @@ public class FootballJobIntegrationTests extends AbstractIntegrationTests {
 			logger.info("Processed: " + stepExecution);
 			if (stepExecution.getStepName().equals("playerload")) {
 				// The effect of the retries
-				assertEquals(new Double(Math.ceil(stepExecution.getReadCount() / 10. + 1)).intValue(),
+				assertEquals(Double.valueOf(Math.ceil(stepExecution.getReadCount() / 10. + 1)).intValue(),
 						stepExecution.getCommitCount());
 			}
 		}
