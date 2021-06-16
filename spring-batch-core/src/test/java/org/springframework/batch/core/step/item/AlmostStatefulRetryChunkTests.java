@@ -36,9 +36,9 @@ public class AlmostStatefulRetryChunkTests {
 
 	private Log logger = LogFactory.getLog(getClass());
 
-	private final Chunk<String> chunk;
+	private Chunk<String> chunk;
 
-	private final int retryLimit;
+	private int retryLimit;
 
 	private int retryAttempts = 0;
 

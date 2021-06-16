@@ -205,7 +205,7 @@ public class FaultTolerantChunkProcessorTests {
 			processor.process(contribution, inputs);
 			fail("Expected Error");
 		} catch (Error e) {
-			assertEquals("Expected Error!", e.getMessage());
+			assertTrue(e.getMessage().contains("Expected Error!"), e.getMessage());
 		}
 		processor.process(contribution, inputs);
 	}
